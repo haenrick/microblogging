@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnonBlog</title>
+    <style>
+        :root {
+            --primary: #1d9bf0;
+            --primary-hover: #1a8cd8;
+            --bg-color: #ffffff;
+            --text-color: #0f1419;
+            --border-color: #eff3f4;
+            --secondary-text: #536471;
+            --surface-hover: #f7f9f9;
+            --error: #f4212e;
+            --success: #00ba7c;
+
+            --max-width: 600px;
+            --header-height: 53px;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #000000;
+            --text-color: #e7e9ea;
+            --border-color: #2f3336;
+            --secondary-text: #71767b;
+            --surface-hover: #16181c;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.5;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 16px;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        [data-theme="dark"] header {
+            background-color: rgba(0, 0, 0, 0.65);
+        }
+
+        h1 {
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .username-display {
+            font-size: 13px;
+            color: var(--secondary-text);
+            font-weight: 500;
+        }
+
+        button.icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+            transition: background-color 0.2s;
+        }
+
+        button.icon-btn:hover {
+            background-color: var(--surface-hover);
+        }
+
+        /* Post Form */
+        .post-form {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            gap: 12px;
+        }
+
+        .avatar-placeholder {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--secondary-text);
+            flex-shrink: 0;
+        }
+
+        .form-content {
+            flex: 1;
+        }
+
+        textarea {
+            width: 100%;
+            border: none;
+            background: none;
+            resize: none;
+            font-size: 20px;
+            outline: none;
+            color: var(--text-color);
+            margin-bottom: 12px;
+            font-family: inherit;
+        }
+
+        textarea::placeholder {
+            color: var(--secondary-text);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .char-count {
+            color: var(--primary);
+            font-size: 14px;
+            font-weight: 500;
+            min-width: 2ch;
+            text-align: right;
+        }
+
+        .char-count.warning {
+            color: #f91880;
+        }
+
+        button.primary-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button.primary-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        button.primary-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Feed */
+        .feed {
+            padding-bottom: 60px;
+        }
+
+        .post {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.2s;
+            position: relative;
+        }
+
+        .post:hover {
+            background-color: var(--surface-hover);
+        }
+
+        .post-header {
+            display: flex;
+            gap: 4px;
+            color: var(--secondary-text);
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .anon-id {
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .dot-sep::after {
+            content: "·";
+            margin: 0 4px;
+        }
+
+        .post-content {
+            font-size: 15px;
+            margin-bottom: 12px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            max-width: 80%;
+            color: var(--secondary-text);
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            font-size: 13px;
+            transition: color 0.2s;
+        }
+
+        .action-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        .action-btn.like:hover { color: #f91880; }
+        .action-btn.reply:hover { color: var(--primary); }
+        .action-btn.delete:hover { color: var(--error); }
+
+        .action-btn.liked { color: #f91880; }
+        .action-btn.liked svg { fill: #f91880; }
+
+        /* Search Bar */
+        .search-container {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 20px;
+            border-radius: 9999px;
+            border: 1px solid var(--border-color);
+            background-color: var(--surface-hover);
+            color: var(--text-color);
+            font-size: 15px;
+            outline: none;
+        }
+
+        .search-input:focus {
+            background-color: var(--bg-color);
+            border-color: var(--primary);
+        }
+
+        /* Reply Threading */
+        .thread {
+            margin-left: 20px;
+            border-left: 2px solid var(--border-color);
+        }
+
+        /* Hidden/Utility */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 200;
+        }
+
+        .toast {
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Auth Overlay */
+        .auth-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 16px;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 400px;
+            padding: 40px 32px;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+        }
+
+        .auth-card h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .auth-card p.subtitle {
+            color: var(--secondary-text);
+            font-size: 15px;
+            margin-bottom: 24px;
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-size: 15px;
+            font-family: inherit;
+            margin-bottom: 12px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .auth-input:focus {
+            border-color: var(--primary);
+        }
+
+        .auth-error {
+            color: var(--error);
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .auth-switch-row {
+            font-size: 14px;
+            color: var(--secondary-text);
+            margin-top: 12px;
+        }
+
+        .auth-switch {
+            color: var(--primary);
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: inherit;
+            font-family: inherit;
+            padding: 0;
+            font-weight: 600;
+        }
+
+        .auth-switch:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Auth Overlay -->
+    <div class="auth-overlay" id="auth-overlay">
+        <div class="auth-card">
+            <h2>AnonBlog</h2>
+
+            <!-- Login -->
+            <div id="login-panel">
+                <p class="subtitle">Anmelden</p>
+                <input class="auth-input" type="text" id="login-identity" placeholder="Username oder E-Mail" autocomplete="username">
+                <input class="auth-input" type="password" id="login-password" placeholder="Passwort" autocomplete="current-password">
+                <div class="auth-error hidden" id="login-error"></div>
+                <button class="primary-btn" id="login-btn" style="width: 100%;">Anmelden</button>
+                <p class="auth-switch-row">
+                    Noch kein Account?
+                    <button class="auth-switch" id="to-register">Registrieren</button>
+                </p>
+            </div>
+
+            <!-- Register -->
+            <div id="register-panel" class="hidden">
+                <p class="subtitle">Account erstellen</p>
+                <input class="auth-input" type="text" id="reg-username" placeholder="Username" autocomplete="username">
+                <input class="auth-input" type="email" id="reg-email" placeholder="E-Mail" autocomplete="email">
+                <input class="auth-input" type="password" id="reg-password" placeholder="Passwort (mind. 8 Zeichen)" autocomplete="new-password">
+                <div class="auth-error hidden" id="reg-error"></div>
+                <button class="primary-btn" id="register-btn" style="width: 100%;">Account erstellen</button>
+                <p class="auth-switch-row">
+                    Bereits registriert?
+                    <button class="auth-switch" id="to-login">Anmelden</button>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div class="container hidden" id="app">
+        <header>
+            <h1 onclick="window.scrollTo({top: 0, behavior: 'smooth'})">AnonBlog</h1>
+            <div class="header-actions">
+                <span class="username-display" id="current-username"></span>
+                <button class="icon-btn" id="theme-toggle" title="Theme wechseln">
+                    <svg viewBox="0 0 24 24" width="20" height="20" id="theme-icon">
+                        <path fill="currentColor" d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
+                    </svg>
+                </button>
+                <button class="icon-btn" id="logout-btn" title="Abmelden" style="color: var(--secondary-text);">
+                    <svg viewBox="0 0 24 24" width="20" height="20">
+                        <path fill="currentColor" d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <div class="search-container hidden" id="search-section">
+            <input type="text" class="search-input" placeholder="Posts durchsuchen..." id="search-input">
+        </div>
+
+        <div class="post-form">
+            <div class="avatar-placeholder"></div>
+            <div class="form-content">
+                <textarea id="post-input" rows="2" placeholder="Was passiert gerade?" maxlength="280"></textarea>
+                <div class="form-actions">
+                    <div style="display: flex; gap: 8px;">
+                        <button class="icon-btn" id="search-toggle" title="Suchen">
+                            <svg viewBox="0 0 24 24" width="20" height="20">
+                                <path fill="currentColor" d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.73 3.815-1.945 5.232l4.959 4.959-1.414 1.414-4.959-4.959C14.065 17.77 12.236 18.5 10.25 18.5c-4.694 0-8.5-3.806-8.5-8.5z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div style="display: flex; gap: 12px; align-items: center;">
+                        <span class="char-count" id="char-count"></span>
+                        <button class="primary-btn" id="post-btn" disabled>Posten</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="feed" id="feed"></div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <template id="post-template">
+        <div class="post">
+            <div class="post-header">
+                <span class="anon-id"></span>
+                <span class="dot-sep"></span>
+                <span class="post-time"></span>
+            </div>
+            <div class="post-content"></div>
+            <div class="post-actions">
+                <button class="action-btn reply">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M1.751 10c0-4.42 3.584-8 8.005-8h4.366c4.49 0 8.129 3.64 8.129 8.13 0 2.96-1.607 5.68-4.196 7.11l-8.054 4.46v-3.69h-.067c-4.49.1-8.183-3.51-8.183-8.01zm8.005-6c-3.317 0-6.005 2.69-6.005 6 0 3.37 2.77 6.08 6.138 6.01l.351-.01h1.761v2.3l5.087-2.81c1.951-1.08 3.163-3.13 3.163-5.36 0-3.39-2.744-6.13-6.129-6.13H9.756z"/>
+                    </svg>
+                    <span class="count"></span>
+                </button>
+                <button class="action-btn like">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.805 1.09-.806-1.09C9.984 6.01 8.526 5.44 7.304 5.5c-1.243.07-2.349.78-2.91 1.91-.552 1.12-.633 2.78.479 4.82 1.074 1.97 3.257 4.27 7.129 6.61 3.87-2.34 6.052-4.64 7.126-6.61 1.111-2.04 1.03-3.7.477-4.82-.561-1.13-1.666-1.84-2.908-1.91zm4.187 7.69c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.605 3.01.894 1.81.846 4.17-.518 6.67z"/>
+                    </svg>
+                    <span class="count"></span>
+                </button>
+                <button class="action-btn delete hidden">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M16 6V4.5C16 3.12 14.88 2 13.5 2h-3C9.11 2 8 3.12 8 4.5V6H3v2h1.06l.81 11.21C4.98 20.78 6.28 22 7.86 22h8.28c1.58 0 2.88-1.22 2.98-2.79L19.94 8H21V6h-5zm-6-1.5c0-.28.22-.5.5-.5h3c.28 0 .5.22.5.5V6h-4V4.5zm7.13 14.57c-.04.52-.47.93-1 .93H7.86c-.53 0-.96-.41-1-.93L6.07 8h11.85l-.79 11.07z"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="reply-form-container"></div>
+            <div class="replies"></div>
+        </div>
+    </template>
+
+    <script type="module">
+        import PocketBase from 'https://cdn.jsdelivr.net/npm/pocketbase/dist/pocketbase.es.mjs';
+
+        // --- Init PocketBase ---
+        // Frontend is served from PocketBase itself, so origin = PocketBase URL
+        const pb = new PocketBase(window.location.origin);
+
+        let posts = [];
+        let lastPostTime = 0;
+
+        // --- Auth ---
+
+        async function login(identity, password) {
+            const errorEl = document.getElementById('login-error');
+            errorEl.classList.add('hidden');
+            try {
+                await pb.collection('users').authWithPassword(identity, password);
+            } catch {
+                errorEl.textContent = 'Falscher Username oder Passwort.';
+                errorEl.classList.remove('hidden');
+            }
+        }
+
+        async function register(username, email, password) {
+            const errorEl = document.getElementById('reg-error');
+            errorEl.classList.add('hidden');
+            try {
+                await pb.collection('users').create({ username, email, password, passwordConfirm: password });
+                await pb.collection('users').authWithPassword(email, password);
+            } catch (e) {
+                const data = e?.response?.data;
+                errorEl.textContent =
+                    data?.username?.message ||
+                    data?.email?.message ||
+                    data?.password?.message ||
+                    'Registrierung fehlgeschlagen.';
+                errorEl.classList.remove('hidden');
+            }
+        }
+
+        function showApp() {
+            document.getElementById('auth-overlay').classList.add('hidden');
+            document.getElementById('app').classList.remove('hidden');
+            document.getElementById('current-username').textContent = '@' + pb.authStore.model.username;
+
+            const draft = localStorage.getItem('post_draft');
+            if (draft) document.getElementById('post-input').value = draft;
+            updateCharCount();
+
+            loadPosts();
+            subscribeToFeed();
+        }
+
+        function showAuth() {
+            pb.collection('posts').unsubscribe('*');
+            document.getElementById('app').classList.add('hidden');
+            document.getElementById('auth-overlay').classList.remove('hidden');
+        }
+
+        // --- Posts ---
+
+        async function loadPosts() {
+            try {
+                const records = await pb.collection('posts').getFullList({
+                    sort: 'created',
+                    expand: 'author',
+                });
+
+                // Build tree from flat list
+                const map = {};
+                records.forEach(r => { map[r.id] = { ...r, replies: [] }; });
+
+                const roots = [];
+                records.forEach(r => {
+                    if (r.parent && map[r.parent]) {
+                        map[r.parent].replies.push(map[r.id]);
+                    } else if (!r.parent) {
+                        roots.push(map[r.id]);
+                    }
+                });
+
+                posts = roots.reverse(); // newest first
+                renderFeed();
+            } catch {
+                showToast('Fehler beim Laden der Posts.');
+            }
+        }
+
+        async function createPost(content, parentId = null) {
+            const now = Date.now();
+            if (now - lastPostTime < 10000) {
+                const wait = Math.ceil((10000 - (now - lastPostTime)) / 1000);
+                showToast(`Warte noch ${wait}s.`);
+                return false;
+            }
+            try {
+                const data = {
+                    content: content.trim(),
+                    author: pb.authStore.model.id,
+                };
+                if (parentId) data.parent = parentId;
+
+                await pb.collection('posts').create(data);
+                lastPostTime = now;
+
+                if (!parentId) {
+                    document.getElementById('post-input').value = '';
+                    localStorage.removeItem('post_draft');
+                    updateCharCount();
+                }
+                return true;
+            } catch {
+                showToast('Fehler beim Posten.');
+                return false;
+            }
+        }
+
+        async function deletePost(id) {
+            try {
+                await pb.collection('posts').delete(id);
+                showToast('Post gelöscht.');
+            } catch {
+                showToast('Fehler beim Löschen.');
+            }
+        }
+
+        async function toggleLike(post) {
+            const userId = pb.authStore.model.id;
+            const likes = post.likes || [];
+            const isLiked = likes.includes(userId);
+            const newLikes = isLiked
+                ? likes.filter(id => id !== userId)
+                : [...likes, userId];
+            try {
+                await pb.collection('posts').update(post.id, { likes: newLikes });
+            } catch {
+                showToast('Fehler.');
+            }
+        }
+
+        function subscribeToFeed() {
+            pb.collection('posts').subscribe('*', () => loadPosts());
+        }
+
+        // --- Render ---
+
+        function renderFeed() {
+            const feed = document.getElementById('feed');
+            const searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
+            feed.innerHTML = '';
+
+            const renderList = (list, container, level = 0) => {
+                list.forEach(post => {
+                    if (searchQuery && !postMatchesSearch(post, searchQuery)) return;
+
+                    const clone = document.getElementById('post-template').content.cloneNode(true);
+                    const el = clone.querySelector('.post');
+
+                    if (level > 0) el.classList.add('thread');
+
+                    const username = post.expand?.author?.username || post.author;
+                    el.querySelector('.anon-id').textContent = '@' + username;
+                    el.querySelector('.post-time').textContent = timeAgo(new Date(post.created).getTime());
+                    el.querySelector('.post-content').textContent = post.content;
+
+                    // Like button
+                    const likes = post.likes || [];
+                    const likeBtn = el.querySelector('.like');
+                    likeBtn.querySelector('.count').textContent = likes.length || '';
+                    if (likes.includes(pb.authStore.model?.id)) likeBtn.classList.add('liked');
+                    likeBtn.onclick = (e) => { e.stopPropagation(); toggleLike(post); };
+
+                    // Reply button
+                    const replyBtn = el.querySelector('.reply');
+                    replyBtn.querySelector('.count').textContent = countReplies(post) || '';
+                    replyBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        const form = el.querySelector('.reply-form-container');
+                        if (form.innerHTML) {
+                            form.innerHTML = '';
+                        } else {
+                            form.innerHTML = `
+                                <div class="post-form" style="padding: 10px 0; border: none;">
+                                    <textarea rows="2" placeholder="Antwort schreiben..." style="font-size: 16px; border-bottom: 1px solid var(--border-color);"></textarea>
+                                    <button class="primary-btn" style="margin-top: 5px;">Antworten</button>
+                                </div>
+                            `;
+                            const btn = form.querySelector('button');
+                            const ta = form.querySelector('textarea');
+                            ta.focus();
+                            ta.addEventListener('keydown', (e) => {
+                                if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') btn.click();
+                            });
+                            btn.onclick = async () => {
+                                if (ta.value.trim()) {
+                                    const ok = await createPost(ta.value, post.id);
+                                    if (ok) form.innerHTML = '';
+                                }
+                            };
+                        }
+                    };
+
+                    // Delete button (own posts only)
+                    if (post.author === pb.authStore.model?.id) {
+                        const delBtn = el.querySelector('.delete');
+                        delBtn.classList.remove('hidden');
+                        delBtn.onclick = (e) => { e.stopPropagation(); deletePost(post.id); };
+                    }
+
+                    container.appendChild(el);
+
+                    // Render replies (max 4 levels deep to avoid layout collapse)
+                    if (post.replies?.length > 0 && level < 4) {
+                        renderList(post.replies, el.querySelector('.replies'), level + 1);
+                    }
+                });
+            };
+
+            renderList(posts, feed);
+
+            if (feed.children.length === 0) {
+                feed.innerHTML = `<p style="padding: 32px 16px; color: var(--secondary-text); text-align: center;">
+                    ${searchQuery ? 'Keine Ergebnisse.' : 'Noch keine Posts. Fang an!'}
+                </p>`;
+            }
+        }
+
+        // Search: show post if it or any nested reply matches
+        function postMatchesSearch(post, query) {
+            if (post.content.toLowerCase().includes(query)) return true;
+            return post.replies?.some(r => postMatchesSearch(r, query)) ?? false;
+        }
+
+        // Count all replies recursively
+        function countReplies(post) {
+            if (!post.replies?.length) return 0;
+            return post.replies.length + post.replies.reduce((sum, r) => sum + countReplies(r), 0);
+        }
+
+        // --- Helpers ---
+
+        function timeAgo(ts) {
+            const seconds = Math.floor((Date.now() - ts) / 1000);
+            if (seconds < 60) return `${seconds}s`;
+            const minutes = Math.floor(seconds / 60);
+            if (minutes < 60) return `${minutes}m`;
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return `${hours}h`;
+            return `${Math.floor(hours / 24)}d`;
+        }
+
+        function showToast(msg) {
+            const c = document.getElementById('toast-container');
+            const t = document.createElement('div');
+            t.className = 'toast';
+            t.textContent = msg;
+            c.appendChild(t);
+            setTimeout(() => t.remove(), 3000);
+        }
+
+        function updateCharCount() {
+            const input = document.getElementById('post-input');
+            const btn = document.getElementById('post-btn');
+            const count = document.getElementById('char-count');
+            const len = input.value.length;
+            const remaining = 280 - len;
+            count.textContent = len > 0 ? remaining : '';
+            count.classList.toggle('warning', remaining < 20);
+            btn.disabled = len === 0 || len > 280;
+        }
+
+        // --- Event Listeners ---
+
+        function setupEventListeners() {
+            // Auth panel switching
+            document.getElementById('to-register').addEventListener('click', () => {
+                document.getElementById('login-panel').classList.add('hidden');
+                document.getElementById('register-panel').classList.remove('hidden');
+            });
+            document.getElementById('to-login').addEventListener('click', () => {
+                document.getElementById('register-panel').classList.add('hidden');
+                document.getElementById('login-panel').classList.remove('hidden');
+            });
+
+            // Login
+            document.getElementById('login-btn').addEventListener('click', () => {
+                login(
+                    document.getElementById('login-identity').value,
+                    document.getElementById('login-password').value
+                );
+            });
+            ['login-identity', 'login-password'].forEach(id => {
+                document.getElementById(id).addEventListener('keydown', e => {
+                    if (e.key === 'Enter') document.getElementById('login-btn').click();
+                });
+            });
+
+            // Register
+            document.getElementById('register-btn').addEventListener('click', () => {
+                register(
+                    document.getElementById('reg-username').value,
+                    document.getElementById('reg-email').value,
+                    document.getElementById('reg-password').value
+                );
+            });
+
+            // Logout
+            document.getElementById('logout-btn').addEventListener('click', () => {
+                pb.authStore.clear();
+            });
+
+            // Theme
+            document.getElementById('theme-toggle').addEventListener('click', () => {
+                const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                localStorage.setItem('theme', next);
+            });
+
+            // Post input
+            const input = document.getElementById('post-input');
+            input.addEventListener('input', () => {
+                updateCharCount();
+                localStorage.setItem('post_draft', input.value);
+            });
+            input.addEventListener('keydown', (e) => {
+                if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+                    document.getElementById('post-btn').click();
+                }
+            });
+            document.getElementById('post-btn').addEventListener('click', () => {
+                createPost(input.value);
+            });
+
+            // Search
+            document.getElementById('search-toggle').addEventListener('click', () => {
+                const s = document.getElementById('search-section');
+                s.classList.toggle('hidden');
+                if (!s.classList.contains('hidden')) document.getElementById('search-input').focus();
+            });
+            document.getElementById('search-input').addEventListener('input', renderFeed);
+        }
+
+        // --- Boot ---
+
+        function init() {
+            const storedTheme = localStorage.getItem('theme');
+            if (storedTheme) {
+                document.documentElement.setAttribute('data-theme', storedTheme);
+            } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+
+            setupEventListeners();
+
+            // React to auth state changes (fires immediately with current state)
+            pb.authStore.onChange((_, model) => {
+                if (model) showApp();
+                else showAuth();
+            }, true);
+        }
+
+        init();
+    </script>
+</body>
+
+</html>
