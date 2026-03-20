@@ -16,7 +16,6 @@
             --surface-hover: #f7f9f9;
             --error: #f4212e;
             --success: #00ba7c;
-
             --max-width: 600px;
             --header-height: 53px;
         }
@@ -29,11 +28,7 @@
             --surface-hover: #16181c;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -66,27 +61,26 @@
             justify-content: space-between;
         }
 
-        [data-theme="dark"] header {
-            background-color: rgba(0, 0, 0, 0.65);
-        }
+        [data-theme="dark"] header { background-color: rgba(0, 0, 0, 0.65); }
 
-        h1 {
-            font-size: 20px;
-            font-weight: 700;
-            cursor: pointer;
-        }
+        h1 { font-size: 20px; font-weight: 700; cursor: pointer; }
 
-        .header-actions {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
+        .header-actions { display: flex; gap: 8px; align-items: center; }
 
         .username-display {
             font-size: 13px;
             color: var(--secondary-text);
             font-weight: 500;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: inherit;
+            padding: 4px 8px;
+            border-radius: 9999px;
+            transition: background-color 0.2s;
         }
+
+        .username-display:hover { background: var(--surface-hover); }
 
         button.icon-btn {
             background: none;
@@ -101,9 +95,7 @@
             transition: background-color 0.2s;
         }
 
-        button.icon-btn:hover {
-            background-color: var(--surface-hover);
-        }
+        button.icon-btn:hover { background-color: var(--surface-hover); }
 
         /* Post Form */
         .post-form {
@@ -121,9 +113,7 @@
             flex-shrink: 0;
         }
 
-        .form-content {
-            flex: 1;
-        }
+        .form-content { flex: 1; }
 
         textarea {
             width: 100%;
@@ -137,9 +127,7 @@
             font-family: inherit;
         }
 
-        textarea::placeholder {
-            color: var(--secondary-text);
-        }
+        textarea::placeholder { color: var(--secondary-text); }
 
         .form-actions {
             display: flex;
@@ -155,9 +143,7 @@
             text-align: right;
         }
 
-        .char-count.warning {
-            color: #f91880;
-        }
+        .char-count.warning { color: #f91880; }
 
         button.primary-btn {
             background-color: var(--primary);
@@ -169,21 +155,14 @@
             font-size: 15px;
             cursor: pointer;
             transition: background-color 0.2s;
+            font-family: inherit;
         }
 
-        button.primary-btn:hover {
-            background-color: var(--primary-hover);
-        }
-
-        button.primary-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+        button.primary-btn:hover { background-color: var(--primary-hover); }
+        button.primary-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
         /* Feed */
-        .feed {
-            padding-bottom: 60px;
-        }
+        .feed { padding-bottom: 60px; }
 
         .post {
             padding: 12px 16px;
@@ -192,9 +171,7 @@
             position: relative;
         }
 
-        .post:hover {
-            background-color: var(--surface-hover);
-        }
+        .post:hover { background-color: var(--surface-hover); }
 
         .post-header {
             display: flex;
@@ -202,17 +179,12 @@
             color: var(--secondary-text);
             font-size: 15px;
             margin-bottom: 4px;
+            align-items: baseline;
         }
 
-        .anon-id {
-            font-weight: 700;
-            color: var(--text-color);
-        }
+        .anon-id { font-weight: 700; color: var(--text-color); }
 
-        .dot-sep::after {
-            content: "·";
-            margin: 0 4px;
-        }
+        .dot-sep::after { content: "·"; margin: 0 4px; }
 
         .post-content {
             font-size: 15px;
@@ -220,6 +192,8 @@
             white-space: pre-wrap;
             word-wrap: break-word;
         }
+
+        .edited-badge { font-size: 12px; color: var(--secondary-text); }
 
         .post-actions {
             display: flex;
@@ -240,18 +214,45 @@
             transition: color 0.2s;
         }
 
-        .action-btn svg {
-            width: 18px;
-            height: 18px;
-            fill: currentColor;
-        }
+        .action-btn svg { width: 18px; height: 18px; fill: currentColor; }
 
-        .action-btn.like:hover { color: #f91880; }
+        .action-btn.like:hover  { color: #f91880; }
         .action-btn.reply:hover { color: var(--primary); }
+        .action-btn.edit:hover  { color: var(--primary); }
         .action-btn.delete:hover { color: var(--error); }
 
         .action-btn.liked { color: #f91880; }
         .action-btn.liked svg { fill: #f91880; }
+
+        /* Hashtags & Mentions */
+        .hashtag, .mention {
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .hashtag:hover, .mention:hover { text-decoration: underline; }
+
+        /* Mention Autocomplete */
+        .mention-dropdown {
+            position: fixed;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            z-index: 500;
+            min-width: 180px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .mention-item {
+            padding: 10px 14px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .mention-item:hover { background: var(--surface-hover); }
 
         /* Search Bar */
         .search-container {
@@ -282,9 +283,7 @@
         }
 
         /* Hidden/Utility */
-        .hidden {
-            display: none !important;
-        }
+        .hidden { display: none !important; }
 
         /* Toast */
         .toast-container {
@@ -292,7 +291,7 @@
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            z-index: 200;
+            z-index: 600;
         }
 
         .toast {
@@ -301,7 +300,7 @@
             padding: 10px 20px;
             border-radius: 4px;
             margin-bottom: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             font-size: 14px;
             display: flex;
             align-items: center;
@@ -333,17 +332,8 @@
             border-radius: 16px;
         }
 
-        .auth-card h2 {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .auth-card p.subtitle {
-            color: var(--secondary-text);
-            font-size: 15px;
-            margin-bottom: 24px;
-        }
+        .auth-card h2 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+        .auth-card p.subtitle { color: var(--secondary-text); font-size: 15px; margin-bottom: 24px; }
 
         .auth-input {
             width: 100%;
@@ -359,21 +349,11 @@
             transition: border-color 0.2s;
         }
 
-        .auth-input:focus {
-            border-color: var(--primary);
-        }
+        .auth-input:focus { border-color: var(--primary); }
 
-        .auth-error {
-            color: var(--error);
-            font-size: 13px;
-            margin-bottom: 12px;
-        }
+        .auth-error { color: var(--error); font-size: 13px; margin-bottom: 12px; }
 
-        .auth-switch-row {
-            font-size: 14px;
-            color: var(--secondary-text);
-            margin-top: 12px;
-        }
+        .auth-switch-row { font-size: 14px; color: var(--secondary-text); margin-top: 12px; }
 
         .auth-switch {
             color: var(--primary);
@@ -386,9 +366,92 @@
             font-weight: 600;
         }
 
-        .auth-switch:hover {
-            text-decoration: underline;
+        .auth-switch:hover { text-decoration: underline; }
+
+        /* Settings Drawer */
+        .settings-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 300;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s;
         }
+
+        .settings-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 320px;
+            max-width: 100vw;
+            background: var(--bg-color);
+            border-left: 1px solid var(--border-color);
+            z-index: 301;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform 0.25s ease;
+            overflow-y: auto;
+        }
+
+        .settings-open .settings-overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .settings-open .settings-drawer {
+            transform: translateX(0);
+        }
+
+        .settings-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            background: var(--bg-color);
+        }
+
+        .settings-header h2 { font-size: 18px; font-weight: 700; }
+
+        .settings-content { padding: 16px; flex: 1; }
+
+        .settings-section { margin-bottom: 32px; }
+
+        .settings-section h3 {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--secondary-text);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 12px;
+        }
+
+        .settings-label {
+            font-size: 13px;
+            color: var(--secondary-text);
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .danger-btn {
+            background: none;
+            border: 1px solid var(--error);
+            color: var(--error);
+            padding: 8px 16px;
+            border-radius: 9999px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background-color 0.2s;
+        }
+
+        .danger-btn:hover { background: rgba(244,33,46,0.08); }
     </style>
 </head>
 
@@ -398,27 +461,25 @@
         <div class="auth-card">
             <h2>AnonBlog</h2>
 
-            <!-- Login -->
             <div id="login-panel">
                 <p class="subtitle">Anmelden</p>
                 <input class="auth-input" type="email" id="login-identity" placeholder="E-Mail" autocomplete="email">
                 <input class="auth-input" type="password" id="login-password" placeholder="Passwort" autocomplete="current-password">
                 <div class="auth-error hidden" id="login-error"></div>
-                <button class="primary-btn" id="login-btn" style="width: 100%;">Anmelden</button>
+                <button class="primary-btn" id="login-btn" style="width:100%;">Anmelden</button>
                 <p class="auth-switch-row">
                     Noch kein Account?
                     <button class="auth-switch" id="to-register">Registrieren</button>
                 </p>
             </div>
 
-            <!-- Register -->
             <div id="register-panel" class="hidden">
                 <p class="subtitle">Account erstellen</p>
                 <input class="auth-input" type="text" id="reg-username" placeholder="Anzeigename (z.B. henrik)" autocomplete="nickname">
                 <input class="auth-input" type="email" id="reg-email" placeholder="E-Mail" autocomplete="email">
                 <input class="auth-input" type="password" id="reg-password" placeholder="Passwort (mind. 8 Zeichen)" autocomplete="new-password">
                 <div class="auth-error hidden" id="reg-error"></div>
-                <button class="primary-btn" id="register-btn" style="width: 100%;">Account erstellen</button>
+                <button class="primary-btn" id="register-btn" style="width:100%;">Account erstellen</button>
                 <p class="auth-switch-row">
                     Bereits registriert?
                     <button class="auth-switch" id="to-login">Anmelden</button>
@@ -427,18 +488,56 @@
         </div>
     </div>
 
+    <!-- Settings Drawer -->
+    <div id="settings-panel">
+        <div class="settings-overlay" id="settings-overlay"></div>
+        <div class="settings-drawer" id="settings-drawer">
+            <div class="settings-header">
+                <h2>Einstellungen</h2>
+                <button class="icon-btn" id="settings-close" title="Schließen">
+                    <svg viewBox="0 0 24 24" width="20" height="20">
+                        <path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="settings-content">
+                <div class="settings-section">
+                    <h3>Profil</h3>
+                    <label class="settings-label">Anzeigename</label>
+                    <input class="auth-input" id="settings-name" type="text" placeholder="Dein Name">
+                    <label class="settings-label">E-Mail</label>
+                    <input class="auth-input" id="settings-email" type="email">
+                    <div class="auth-error hidden" id="settings-profile-error"></div>
+                    <button class="primary-btn" id="settings-save-profile">Speichern</button>
+                </div>
+                <div class="settings-section">
+                    <h3>Passwort</h3>
+                    <input class="auth-input" id="settings-old-pw" type="password" placeholder="Aktuelles Passwort">
+                    <input class="auth-input" id="settings-new-pw" type="password" placeholder="Neues Passwort (mind. 8 Zeichen)">
+                    <div class="auth-error hidden" id="settings-pw-error"></div>
+                    <button class="primary-btn" id="settings-save-pw">Passwort ändern</button>
+                </div>
+                <div class="settings-section">
+                    <h3>Gefahrenzone</h3>
+                    <p style="font-size:13px;color:var(--secondary-text);margin-bottom:12px;">Löscht deinen Account dauerhaft.</p>
+                    <button class="danger-btn" id="settings-delete-account">Account löschen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Main App -->
     <div class="container hidden" id="app">
         <header>
-            <h1 onclick="window.scrollTo({top: 0, behavior: 'smooth'})">AnonBlog</h1>
+            <h1 onclick="window.scrollTo({top:0,behavior:'smooth'})">AnonBlog</h1>
             <div class="header-actions">
-                <span class="username-display" id="current-username"></span>
+                <button class="username-display" id="current-username" title="Einstellungen"></button>
                 <button class="icon-btn" id="theme-toggle" title="Theme wechseln">
-                    <svg viewBox="0 0 24 24" width="20" height="20" id="theme-icon">
+                    <svg viewBox="0 0 24 24" width="20" height="20">
                         <path fill="currentColor" d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
                     </svg>
                 </button>
-                <button class="icon-btn" id="logout-btn" title="Abmelden" style="color: var(--secondary-text);">
+                <button class="icon-btn" id="logout-btn" title="Abmelden" style="color:var(--secondary-text);">
                     <svg viewBox="0 0 24 24" width="20" height="20">
                         <path fill="currentColor" d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
                     </svg>
@@ -447,22 +546,22 @@
         </header>
 
         <div class="search-container hidden" id="search-section">
-            <input type="text" class="search-input" placeholder="Posts durchsuchen..." id="search-input">
+            <input type="text" class="search-input" placeholder="Posts, #hashtags oder @namen durchsuchen..." id="search-input">
         </div>
 
         <div class="post-form">
             <div class="avatar-placeholder"></div>
-            <div class="form-content">
+            <div class="form-content" style="position:relative;">
                 <textarea id="post-input" rows="2" placeholder="Was passiert gerade?" maxlength="280"></textarea>
                 <div class="form-actions">
-                    <div style="display: flex; gap: 8px;">
+                    <div style="display:flex;gap:8px;">
                         <button class="icon-btn" id="search-toggle" title="Suchen">
                             <svg viewBox="0 0 24 24" width="20" height="20">
                                 <path fill="currentColor" d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.73 3.815-1.945 5.232l4.959 4.959-1.414 1.414-4.959-4.959C14.065 17.77 12.236 18.5 10.25 18.5c-4.694 0-8.5-3.806-8.5-8.5z"/>
                             </svg>
                         </button>
                     </div>
-                    <div style="display: flex; gap: 12px; align-items: center;">
+                    <div style="display:flex;gap:12px;align-items:center;">
                         <span class="char-count" id="char-count"></span>
                         <button class="primary-btn" id="post-btn" disabled>Posten</button>
                     </div>
@@ -496,6 +595,11 @@
                     </svg>
                     <span class="count"></span>
                 </button>
+                <button class="action-btn edit hidden">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                    </svg>
+                </button>
                 <button class="action-btn delete hidden">
                     <svg viewBox="0 0 24 24">
                         <path d="M16 6V4.5C16 3.12 14.88 2 13.5 2h-3C9.11 2 8 3.12 8 4.5V6H3v2h1.06l.81 11.21C4.98 20.78 6.28 22 7.86 22h8.28c1.58 0 2.88-1.22 2.98-2.79L19.94 8H21V6h-5zm-6-1.5c0-.28.22-.5.5-.5h3c.28 0 .5.22.5.5V6h-4V4.5zm7.13 14.57c-.04.52-.47.93-1 .93H7.86c-.53 0-.96-.41-1-.93L6.07 8h11.85l-.79 11.07z"/>
@@ -510,10 +614,7 @@
     <script type="module">
         import PocketBase from 'https://cdn.jsdelivr.net/npm/pocketbase/dist/pocketbase.es.mjs';
 
-        // --- Init PocketBase ---
-        // Frontend is served from PocketBase itself, so origin = PocketBase URL
         const pb = new PocketBase(window.location.origin);
-
         let posts = [];
         let lastPostTime = 0;
 
@@ -525,7 +626,7 @@
             try {
                 await pb.collection('users').authWithPassword(identity, password);
             } catch {
-                errorEl.textContent = 'Falscher Username oder Passwort.';
+                errorEl.textContent = 'Falsche E-Mail oder Passwort.';
                 errorEl.classList.remove('hidden');
             }
         }
@@ -547,12 +648,14 @@
             }
         }
 
+        function getDisplayName(model) {
+            return model?.name || model?.email?.split('@')[0] || 'Anonym';
+        }
+
         function showApp() {
             document.getElementById('auth-overlay').classList.add('hidden');
             document.getElementById('app').classList.remove('hidden');
-            const model = pb.authStore.model;
-            const displayName = model.name || model.email?.split('@')[0] || 'Anonym';
-            document.getElementById('current-username').textContent = '@' + displayName;
+            document.getElementById('current-username').textContent = '@' + getDisplayName(pb.authStore.model);
 
             const draft = localStorage.getItem('post_draft');
             if (draft) document.getElementById('post-input').value = draft;
@@ -568,6 +671,70 @@
             document.getElementById('auth-overlay').classList.remove('hidden');
         }
 
+        // --- Settings ---
+
+        function openSettings() {
+            const model = pb.authStore.model;
+            document.getElementById('settings-name').value = model?.name || '';
+            document.getElementById('settings-email').value = model?.email || '';
+            document.getElementById('settings-profile-error').classList.add('hidden');
+            document.getElementById('settings-pw-error').classList.add('hidden');
+            document.body.classList.add('settings-open');
+        }
+
+        function closeSettings() {
+            document.body.classList.remove('settings-open');
+        }
+
+        async function saveProfile() {
+            const name = document.getElementById('settings-name').value.trim();
+            const email = document.getElementById('settings-email').value.trim();
+            const errorEl = document.getElementById('settings-profile-error');
+            errorEl.classList.add('hidden');
+            try {
+                const updated = await pb.collection('users').update(pb.authStore.model.id, { name, email });
+                pb.authStore.save(pb.authStore.token, updated);
+                document.getElementById('current-username').textContent = '@' + getDisplayName(updated);
+                showToast('Profil gespeichert.');
+            } catch (e) {
+                const data = e?.response?.data;
+                errorEl.textContent = data?.email?.message || data?.name?.message || 'Fehler beim Speichern.';
+                errorEl.classList.remove('hidden');
+            }
+        }
+
+        async function savePassword() {
+            const oldPw = document.getElementById('settings-old-pw').value;
+            const newPw = document.getElementById('settings-new-pw').value;
+            const errorEl = document.getElementById('settings-pw-error');
+            errorEl.classList.add('hidden');
+            try {
+                await pb.collection('users').update(pb.authStore.model.id, {
+                    oldPassword: oldPw,
+                    password: newPw,
+                    passwordConfirm: newPw,
+                });
+                document.getElementById('settings-old-pw').value = '';
+                document.getElementById('settings-new-pw').value = '';
+                showToast('Passwort geändert. Bitte neu anmelden.');
+                setTimeout(() => { pb.authStore.clear(); }, 1500);
+            } catch (e) {
+                const data = e?.response?.data;
+                errorEl.textContent = data?.oldPassword?.message || data?.password?.message || 'Fehler beim Ändern.';
+                errorEl.classList.remove('hidden');
+            }
+        }
+
+        async function deleteAccount() {
+            if (!confirm('Account wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.')) return;
+            try {
+                await pb.collection('users').delete(pb.authStore.model.id);
+                pb.authStore.clear();
+            } catch {
+                showToast('Fehler beim Löschen.');
+            }
+        }
+
         // --- Posts ---
 
         async function loadPosts() {
@@ -577,7 +744,6 @@
                     expand: 'author',
                 });
 
-                // Build tree from flat list
                 const map = {};
                 records.forEach(r => { map[r.id] = { ...r, replies: [] }; });
 
@@ -590,7 +756,7 @@
                     }
                 });
 
-                posts = roots.reverse(); // newest first
+                posts = roots.reverse();
                 renderFeed();
             } catch {
                 showToast('Fehler beim Laden der Posts.');
@@ -600,20 +766,14 @@
         async function createPost(content, parentId = null) {
             const now = Date.now();
             if (now - lastPostTime < 10000) {
-                const wait = Math.ceil((10000 - (now - lastPostTime)) / 1000);
-                showToast(`Warte noch ${wait}s.`);
+                showToast(`Warte noch ${Math.ceil((10000 - (now - lastPostTime)) / 1000)}s.`);
                 return false;
             }
             try {
-                const data = {
-                    content: content.trim(),
-                    author: pb.authStore.model.id,
-                };
+                const data = { content: content.trim(), author: pb.authStore.model.id };
                 if (parentId) data.parent = parentId;
-
                 await pb.collection('posts').create(data);
                 lastPostTime = now;
-
                 if (!parentId) {
                     document.getElementById('post-input').value = '';
                     localStorage.removeItem('post_draft');
@@ -635,13 +795,21 @@
             }
         }
 
+        async function editPost(id, newContent) {
+            try {
+                await pb.collection('posts').update(id, { content: newContent.trim() });
+                return true;
+            } catch {
+                showToast('Fehler beim Speichern.');
+                return false;
+            }
+        }
+
         async function toggleLike(post) {
             const userId = pb.authStore.model.id;
             const likes = Array.isArray(post.likes) ? post.likes : (post.likes ? [post.likes] : []);
             const isLiked = likes.includes(userId);
-            const newLikes = isLiked
-                ? likes.filter(id => id !== userId)
-                : [...likes, userId];
+            const newLikes = isLiked ? likes.filter(id => id !== userId) : [...likes, userId];
             try {
                 await pb.collection('posts').update(post.id, { likes: newLikes });
             } catch {
@@ -651,6 +819,94 @@
 
         function subscribeToFeed() {
             pb.collection('posts').subscribe('*', () => loadPosts());
+        }
+
+        // --- Content Rendering (hashtags & mentions) ---
+
+        function renderPostContent(content) {
+            // Escape HTML to prevent XSS
+            const escaped = content
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+            // Add hashtag and mention spans
+            return escaped
+                .replace(/#(\w+)/g, '<span class="hashtag" data-tag="$1">#$1</span>')
+                .replace(/@([\w.-]+)/g, '<span class="mention" data-name="$1">@$1</span>');
+        }
+
+        function filterByTag(query) {
+            const searchSection = document.getElementById('search-section');
+            const searchInput = document.getElementById('search-input');
+            searchSection.classList.remove('hidden');
+            searchInput.value = query;
+            renderFeed();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- Mention Autocomplete ---
+
+        function setupMentionAutocomplete(textarea) {
+            let dropdown = null;
+
+            textarea.addEventListener('input', async () => {
+                const text = textarea.value;
+                const pos = textarea.selectionStart;
+                const before = text.slice(0, pos);
+                const match = before.match(/@([\w.-]*)$/);
+
+                if (!match) { hideDropdown(); return; }
+
+                const query = match[1];
+                try {
+                    const filter = query
+                        ? `name ~ "${query}" || email ~ "${query}"`
+                        : '';
+                    const result = await pb.collection('users').getList(1, 6, { filter });
+                    if (result.items.length) showDropdown(result.items);
+                    else hideDropdown();
+                } catch { hideDropdown(); }
+            });
+
+            textarea.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') hideDropdown();
+            });
+
+            textarea.addEventListener('blur', () => setTimeout(hideDropdown, 150));
+
+            function showDropdown(users) {
+                hideDropdown();
+                dropdown = document.createElement('div');
+                dropdown.className = 'mention-dropdown';
+
+                users.forEach(u => {
+                    const name = u.name || u.email.split('@')[0];
+                    const item = document.createElement('div');
+                    item.className = 'mention-item';
+                    item.textContent = '@' + name;
+                    item.onmousedown = () => {
+                        const text = textarea.value;
+                        const pos = textarea.selectionStart;
+                        const newVal = text.slice(0, pos).replace(/@[\w.-]*$/, '@' + name + ' ') + text.slice(pos);
+                        textarea.value = newVal;
+                        const newPos = newVal.indexOf('@' + name) + name.length + 2;
+                        textarea.selectionStart = textarea.selectionEnd = newPos;
+                        hideDropdown();
+                        textarea.focus();
+                        if (textarea.id === 'post-input') updateCharCount();
+                    };
+                    dropdown.appendChild(item);
+                });
+
+                const rect = textarea.getBoundingClientRect();
+                dropdown.style.cssText = `top:${rect.bottom + window.scrollY}px;left:${rect.left}px;`;
+                document.body.appendChild(dropdown);
+            }
+
+            function hideDropdown() {
+                if (dropdown) { dropdown.remove(); dropdown = null; }
+            }
         }
 
         // --- Render ---
@@ -672,17 +928,35 @@
                     const authorModel = post.expand?.author;
                     const username = authorModel?.name || authorModel?.email?.split('@')[0] || post.author.substring(0, 8);
                     el.querySelector('.anon-id').textContent = '@' + username;
-                    el.querySelector('.post-time').textContent = timeAgo(new Date(post.created).getTime());
-                    el.querySelector('.post-content').textContent = post.content;
 
-                    // Like button
+                    const timeEl = el.querySelector('.post-time');
+                    timeEl.textContent = timeAgo(new Date(post.created).getTime());
+                    const wasEdited = new Date(post.updated) - new Date(post.created) > 5000;
+                    if (wasEdited) {
+                        const badge = document.createElement('span');
+                        badge.className = 'edited-badge';
+                        badge.textContent = ' (bearbeitet)';
+                        timeEl.appendChild(badge);
+                    }
+
+                    // Post content with hashtags & mentions
+                    const contentEl = el.querySelector('.post-content');
+                    contentEl.innerHTML = renderPostContent(post.content);
+                    contentEl.querySelectorAll('.hashtag').forEach(tag => {
+                        tag.onclick = (e) => { e.stopPropagation(); filterByTag('#' + tag.dataset.tag); };
+                    });
+                    contentEl.querySelectorAll('.mention').forEach(m => {
+                        m.onclick = (e) => { e.stopPropagation(); filterByTag('@' + m.dataset.name); };
+                    });
+
+                    // Likes
                     const likes = Array.isArray(post.likes) ? post.likes : (post.likes ? [post.likes] : []);
                     const likeBtn = el.querySelector('.like');
                     likeBtn.querySelector('.count').textContent = likes.length || '';
                     if (likes.includes(pb.authStore.model?.id)) likeBtn.classList.add('liked');
                     likeBtn.onclick = (e) => { e.stopPropagation(); toggleLike(post); };
 
-                    // Reply button
+                    // Reply
                     const replyBtn = el.querySelector('.reply');
                     replyBtn.querySelector('.count').textContent = countReplies(post) || '';
                     replyBtn.onclick = (e) => {
@@ -692,14 +966,14 @@
                             form.innerHTML = '';
                         } else {
                             form.innerHTML = `
-                                <div class="post-form" style="padding: 10px 0; border: none;">
-                                    <textarea rows="2" placeholder="Antwort schreiben..." style="font-size: 16px; border-bottom: 1px solid var(--border-color);"></textarea>
-                                    <button class="primary-btn" style="margin-top: 5px;">Antworten</button>
-                                </div>
-                            `;
+                                <div class="post-form" style="padding:10px 0;border:none;">
+                                    <textarea rows="2" placeholder="Antwort schreiben..." style="font-size:16px;border-bottom:1px solid var(--border-color);"></textarea>
+                                    <button class="primary-btn" style="margin-top:5px;">Antworten</button>
+                                </div>`;
                             const btn = form.querySelector('button');
                             const ta = form.querySelector('textarea');
                             ta.focus();
+                            setupMentionAutocomplete(ta);
                             ta.addEventListener('keydown', (e) => {
                                 if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') btn.click();
                             });
@@ -712,8 +986,15 @@
                         }
                     };
 
-                    // Delete button (own posts only)
+                    // Own-post controls (edit + delete)
                     if (post.author === pb.authStore.model?.id) {
+                        const editBtn = el.querySelector('.edit');
+                        editBtn.classList.remove('hidden');
+                        editBtn.onclick = (e) => {
+                            e.stopPropagation();
+                            showEditForm(el, post);
+                        };
+
                         const delBtn = el.querySelector('.delete');
                         delBtn.classList.remove('hidden');
                         delBtn.onclick = (e) => { e.stopPropagation(); deletePost(post.id); };
@@ -721,7 +1002,6 @@
 
                     container.appendChild(el);
 
-                    // Render replies (max 4 levels deep to avoid layout collapse)
                     if (post.replies?.length > 0 && level < 4) {
                         renderList(post.replies, el.querySelector('.replies'), level + 1);
                     }
@@ -731,25 +1011,64 @@
             renderList(posts, feed);
 
             if (feed.children.length === 0) {
-                feed.innerHTML = `<p style="padding: 32px 16px; color: var(--secondary-text); text-align: center;">
+                feed.innerHTML = `<p style="padding:32px 16px;color:var(--secondary-text);text-align:center;">
                     ${searchQuery ? 'Keine Ergebnisse.' : 'Noch keine Posts. Fang an!'}
                 </p>`;
             }
         }
 
-        // Search: show post if it or any nested reply matches
+        function showEditForm(el, post) {
+            const contentEl = el.querySelector('.post-content');
+            const actionsEl = el.querySelector('.post-actions');
+
+            const ta = document.createElement('textarea');
+            ta.value = post.content;
+            ta.rows = 3;
+            ta.style.cssText = 'width:100%;font-size:15px;padding:4px 0;border:none;border-bottom:1px solid var(--border-color);background:none;color:var(--text-color);font-family:inherit;outline:none;resize:none;margin-bottom:8px;';
+
+            const btnRow = document.createElement('div');
+            btnRow.style.marginBottom = '8px';
+
+            const saveBtn = document.createElement('button');
+            saveBtn.className = 'primary-btn';
+            saveBtn.style.marginRight = '8px';
+            saveBtn.style.fontSize = '13px';
+            saveBtn.style.padding = '6px 14px';
+            saveBtn.textContent = 'Speichern';
+
+            const cancelBtn = document.createElement('button');
+            cancelBtn.className = 'danger-btn';
+            cancelBtn.style.fontSize = '13px';
+            cancelBtn.textContent = 'Abbrechen';
+
+            btnRow.appendChild(saveBtn);
+            btnRow.appendChild(cancelBtn);
+
+            contentEl.replaceWith(ta);
+            actionsEl.before(btnRow);
+            actionsEl.classList.add('hidden');
+            ta.focus();
+            ta.setSelectionRange(ta.value.length, ta.value.length);
+
+            cancelBtn.onclick = () => loadPosts();
+            saveBtn.onclick = async () => {
+                if (!ta.value.trim()) return;
+                const ok = await editPost(post.id, ta.value);
+                if (ok) loadPosts();
+            };
+        }
+
+        // --- Helpers ---
+
         function postMatchesSearch(post, query) {
             if (post.content.toLowerCase().includes(query)) return true;
             return post.replies?.some(r => postMatchesSearch(r, query)) ?? false;
         }
 
-        // Count all replies recursively
         function countReplies(post) {
             if (!post.replies?.length) return 0;
             return post.replies.length + post.replies.reduce((sum, r) => sum + countReplies(r), 0);
         }
-
-        // --- Helpers ---
 
         function timeAgo(ts) {
             const seconds = Math.floor((Date.now() - ts) / 1000);
@@ -775,16 +1094,15 @@
             const btn = document.getElementById('post-btn');
             const count = document.getElementById('char-count');
             const len = input.value.length;
-            const remaining = 280 - len;
-            count.textContent = len > 0 ? remaining : '';
-            count.classList.toggle('warning', remaining < 20);
+            count.textContent = len > 0 ? 280 - len : '';
+            count.classList.toggle('warning', 280 - len < 20);
             btn.disabled = len === 0 || len > 280;
         }
 
         // --- Event Listeners ---
 
         function setupEventListeners() {
-            // Auth panel switching
+            // Auth
             document.getElementById('to-register').addEventListener('click', () => {
                 document.getElementById('login-panel').classList.add('hidden');
                 document.getElementById('register-panel').classList.remove('hidden');
@@ -793,21 +1111,14 @@
                 document.getElementById('register-panel').classList.add('hidden');
                 document.getElementById('login-panel').classList.remove('hidden');
             });
-
-            // Login
             document.getElementById('login-btn').addEventListener('click', () => {
-                login(
-                    document.getElementById('login-identity').value,
-                    document.getElementById('login-password').value
-                );
+                login(document.getElementById('login-identity').value, document.getElementById('login-password').value);
             });
             ['login-identity', 'login-password'].forEach(id => {
                 document.getElementById(id).addEventListener('keydown', e => {
                     if (e.key === 'Enter') document.getElementById('login-btn').click();
                 });
             });
-
-            // Register
             document.getElementById('register-btn').addEventListener('click', () => {
                 register(
                     document.getElementById('reg-username').value,
@@ -815,11 +1126,15 @@
                     document.getElementById('reg-password').value
                 );
             });
+            document.getElementById('logout-btn').addEventListener('click', () => pb.authStore.clear());
 
-            // Logout
-            document.getElementById('logout-btn').addEventListener('click', () => {
-                pb.authStore.clear();
-            });
+            // Settings
+            document.getElementById('current-username').addEventListener('click', openSettings);
+            document.getElementById('settings-close').addEventListener('click', closeSettings);
+            document.getElementById('settings-overlay').addEventListener('click', closeSettings);
+            document.getElementById('settings-save-profile').addEventListener('click', saveProfile);
+            document.getElementById('settings-save-pw').addEventListener('click', savePassword);
+            document.getElementById('settings-delete-account').addEventListener('click', deleteAccount);
 
             // Theme
             document.getElementById('theme-toggle').addEventListener('click', () => {
@@ -835,13 +1150,10 @@
                 localStorage.setItem('post_draft', input.value);
             });
             input.addEventListener('keydown', (e) => {
-                if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
-                    document.getElementById('post-btn').click();
-                }
+                if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') document.getElementById('post-btn').click();
             });
-            document.getElementById('post-btn').addEventListener('click', () => {
-                createPost(input.value);
-            });
+            document.getElementById('post-btn').addEventListener('click', () => createPost(input.value));
+            setupMentionAutocomplete(input);
 
             // Search
             document.getElementById('search-toggle').addEventListener('click', () => {
@@ -864,7 +1176,6 @@
 
             setupEventListeners();
 
-            // React to auth state changes (fires immediately with current state)
             pb.authStore.onChange((_, model) => {
                 if (model) showApp();
                 else showAuth();
