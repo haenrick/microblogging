@@ -574,6 +574,7 @@
             try {
                 const records = await pb.collection('posts').getFullList({
                     sort: 'id',
+                    expand: 'author',
                 });
 
                 // Build tree from flat list
@@ -636,7 +637,7 @@
 
         async function toggleLike(post) {
             const userId = pb.authStore.model.id;
-            const likes = post.likes || [];
+            const likes = Array.isArray(post.likes) ? post.likes : (post.likes ? [post.likes] : []);
             const isLiked = likes.includes(userId);
             const newLikes = isLiked
                 ? likes.filter(id => id !== userId)
@@ -668,13 +669,14 @@
 
                     if (level > 0) el.classList.add('thread');
 
-                    const username = post.author;
+                    const authorModel = post.expand?.author;
+                    const username = authorModel?.name || authorModel?.email?.split('@')[0] || post.author.substring(0, 8);
                     el.querySelector('.anon-id').textContent = '@' + username;
                     el.querySelector('.post-time').textContent = timeAgo(new Date(post.created).getTime());
                     el.querySelector('.post-content').textContent = post.content;
 
                     // Like button
-                    const likes = post.likes || [];
+                    const likes = Array.isArray(post.likes) ? post.likes : (post.likes ? [post.likes] : []);
                     const likeBtn = el.querySelector('.like');
                     likeBtn.querySelector('.count').textContent = likes.length || '';
                     if (likes.includes(pb.authStore.model?.id)) likeBtn.classList.add('liked');
