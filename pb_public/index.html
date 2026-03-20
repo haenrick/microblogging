@@ -571,8 +571,7 @@
         async function loadPosts() {
             try {
                 const records = await pb.collection('posts').getFullList({
-                    sort: 'created',
-                    expand: 'author',
+                    sort: 'id',
                 });
 
                 // Build tree from flat list
@@ -667,7 +666,7 @@
 
                     if (level > 0) el.classList.add('thread');
 
-                    const username = post.expand?.author?.username || post.author;
+                    const username = post.author;
                     el.querySelector('.anon-id').textContent = '@' + username;
                     el.querySelector('.post-time').textContent = timeAgo(new Date(post.created).getTime());
                     el.querySelector('.post-content').textContent = post.content;
