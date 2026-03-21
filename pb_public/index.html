@@ -1157,7 +1157,7 @@
                 localStorage.setItem('post_draft', input.value);
             });
             input.addEventListener('keydown', (e) => {
-                if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') document.getElementById('post-btn').click();
+                if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); document.getElementById('post-btn').click(); }
             });
             document.getElementById('post-btn').addEventListener('click', async () => {
                 const ok = await createPost(input.value);
