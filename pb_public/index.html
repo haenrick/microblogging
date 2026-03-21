@@ -740,12 +740,16 @@
         async function loadPosts() {
             try {
                 const records = await pb.collection('posts').getFullList({
-                    sort: 'id',
+                    sort: '-created',
                     expand: 'author',
+                    requestKey: null,
                 });
 
+                // Build lookup map first, then tree — preserve created/updated via explicit copy
                 const map = {};
-                records.forEach(r => { map[r.id] = { ...r, replies: [] }; });
+                records.forEach(r => {
+                    map[r.id] = { ...r, created: r.created, updated: r.updated, replies: [] };
+                });
 
                 const roots = [];
                 records.forEach(r => {
@@ -756,10 +760,13 @@
                     }
                 });
 
-                posts = roots.reverse();
+                // Sort root posts newest-first (created was explicitly copied above)
+                roots.sort((a, b) => new Date(b.created) - new Date(a.created));
+                posts = roots;
                 renderFeed();
-            } catch {
-                showToast('Fehler beim Laden der Posts.');
+            } catch (e) {
+                showToast('Fehler: ' + (e?.message || e));
+                console.error('loadPosts error', e);
             }
         }
 
@@ -1152,7 +1159,10 @@
             input.addEventListener('keydown', (e) => {
                 if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') document.getElementById('post-btn').click();
             });
-            document.getElementById('post-btn').addEventListener('click', () => createPost(input.value));
+            document.getElementById('post-btn').addEventListener('click', async () => {
+                const ok = await createPost(input.value);
+                if (ok) loadPosts();
+            });
             setupMentionAutocomplete(input);
 
             // Search
