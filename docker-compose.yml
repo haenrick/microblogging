@@ -1,15 +1,31 @@
 services:
-  pocketbase:
-    image: ghcr.io/muchobien/pocketbase:latest
-    container_name: microblog
+  db:
+    image: postgres:16
+    container_name: microblog_db
+    environment:
+      POSTGRES_USER: microblog
+      POSTGRES_PASSWORD: microblog_dev
+      POSTGRES_DB: microblog_development
     volumes:
-      - ./pb_data:/pb_data
-      - ./pb_public:/pb_public
+      - postgres_data:/var/lib/postgresql/data
     ports:
-      - "8097:8090"
+      - "5432:5432"
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8090/api/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      test: ["CMD-SHELL", "pg_isready -U microblog"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: microblog_redis
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
