@@ -311,141 +311,56 @@ Nachricht entschlüsseln (Empfänger):
 ## Zusammenfassung: Empfohlene Reihenfolge (aktualisiert)
 
 ```
-1. [Q7] Max-Depth für Replies          — 20 Min, Layout-Schutz (noch offen)
-2. [D1] Hetzner CX22 aufsetzen         — 1–2h, Produktionsbasis
-3. [N2] Rails-Migration                — 3–5 Tage, strategische Basis
-4. [N1] Follow-System                  — 1–2 Tage, Kern-Sozialfeature
-5. [N3] Blockieren                     — 1 Tag, Safety
-6. [M2] Username/Auth (via Devise)     — in N2 integriert
-7. [M6] PWA / Service Worker           — 1 Tag
-8. [N4] E2E-DMs                        — 3–5 Tage, nach allem anderen
+✅ [Q7] Max-Depth für Replies
+~~[D1] Hetzner CX22~~ → ersetzt durch Pi 5 + Cloudflare Tunnel
+1. [N2] Rails-Migration                — 3–5 Tage, strategische Basis
+2. [N1] Follow-System                  — 1–2 Tage, Kern-Sozialfeature
+3. [N3] Blockieren                     — 1 Tag, Safety
+4. [M2] Username/Auth (via Devise)     — in N2 integriert
+5. [M6] PWA / Service Worker           — 1 Tag
+6. [N4] E2E-DMs                        — 3–5 Tage, nach allem anderen
 ```
 
 ---
 
-## Teil 4c: Deployment — Hetzner CX22 + Kamal
+## Teil 4c: Deployment — Raspberry Pi 5 + Cloudflare Tunnel
 
-### D1 — Server-Setup & Deployment-Pipeline
+### Entscheidung: Pi statt Hetzner
 
-**Ziel:** Die Rails-App reproducierbar und mit einem einzigen Befehl auf einen Hetzner CX22 deployen.
+Kein extra Server nötig. Der Pi 5 läuft bereits mit Docker und Cloudflare Tunnel (`datenkistchen.de`). Die Rails-App wird dort als vollständige Testumgebung betrieben.
 
-**Warum Hetzner CX22?**
-
-| | Wert |
-|---|---|
-| Preis | ~€4/Monat |
-| vCPUs | 2 |
-| RAM | 4 GB (Rails + PostgreSQL + Redis: ~500 MB genutzt) |
-| Storage | 40 GB NVMe |
-| Standort | Nürnberg / Falkenstein (DE, DSGVO-konform) |
-| Upgrade | Resize per Klick, 30 Sekunden |
-
-Für ein persönliches Test-Projekt mit <50 Nutzern ist der CX22 mehr als ausreichend. Upgrade auf CX32 (€8/Monat, 8 GB RAM) erst nötig bei öffentlichem Wachstum.
-
-**Stack auf dem Server:**
+**Stack:**
 
 ```
-datenkistchen.de
-       │
-  Cloudflare (DNS + TLS)
-       │
-  Caddy (Reverse Proxy, auto-HTTPS)
-       │
-  ┌────────────────────────────────┐
-  │         Hetzner CX22           │
-  │                                │
-  │  Rails (Puma)   :3000          │
-  │  PostgreSQL     :5432 (lokal)  │
-  │  Redis          :6379 (lokal)  │
-  └────────────────────────────────┘
+microblog.datenkistchen.de
+        │
+  Cloudflare Tunnel (HTTPS automatisch)
+        │
+  Raspberry Pi 5
+  ┌─────────────────────────────┐
+  │  Rails (Puma)     :3000     │
+  │  PostgreSQL       :5432     │
+  │  Redis            :6379     │
+  │  (Docker Compose)           │
+  └─────────────────────────────┘
 ```
 
-**Warum Kamal?**
+**Kosten: €0/Monat** (Pi und Cloudflare-Account bereits vorhanden)
 
-Kamal ist das offizielle Rails-Deploy-Tool (von Basecamp / 37signals). Es deployt Docker-Container auf eigene Server ohne Heroku/Render-Abhängigkeit:
-- Ein Befehl: `kamal deploy`
-- Zero-Downtime durch Container-Rollover
-- Rollback: `kamal rollback`
-- Secrets via `.kamal/secrets` (nie im Git)
-- Läuft auf dem Pi (Dev) und deployt auf Hetzner (Prod)
+**Setup-Schritte (einmalig):**
 
-**Setup-Schritte:**
-
-1. Hetzner CX22 anlegen (Ubuntu 24.04), SSH-Key hinterlegen
-2. Domain `microblog.datenkistchen.de` → Hetzner-IP (Cloudflare A-Record)
-3. `gem install kamal` auf dem Pi
-4. `kamal init` im Rails-Projektverzeichnis
-5. `config/deploy.yml` konfigurieren (s. unten)
-6. `kamal setup` — einmaliges Server-Setup (Docker, Netzwerk)
-7. `kamal deploy` — erstes Deployment
-
-**`config/deploy.yml` (Basis):**
-
-```yaml
-service: microblog
-image: henrik/microblog
-
-servers:
-  web:
-    - <HETZNER-IP>
-
-proxy:
-  ssl: true
-  host: microblog.datenkistchen.de
-
-registry:
-  server: ghcr.io
-  username: henrik
-  password:
-    - KAMAL_REGISTRY_PASSWORD
-
-env:
-  secret:
-    - RAILS_MASTER_KEY
-    - DATABASE_URL
-  clear:
-    RAILS_ENV: production
-
-accessories:
-  db:
-    image: postgres:16
-    host: <HETZNER-IP>
-    env:
-      secret:
-        - POSTGRES_PASSWORD
-    volumes:
-      - /var/lib/postgresql/data:/var/lib/postgresql/data
-
-  redis:
-    image: redis:7
-    host: <HETZNER-IP>
-    volumes:
-      - /var/lib/redis/data:/data
-```
+1. Subdomain `microblog.datenkistchen.de` im Cloudflare Tunnel auf `localhost:3000` routen
+2. `docker-compose.yml` für Rails + PostgreSQL + Redis anlegen
+3. `docker compose up` — fertig
 
 **Entwicklungs-Workflow:**
 
+```bash
+docker compose up          # App starten
+docker compose run web rails console
+docker compose run web rails db:migrate
+docker compose logs -f
 ```
-Raspberry Pi 5 (Dev)          Hetzner CX22 (Prod)
-─────────────────────         ──────────────────────
-rails server                  kamal deploy
-rspec / rubocop               kamal logs
-rails console                 kamal exec rails console
-docker compose (lokal)        PostgreSQL + Redis als Accessories
-```
-
-**Kosten gesamt:**
-
-| Dienst | Preis/Monat |
-|---|---|
-| Hetzner CX22 | ~€4 |
-| Cloudflare (DNS) | kostenlos |
-| ghcr.io (Container Registry) | kostenlos (öffentlich) |
-| **Gesamt** | **~€4/Monat** |
-
-**Abhängigkeiten:** N2 (Rails-App muss existieren)
-**Aufwand:** 1–2 Stunden (einmalig)
-**Priorität:** Vor der Rails-Migration festlegen — dann ist Prod von Anfang an bereit
 
 ---
 
