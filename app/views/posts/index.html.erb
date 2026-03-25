@@ -1,0 +1,20 @@
+<div class="feed-header">
+  <h1>Feed</h1>
+  <span class="current-user">@<%= Current.user.username %></span>
+  <%= button_to "Sign out", session_path, method: :delete, class: "btn-ghost" %>
+</div>
+
+<%= form_with model: @post, class: "post-form" do |f| %>
+  <% if @post.errors.any? %>
+    <div class="error"><%= @post.errors.full_messages.to_sentence %></div>
+  <% end %>
+  <%= f.text_area :content, placeholder: "What's happening?", maxlength: 280, rows: 3 %>
+  <div class="form-footer">
+    <span class="char-count" data-max="280"></span>
+    <%= f.submit "Post", class: "btn-primary" %>
+  </div>
+<% end %>
+
+<div class="posts-feed">
+  <%= render @posts %>
+</div>

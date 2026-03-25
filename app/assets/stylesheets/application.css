@@ -1,10 +1,126 @@
-/*
- * This is a manifest file that'll be compiled into application.css.
- *
- * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
- * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
- * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
- * depending on specificity.
- *
- * Consider organizing styles into separate files for maintainability.
- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: system-ui, sans-serif;
+  background: #0f0f0f;
+  color: #e0e0e0;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.feed-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #2a2a2a;
+}
+.feed-header h1 { flex: 1; font-size: 1.25rem; }
+.current-user { color: #888; font-size: 0.9rem; }
+
+.post-form {
+  margin-bottom: 1.5rem;
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 1rem;
+}
+.post-form textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #e0e0e0;
+  font-size: 1rem;
+  resize: none;
+  outline: none;
+}
+.form-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.post {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+}
+.post.reply {
+  margin-left: 1.5rem;
+  border-left: 2px solid #333;
+  border-radius: 0 8px 8px 0;
+}
+.post-meta { display: flex; gap: 0.75rem; margin-bottom: 0.5rem; }
+.username { color: #a78bfa; font-weight: 600; font-size: 0.9rem; }
+.post-time { color: #555; font-size: 0.85rem; }
+.post-content { line-height: 1.5; margin-bottom: 0.75rem; word-break: break-word; }
+
+.post-actions { display: flex; gap: 0.5rem; }
+.replies { margin-top: 0.75rem; }
+.reply-form { margin-top: 0.75rem; }
+.reply-form.hidden { display: none; }
+
+.btn-primary {
+  background: #7c3aed;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.btn-primary:hover { background: #6d28d9; }
+.btn-small { padding: 0.25rem 0.75rem; font-size: 0.85rem; }
+
+.btn-action {
+  background: transparent;
+  border: 1px solid #333;
+  color: #888;
+  border-radius: 6px;
+  padding: 0.25rem 0.6rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.btn-action:hover { border-color: #555; color: #e0e0e0; }
+.btn-action.liked { color: #f472b6; border-color: #f472b6; }
+.btn-danger:hover { border-color: #ef4444; color: #ef4444; }
+.btn-ghost {
+  background: transparent;
+  border: 1px solid #333;
+  color: #888;
+  border-radius: 6px;
+  padding: 0.25rem 0.75rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.error { color: #f87171; margin-bottom: 0.5rem; font-size: 0.9rem; }
+.flash-notice { color: #34d399; margin-bottom: 1rem; font-size: 0.9rem; }
+.flash-alert  { color: #f87171; margin-bottom: 1rem; font-size: 0.9rem; }
+
+/* Login form */
+.session-form {
+  margin-top: 4rem;
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 2rem;
+}
+.session-form h1 { margin-bottom: 1.5rem; }
+.form-group { margin-bottom: 1rem; }
+.form-group label { display: block; margin-bottom: 0.25rem; color: #888; font-size: 0.9rem; }
+.form-group input {
+  width: 100%;
+  background: #0f0f0f;
+  border: 1px solid #333;
+  border-radius: 6px;
+  color: #e0e0e0;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+}

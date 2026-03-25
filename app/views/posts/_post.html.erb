@@ -1,0 +1,39 @@
+<div class="post <%= "reply" if post.parent_id %>">
+  <div class="post-meta">
+    <span class="username">@<%= post.user.username %></span>
+    <span class="post-time"><%= time_ago_in_words(post.created_at) %> ago</span>
+  </div>
+
+  <div class="post-content"><%= post.content %></div>
+
+  <div class="post-actions">
+    <%= button_to like_post_path(post), method: :post, class: "btn-action #{post.liked_by?(Current.user) ? "liked" : ""}" do %>
+      ♥ <%= post.likes_count %>
+    <% end %>
+
+    <button class="btn-action" onclick="this.nextElementSibling.classList.toggle('hidden')">
+      ↩ <%= post.replies.size %> replies
+    </button>
+
+    <% if post.user == Current.user %>
+      <%= button_to post_path(post), method: :delete, class: "btn-action btn-danger",
+          data: { turbo_confirm: "Delete this post?" } do %>
+        ✕
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="reply-form hidden">
+    <%= form_with url: reply_post_path(post), class: "post-form reply-form-inner" do |f| %>
+      <%= f.text_area :content, placeholder: "Write a reply...", maxlength: 280, rows: 2,
+          name: "post[content]" %>
+      <%= f.submit "Reply", class: "btn-primary btn-small" %>
+    <% end %>
+  </div>
+
+  <% if post.replies.any? %>
+    <div class="replies">
+      <%= render post.replies.order(:created_at) %>
+    </div>
+  <% end %>
+</div>
