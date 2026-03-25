@@ -136,7 +136,316 @@ Suggeriert Klickbarkeit (z.B. für Detailansicht), aber kein Handler implementie
 | G1 | **Mehrere Channels/Feeds** (Topics, Gruppen) | 1 Woche |
 | G2 | **Medien-Feed** (nur Posts mit Bildern) | 2–3 Tage |
 | G3 | **ActivityPub-Kompatibilität** (eigene Mini-Mastodon-Alternative) | Wochen |
-| G4 | **E2E-verschlüsselte private Nachrichten** | Wochen |
+| G4 | **E2E-verschlüsselte private Nachrichten** *(→ jetzt N1, siehe unten)* | Wochen |
+
+---
+
+## Teil 4b: Neue Features (hinzugefügt März 2026)
+
+### N1 — User abonnieren (Follow-System)
+
+**Ziel:** Usern folgen und einen personalisierten Feed aus deren Posts sehen.
+
+**Datenbankschema:**
+```
+follows
+  id          (auto)
+  follower    (relation → users)
+  following   (relation → users)
+  created     (auto)
+```
+
+**Frontend:**
+- Profilkarte / Hover-Popup auf `@username` → "Folgen"-Button
+- Separater Tab im Feed: "Alle" | "Abonniert"
+- Follower-/Following-Zähler im User-Settings-Drawer
+
+**Backend-Logik:**
+- `POST /api/follows` — folgen
+- `DELETE /api/follows/:id` — entfolgen
+- `GET /api/feed/following` — Posts nur von gefolgten Usern, sortiert nach `-created`
+
+**Abhängigkeiten:** M2 (Auth), PocketBase läuft bereits
+**Aufwand:** ~1–2 Tage
+**Priorität:** Hoch — Kernfeature für soziale Interaktion
+
+---
+
+### N2 — Platform-Migration: Ruby on Rails
+
+**Ziel:** Den gesamten Stack (aktuell PocketBase + Vanilla-JS-Frontend) auf Ruby on Rails migrieren. Rails übernimmt Routing, Auth, Datenbank (PostgreSQL), Server-Side-Rendering und API.
+
+**Warum Rails?**
+- Convention over Configuration — schnelle Entwicklung ohne Boilerplate
+- ActiveRecord + PostgreSQL: robustere Grundlage als PocketBase/SQLite für Wachstum
+- Action Cable: WebSocket-Support für Realtime out-of-the-box
+- Devise + Rodauth: ausgereifte Auth-Libraries
+- Hotwire (Turbo + Stimulus): reaktives UI ohne schweres JS-Framework, passt zur bisherigen Vanilla-JS-Philosophie
+
+**Migrations-Schritte:**
+1. Rails-App anlegen (`rails new microblog --database=postgresql`)
+2. Models: `User`, `Post` (mit `parent_id` für Replies), `Follow`, `Like`, `Block`, `Message`
+3. Devise für Auth einrichten (Username, E-Mail, Passwort)
+4. PocketBase-Daten per Rake-Task nach PostgreSQL migrieren
+5. Turbo Streams für Realtime (ersetzt BroadcastChannel + PocketBase-SSE)
+6. Frontend-JS in Stimulus-Controller überführen
+7. Bestehende UI (CSS, Templates) übernehmen und auf ERB-Partials umstellen
+
+**Breaking Changes:**
+- PocketBase entfällt komplett
+- Alle API-Calls werden zu Rails-Controllern
+- Auth wechselt von PocketBase-Auth zu Devise
+
+**Aufwand:** 3–5 Tage (sauber, mit Tests)
+**Priorität:** Strategisch — alle anderen N-Features bauen idealerweise darauf auf
+
+---
+
+### N3 — User blockieren
+
+**Ziel:** Andere User blockieren. Blockierte User können einem nicht mehr folgen, sehen eigene Posts nicht und erscheinen selbst nicht im Feed.
+
+**Datenbankschema:**
+```
+blocks
+  id        (auto)
+  blocker   (relation → users)
+  blocked   (relation → users)
+  created   (auto)
+```
+
+**Verhalten:**
+- Blockierter User sieht Posts des Blockers nicht (Feed-Filter)
+- Blockierter User kann dem Blocker nicht mehr folgen (Follow-Endpunkt prüft Block-Relation)
+- Bestehende Follow-Relation wird beim Blockieren automatisch aufgelöst
+- Blockierter User kann keine DMs senden (s. N4)
+- Block ist einseitig und still (kein Hinweis an den Blockierten)
+
+**UI:**
+- "..." Menü auf jedem Post/Profil → "Blockieren"
+- Blockliste im User-Settings-Drawer verwaltbar
+
+**Backend-Logik (Rails):**
+- `before_action :check_blocked` in Feed-, Follow- und Message-Controllern
+- Scope `Post.visible_to(current_user)` filtert blockierte User heraus
+
+**Abhängigkeiten:** N2 (Rails), N1 (Follow-System)
+**Aufwand:** ~1 Tag
+**Priorität:** Mittel — wichtig für Safety, aber nach Follow sinnvoll
+
+---
+
+### N4 — Ende-zu-Ende-verschlüsselte Direktnachrichten (E2E-DMs)
+
+**Ziel:** Private Nachrichten zwischen Usern, die der Server nie im Klartext sieht.
+
+**Kryptographie-Ansatz: X25519 + AES-GCM (Web Crypto API)**
+
+```
+Schlüsselgenerierung (einmalig pro User, im Browser):
+  const keyPair = await crypto.subtle.generateKey(
+      { name: 'X25519' }, true, ['deriveKey']
+  );
+  // Public Key → Server speichern (öffentlich)
+  // Private Key → localStorage (niemals den Server verlassen)
+
+Nachricht verschlüsseln (Sender):
+  const sharedKey = await crypto.subtle.deriveKey(
+      { name: 'X25519', public: recipientPublicKey },
+      senderPrivateKey, { name: 'AES-GCM', length: 256 }, false, ['encrypt']
+  );
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const ciphertext = await crypto.subtle.encrypt(
+      { name: 'AES-GCM', iv }, sharedKey, encode(plaintext)
+  );
+  // ciphertext + iv → Server
+
+Nachricht entschlüsseln (Empfänger):
+  const sharedKey = await crypto.subtle.deriveKey(
+      { name: 'X25519', public: senderPublicKey },
+      recipientPrivateKey, { name: 'AES-GCM', length: 256 }, false, ['decrypt']
+  );
+  const plaintext = await crypto.subtle.decrypt(
+      { name: 'AES-GCM', iv }, sharedKey, ciphertext
+  );
+```
+
+**Datenbankschema (Rails):**
+```ruby
+# messages
+  id            (uuid)
+  sender        (references users)
+  recipient     (references users)
+  ciphertext    (text)      # Base64-encoded verschlüsselter Inhalt
+  iv            (text)      # Base64-encoded Initialization Vector
+  created_at    (datetime)
+
+# user_keys
+  user          (references users)
+  public_key    (text)      # Base64-encoded X25519 Public Key
+```
+
+**Sicherheits-Eigenschaften:**
+- Server speichert ausschließlich Ciphertext + IV + Public Keys
+- Private Keys verlassen nie den Browser (localStorage)
+- Forward Secrecy: nicht eingebaut (statische Keys) — für spätere Version Signal-Protokoll möglich
+- Blockierte User können keine Nachrichten senden (s. N3)
+
+**UI:**
+- DM-Icon in der Navigation → Posteingang
+- Konversationsansicht pro User-Paar
+- Schlüssel-Generierung automatisch beim ersten DM-Öffnen
+- Warnung: "Private Key ist nur in diesem Browser gespeichert. Kein Recovery möglich."
+
+**Risiken / Einschränkungen:**
+- Kein Key-Recovery: verliert der User den Browser-Storage, sind alle DMs unlesbar
+- Kein Multi-Device ohne Key-Export-Flow
+- Key-Authentizität: kein Web-of-Trust, User könnte falschen Public Key akzeptieren (TOFU — Trust on First Use)
+
+**Abhängigkeiten:** N2 (Rails), N3 (Block-Check)
+**Aufwand:** 3–5 Tage (Crypto-Layer + UI + Tests)
+**Priorität:** Groß — eigenständiges Projekt, nach Rails-Migration angehen
+
+---
+
+## Zusammenfassung: Empfohlene Reihenfolge (aktualisiert)
+
+```
+1. [Q7] Max-Depth für Replies          — 20 Min, Layout-Schutz (noch offen)
+2. [D1] Hetzner CX22 aufsetzen         — 1–2h, Produktionsbasis
+3. [N2] Rails-Migration                — 3–5 Tage, strategische Basis
+4. [N1] Follow-System                  — 1–2 Tage, Kern-Sozialfeature
+5. [N3] Blockieren                     — 1 Tag, Safety
+6. [M2] Username/Auth (via Devise)     — in N2 integriert
+7. [M6] PWA / Service Worker           — 1 Tag
+8. [N4] E2E-DMs                        — 3–5 Tage, nach allem anderen
+```
+
+---
+
+## Teil 4c: Deployment — Hetzner CX22 + Kamal
+
+### D1 — Server-Setup & Deployment-Pipeline
+
+**Ziel:** Die Rails-App reproducierbar und mit einem einzigen Befehl auf einen Hetzner CX22 deployen.
+
+**Warum Hetzner CX22?**
+
+| | Wert |
+|---|---|
+| Preis | ~€4/Monat |
+| vCPUs | 2 |
+| RAM | 4 GB (Rails + PostgreSQL + Redis: ~500 MB genutzt) |
+| Storage | 40 GB NVMe |
+| Standort | Nürnberg / Falkenstein (DE, DSGVO-konform) |
+| Upgrade | Resize per Klick, 30 Sekunden |
+
+Für ein persönliches Test-Projekt mit <50 Nutzern ist der CX22 mehr als ausreichend. Upgrade auf CX32 (€8/Monat, 8 GB RAM) erst nötig bei öffentlichem Wachstum.
+
+**Stack auf dem Server:**
+
+```
+datenkistchen.de
+       │
+  Cloudflare (DNS + TLS)
+       │
+  Caddy (Reverse Proxy, auto-HTTPS)
+       │
+  ┌────────────────────────────────┐
+  │         Hetzner CX22           │
+  │                                │
+  │  Rails (Puma)   :3000          │
+  │  PostgreSQL     :5432 (lokal)  │
+  │  Redis          :6379 (lokal)  │
+  └────────────────────────────────┘
+```
+
+**Warum Kamal?**
+
+Kamal ist das offizielle Rails-Deploy-Tool (von Basecamp / 37signals). Es deployt Docker-Container auf eigene Server ohne Heroku/Render-Abhängigkeit:
+- Ein Befehl: `kamal deploy`
+- Zero-Downtime durch Container-Rollover
+- Rollback: `kamal rollback`
+- Secrets via `.kamal/secrets` (nie im Git)
+- Läuft auf dem Pi (Dev) und deployt auf Hetzner (Prod)
+
+**Setup-Schritte:**
+
+1. Hetzner CX22 anlegen (Ubuntu 24.04), SSH-Key hinterlegen
+2. Domain `microblog.datenkistchen.de` → Hetzner-IP (Cloudflare A-Record)
+3. `gem install kamal` auf dem Pi
+4. `kamal init` im Rails-Projektverzeichnis
+5. `config/deploy.yml` konfigurieren (s. unten)
+6. `kamal setup` — einmaliges Server-Setup (Docker, Netzwerk)
+7. `kamal deploy` — erstes Deployment
+
+**`config/deploy.yml` (Basis):**
+
+```yaml
+service: microblog
+image: henrik/microblog
+
+servers:
+  web:
+    - <HETZNER-IP>
+
+proxy:
+  ssl: true
+  host: microblog.datenkistchen.de
+
+registry:
+  server: ghcr.io
+  username: henrik
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+env:
+  secret:
+    - RAILS_MASTER_KEY
+    - DATABASE_URL
+  clear:
+    RAILS_ENV: production
+
+accessories:
+  db:
+    image: postgres:16
+    host: <HETZNER-IP>
+    env:
+      secret:
+        - POSTGRES_PASSWORD
+    volumes:
+      - /var/lib/postgresql/data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    host: <HETZNER-IP>
+    volumes:
+      - /var/lib/redis/data:/data
+```
+
+**Entwicklungs-Workflow:**
+
+```
+Raspberry Pi 5 (Dev)          Hetzner CX22 (Prod)
+─────────────────────         ──────────────────────
+rails server                  kamal deploy
+rspec / rubocop               kamal logs
+rails console                 kamal exec rails console
+docker compose (lokal)        PostgreSQL + Redis als Accessories
+```
+
+**Kosten gesamt:**
+
+| Dienst | Preis/Monat |
+|---|---|
+| Hetzner CX22 | ~€4 |
+| Cloudflare (DNS) | kostenlos |
+| ghcr.io (Container Registry) | kostenlos (öffentlich) |
+| **Gesamt** | **~€4/Monat** |
+
+**Abhängigkeiten:** N2 (Rails-App muss existieren)
+**Aufwand:** 1–2 Stunden (einmalig)
+**Priorität:** Vor der Rails-Migration festlegen — dann ist Prod von Anfang an bereit
 
 ---
 

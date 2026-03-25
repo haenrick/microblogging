@@ -640,6 +640,8 @@
             // Simplest: Flatten list for search? No, threading important.
             // Let's just filter top level posts content for now.
 
+            const MAX_DEPTH = 4;
+
             const renderList = (list, container, level = 0) => {
                 list.forEach(post => {
                     // Search filtering
@@ -666,6 +668,9 @@
 
                     const replyBtn = el.querySelector('.reply');
                     replyBtn.querySelector('.count').textContent = post.replies ? post.replies.length : 0;
+                    if (level >= MAX_DEPTH) {
+                        replyBtn.style.display = 'none';
+                    }
                     replyBtn.onclick = (e) => {
                         e.stopPropagation();
                         const form = el.querySelector('.reply-form-container');
@@ -700,10 +705,12 @@
 
                     container.appendChild(el);
 
-                    // Recursive render replies
+                    // Recursive render replies (capped at MAX_DEPTH)
                     if (post.replies && post.replies.length > 0) {
-                        const replyContainer = el.querySelector('.replies');
-                        renderList(post.replies, replyContainer, level + 1);
+                        const replyContainer = level < MAX_DEPTH
+                            ? el.querySelector('.replies')
+                            : container;
+                        renderList(post.replies, replyContainer, Math.min(level + 1, MAX_DEPTH));
                     }
                 });
             };
