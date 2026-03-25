@@ -1,3 +1,23 @@
-# PocketBase data directory — contains database, user data, admin credentials
-# NEVER commit this
+# PocketBase data (database, user data, admin credentials - never commit)
 pb_data/
+
+# Rails
+*.rbc
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+/storage/*
+!/storage/.keep
+/public/assets
+.byebug_history
+
+# Credentials
+config/master.key
+config/credentials/*.key
+.env
+.env.*
+!.env.example
+
+# macOS
+.DS_Store
