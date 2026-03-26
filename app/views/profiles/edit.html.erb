@@ -36,9 +36,10 @@
     <div class="settings-section">
       <h3>Terminal color</h3>
       <div class="theme-picker">
-        <% User::THEMES.each do |name, _| %>
+        <% User::THEMES.each do |name, colors| %>
           <label class="theme-swatch-label">
-            <%= f.radio_button :theme, name, class: "theme-radio" %>
+            <%= f.radio_button :theme, name, class: "theme-radio",
+                data: { primary: colors[:primary], dim: colors[:dim], glow: colors[:glow] } %>
             <span class="theme-swatch theme-swatch-<%= name %>" title="<%= name %>"></span>
           </label>
         <% end %>

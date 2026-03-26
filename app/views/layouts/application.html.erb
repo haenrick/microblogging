@@ -44,6 +44,14 @@
         label.textContent = file ? "📎 " + file.name : "📎";
       });
 
+      document.addEventListener("change", function(e) {
+        if (!e.target.classList.contains("theme-radio")) return;
+        var d = e.target.dataset;
+        document.documentElement.style.setProperty("--green", d.primary);
+        document.documentElement.style.setProperty("--green-dim", d.dim);
+        document.documentElement.style.setProperty("--green-glow", d.glow);
+      });
+
       document.addEventListener("input", function(e) {
         if (!e.target.dataset.charcount) return;
         var max = parseInt(e.target.getAttribute("maxlength") || 280);
