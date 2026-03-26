@@ -17,7 +17,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
         }
       }
     end
-    assert_redirected_to posts_path
+    assert_redirected_to root_path
   end
 
   test "does not create user with duplicate username" do

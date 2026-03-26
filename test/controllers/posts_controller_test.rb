@@ -19,7 +19,7 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     assert_difference("Post.count", 1) do
       post posts_path, params: { post: { content: "Hello world" } }
     end
-    assert_redirected_to posts_path
+    assert_redirected_to root_path
   end
 
   test "create post fails without content" do
