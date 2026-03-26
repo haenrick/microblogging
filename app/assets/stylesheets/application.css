@@ -201,6 +201,18 @@ body {
 .username:hover { text-decoration: underline; text-shadow: 0 0 12px var(--green); }
 .post-time { color: #333; font-size: 11px; letter-spacing: 1px; }
 .post-content { line-height: 1.6; color: var(--text); word-break: break-word; margin-bottom: 10px; font-size: 14px; }
+
+.expiry-badge {
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  padding: 1px 6px;
+  border-radius: 3px;
+  border: 1px solid;
+  margin-left: auto;
+}
+.expiry-fresh    { color: var(--green);   border-color: var(--green);   background: var(--green-glow); }
+.expiry-aging    { color: var(--cyan);    border-color: var(--cyan-dim); background: rgba(0,229,255,0.08); }
+.expiry-critical { color: var(--red);     border-color: var(--red);      background: rgba(255,68,68,0.08); }
 .post-actions { display: flex; gap: 4px; flex-wrap: wrap; }
 .replies { margin-top: 8px; }
 .reply-form { margin-top: 10px; }

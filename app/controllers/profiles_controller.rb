@@ -3,7 +3,7 @@ class ProfilesController < ApplicationController
 
   def show
     @user = User.find_by!(username: params[:username])
-    @posts = @user.posts.top_level.includes(:likes, replies: :user).recent
+    @posts = @user.posts.top_level.active.includes(:likes, replies: :user).recent
   end
 
   def edit

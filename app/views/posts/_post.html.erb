@@ -13,6 +13,7 @@
     </div>
     <%= link_to "@#{post.user.username}", profile_path(post.user.username), class: "username" %>
     <span class="post-time"><%= time_ago_in_words(post.created_at) %> ago</span>
+    <span class="expiry-badge expiry-<%= post.expiry_status %>">⏳ <%= post.expiry_label %></span>
   </div>
 
   <div class="post-content"><%= post.content %></div>

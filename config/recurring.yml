@@ -1,0 +1,4 @@
+purge_expired_posts:
+  class: PurgeExpiredPostsJob
+  schedule: every day at midnight
+  queue: default

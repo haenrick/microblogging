@@ -5,7 +5,7 @@ class SearchController < ApplicationController
     @query = params[:q].to_s.strip
     if @query.length >= 2
       @users = User.where("username ILIKE ?", "%#{@query}%").limit(10)
-      @posts = Post.where("content ILIKE ?", "%#{@query}%")
+      @posts = Post.active.where("content ILIKE ?", "%#{@query}%")
                    .includes(:user, :likes)
                    .order(created_at: :desc)
                    .limit(30)
