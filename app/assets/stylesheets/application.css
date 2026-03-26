@@ -371,6 +371,12 @@ body {
 }
 .theme-swatch:hover { transform: scale(1.15); }
 .theme-radio:checked + .theme-swatch { border-color: #fff; transform: scale(1.15); }
+.theme-swatch-green  { --swatch: #00ff88; }
+.theme-swatch-amber  { --swatch: #ffaa00; }
+.theme-swatch-purple { --swatch: #bf5fff; }
+.theme-swatch-pink   { --swatch: #ff44aa; }
+.theme-swatch-cyan   { --swatch: #00e5ff; }
+.theme-swatch-white  { --swatch: #e0e0e0; }
 
 .profile-link { color: var(--green); font-size: 12px; letter-spacing: 1px; transition: text-shadow 0.15s; }
 .profile-link:hover { text-shadow: 0 0 12px var(--green); }

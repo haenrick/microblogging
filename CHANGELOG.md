@@ -5,6 +5,15 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.5.1] — 2026-03-26
+
+### Gefixt
+- **Theme-Auswahl** — CSP blockierte den Inline-`<style>`-Block mit Theme-Variablen (fehlender Nonce); Theme-Wahl wird jetzt korrekt visuell übernommen und persistiert
+- **Theme-Swatches** — Inline-`style`-Attribute auf Swatch-Spans durch CSS-Klassen ersetzt (CSP-konform); Farben sind jetzt für alle User sichtbar
+- **README** — Datenbankpasswörter aus Deployment-Doku entfernt; Pi-Deployment referenziert jetzt `bin/start`
+
+---
+
 ## [0.5.0] — 2026-03-26
 
 ### Neu

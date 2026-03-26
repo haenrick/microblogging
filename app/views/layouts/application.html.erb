@@ -19,7 +19,7 @@
     <%= javascript_importmap_tags %>
     <% if user_signed_in? %>
       <% colors = Current.user.theme_colors %>
-      <style>
+      <style nonce="<%= content_security_policy_nonce %>">
         :root {
           --green:      <%= colors[:primary] %>;
           --green-dim:  <%= colors[:dim] %>;

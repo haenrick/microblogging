@@ -46,15 +46,15 @@ bundle install
 docker compose up -d
 
 # Setup database (DB_USER matches docker-compose.yml)
-DB_HOST=localhost DB_USER=fl4re DB_PASSWORD=fl4re_dev bin/rails db:create db:migrate
+DB_HOST=localhost DB_USER=fl4re DB_PASSWORD=<your-password> bin/rails db:create db:migrate
 
 # Start server
-DB_HOST=localhost DB_USER=fl4re DB_PASSWORD=fl4re_dev bin/rails server
+DB_HOST=localhost DB_USER=fl4re DB_PASSWORD=<your-password> bin/rails server
 ```
 
 Open [http://localhost:3000](http://localhost:3000)
 
-> **Pi note:** The existing Pi setup uses `DB_USER=microblog DB_PASSWORD=microblog_dev` — these ENV vars override the defaults and keep working as-is.
+> **Pi note:** The existing Pi setup overrides `DB_USER` and `DB_PASSWORD` via `.env` — these ENV vars are set on the server and keep working as-is.
 
 ### Environment variables
 
@@ -62,7 +62,7 @@ Open [http://localhost:3000](http://localhost:3000)
 |----------|---------|-------------|
 | `DB_HOST` | `localhost` | PostgreSQL host |
 | `DB_USER` | `fl4re` | PostgreSQL user |
-| `DB_PASSWORD` | *(none)* | PostgreSQL password |
+| `DB_PASSWORD` | *(required)* | PostgreSQL password |
 
 ### First admin user
 
@@ -76,10 +76,10 @@ User.find_by(username: "your_username").update!(admin: true)
 ```bash
 # Pull latest and migrate
 git pull
-DB_HOST=localhost DB_USER=microblog DB_PASSWORD=microblog_dev bin/rails db:migrate
+bin/rails db:migrate
 
 # Start server on port 4000
-DB_HOST=localhost DB_USER=microblog DB_PASSWORD=microblog_dev bin/rails server -p 4000 -b 0.0.0.0
+bin/start
 ```
 
 Exposed via Cloudflare Tunnel — no open firewall ports required.
