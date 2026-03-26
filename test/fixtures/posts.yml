@@ -1,11 +1,13 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  content: MyText
+  content: Hello from userone
   user: one
-  parent: one
+  public_id: abc123de
+  expires_at: <%= 30.days.from_now %>
 
 two:
-  content: MyText
+  content: Hello from usertwo
   user: two
-  parent: two
+  public_id: xyz789fg
+  expires_at: <%= 30.days.from_now %>

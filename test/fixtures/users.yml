@@ -2,8 +2,12 @@
 
 one:
   email_address: one@example.com
+  username: userone
   password_digest: <%= password_digest %>
+  theme: green
 
 two:
   email_address: two@example.com
+  username: usertwo
   password_digest: <%= password_digest %>
+  theme: green

@@ -2,8 +2,4 @@
 
 one:
   follower: one
-  following: one
-
-two:
-  follower: two
   following: two

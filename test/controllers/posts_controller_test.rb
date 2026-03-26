@@ -1,18 +1,31 @@
 require "test_helper"
 
 class PostsControllerTest < ActionDispatch::IntegrationTest
-  test "should get index" do
-    get posts_index_url
+  setup { @user = users(:one) }
+
+  test "index redirects when not logged in" do
+    get posts_path
+    assert_redirected_to new_session_path
+  end
+
+  test "index returns success when logged in" do
+    sign_in_as(@user)
+    get posts_path
     assert_response :success
   end
 
-  test "should get create" do
-    get posts_create_url
-    assert_response :success
+  test "create post when logged in" do
+    sign_in_as(@user)
+    assert_difference("Post.count", 1) do
+      post posts_path, params: { post: { content: "Hello world" } }
+    end
+    assert_redirected_to posts_path
   end
 
-  test "should get destroy" do
-    get posts_destroy_url
-    assert_response :success
+  test "create post fails without content" do
+    sign_in_as(@user)
+    assert_no_difference("Post.count") do
+      post posts_path, params: { post: { content: "" } }
+    end
   end
 end

@@ -1,13 +1,35 @@
 require "test_helper"
 
 class RegistrationsControllerTest < ActionDispatch::IntegrationTest
-  test "should get new" do
-    get registrations_new_url
+  test "shows registration page" do
+    get new_register_path
     assert_response :success
   end
 
-  test "should get create" do
-    get registrations_create_url
-    assert_response :success
+  test "creates new user" do
+    assert_difference("User.count", 1) do
+      post register_path, params: {
+        user: {
+          username: "newuser",
+          email_address: "new@example.com",
+          password: "password123",
+          password_confirmation: "password123"
+        }
+      }
+    end
+    assert_redirected_to posts_path
+  end
+
+  test "does not create user with duplicate username" do
+    assert_no_difference("User.count") do
+      post register_path, params: {
+        user: {
+          username: "userone",
+          email_address: "other@example.com",
+          password: "password123",
+          password_confirmation: "password123"
+        }
+      }
+    end
   end
 end
