@@ -25,7 +25,7 @@ Rails.application.routes.draw do
   patch  "/profile",                 to: "profiles#update",          as: :update_profile
   patch  "/profile/change_password", to: "profiles#change_password", as: :change_password
   delete "/profile",                 to: "profiles#destroy",         as: :delete_account
-  get  "/:username",    to: "profiles#show",   as: :profile, constraints: { username: /[a-z0-9_]+/ }
+  get "/:username", to: "profiles#show", as: :profile, constraints: { username: /[a-z0-9_]+/ }
 
   namespace :admin do
     root "dashboard#index"
