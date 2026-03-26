@@ -22,8 +22,8 @@
       ♥ <%= post.likes_count %>
     <% end %>
 
-    <button class="btn-action" onclick="this.nextElementSibling.classList.toggle('hidden')">
-      ↩ <%= post.replies.size %> replies
+    <button class="btn-action" onclick="this.closest('.post').querySelector('.reply-form').classList.toggle('hidden')">
+      ↩ <%= post.replies.size %>
     </button>
 
     <% if post.user == Current.user %>

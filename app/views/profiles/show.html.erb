@@ -1,15 +1,19 @@
+<%= link_to "← Back", :back, class: "back-link" %>
+
 <div class="profile-header">
   <div class="profile-avatar">
     <% if @user.avatar.attached? %>
-      <%= image_tag @user.avatar_thumbnail, class: "avatar-img" %>
+      <%= image_tag @user.avatar_thumbnail, class: "avatar-img avatar-large" %>
     <% else %>
-      <div class="avatar-initials"><%= @user.initials %></div>
+      <div class="avatar-initials avatar-large"><%= @user.initials %></div>
     <% end %>
   </div>
   <div class="profile-info">
     <h1>@<%= @user.username %></h1>
     <% if @user.bio.present? %>
       <p class="bio"><%= @user.bio %></p>
+    <% else %>
+      <p class="bio muted">No bio yet.</p>
     <% end %>
     <p class="stat"><%= @user.posts.count %> Posts</p>
   </div>

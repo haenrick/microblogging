@@ -4,27 +4,54 @@
     <title><%= content_for(:title) || "Microblog" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Repo">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= yield :head %>
-
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
   </head>
 
   <body>
-    <% if flash[:notice] %><p class="flash-notice"><%= flash[:notice] %></p><% end %>
-    <% if flash[:alert] %><p class="flash-alert"><%= flash[:alert] %></p><% end %>
-    <%= yield %>
+    <% if user_signed_in? %>
+      <div class="app-layout">
+        <nav class="sidebar">
+          <div class="sidebar-top">
+            <%= link_to "◆ Microblog", root_path, class: "sidebar-logo" %>
+            <ul class="nav-links">
+              <li><%= link_to "🏠 Feed", root_path, class: "nav-link #{current_page?(root_path) ? "active" : ""}" %></li>
+              <li><%= link_to "👤 Profile", profile_path(Current.user.username), class: "nav-link #{current_page?(profile_path(Current.user.username)) ? "active" : ""}" %></li>
+              <li><%= link_to "⚙ Settings", edit_profile_path, class: "nav-link #{current_page?(edit_profile_path) ? "active" : ""}" %></li>
+            </ul>
+          </div>
+          <div class="sidebar-bottom">
+            <div class="sidebar-user">
+              <div class="avatar-wrap">
+                <% if Current.user.avatar.attached? %>
+                  <%= image_tag Current.user.avatar_thumbnail, class: "avatar-img avatar-small" %>
+                <% else %>
+                  <div class="avatar-initials avatar-small"><%= Current.user.initials %></div>
+                <% end %>
+              </div>
+              <span class="sidebar-username">@<%= Current.user.username %></span>
+            </div>
+            <%= button_to "Sign out", session_path, method: :delete, class: "btn-signout" %>
+          </div>
+        </nav>
+
+        <main class="main-content">
+          <% if flash[:notice] %><p class="flash-notice"><%= flash[:notice] %></p><% end %>
+          <% if flash[:alert] %><p class="flash-alert"><%= flash[:alert] %></p><% end %>
+          <%= yield %>
+        </main>
+      </div>
+    <% else %>
+      <div class="auth-layout">
+        <% if flash[:notice] %><p class="flash-notice"><%= flash[:notice] %></p><% end %>
+        <% if flash[:alert] %><p class="flash-alert"><%= flash[:alert] %></p><% end %>
+        <%= yield %>
+      </div>
+    <% end %>
   </body>
 </html>
