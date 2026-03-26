@@ -108,35 +108,40 @@ Steuerbefehle: `sudo systemctl start|stop|restart|status fl4re`
 
 ---
 
-### D3 — CD via GitHub Actions
+### D3 — CD via GitHub Actions (Self-hosted Runner)
 
 **Problem:** Deploys sind manuell — SSH → git pull → bundle install → restart.
 
-**Lösung:** GitHub Actions SSH-Deploy-Job nach erfolgreichem CI:
+**Lösung:** Self-hosted GitHub Actions Runner direkt auf dem Pi. Kein SSH-Schlüssel in GitHub Secrets nötig — der Runner-Daemon läuft als systemd-Service und führt Jobs lokal aus.
+
+**Setup Pi (~10 min):**
+1. GitHub → Settings → Actions → Runners → „New self-hosted runner" → Token kopieren
+2. Runner-Binary herunterladen, Token eingeben, als systemd-Service registrieren
+
+**Workflow `.github/workflows/deploy.yml`:**
 
 ```yaml
 deploy:
   needs: [scan_ruby, lint, test]
-  runs-on: ubuntu-latest
+  runs-on: self-hosted
   if: github.ref == 'refs/heads/main'
   steps:
-    - uses: appleboy/ssh-action@v1
-      with:
-        host: ${{ secrets.PI_HOST }}
-        username: henrik
-        key: ${{ secrets.PI_SSH_KEY }}
-        script: |
-          cd ~/microblog
-          git pull
-          bundle install --without development test
-          bin/rails assets:precompile RAILS_ENV=production
-          bin/rails db:migrate RAILS_ENV=production
-          sudo systemctl restart fl4re
+    - name: Deploy
+      run: |
+        cd ~/microblog
+        git pull
+        bundle install --without development test
+        bin/rails assets:precompile RAILS_ENV=production
+        bin/rails db:migrate RAILS_ENV=production
+        sudo systemctl restart fl4re
 ```
 
-**GitHub Secrets:** `PI_HOST`, `PI_SSH_KEY`
+**Vorteile gegenüber SSH-Ansatz:**
+- Kein PI_SSH_KEY Secret nötig
+- Deploy-Log direkt in GitHub Actions UI sichtbar
+- Läuft in der echten Pi-Umgebung mit echtem `.env`
 
-**Aufwand:** ~2h · **Abhängigkeiten:** D1, D2
+**Aufwand:** ~20–30 min · **Abhängigkeiten:** D1 ✅, D2 ✅
 
 ---
 
@@ -339,3 +344,6 @@ Für öffentlichen Launch: Hetzner CX22 (~5 €/Monat) + Kamal (bereits im Gemfi
 | `v0.1.0` | Basis-Features: Posts, Replies, Likes, Follow, Search, Discover, Profile, Themes, Ephemeral Posts, Edit, Permalink, Admin |
 | `v0.2.0` | Admin-Konsole, fl4re-Rename, Bugfixes, CI-Stabilisierung |
 | `v0.3.x` | Sicherheit (Rack::Attack, CSP, Rate Limiting), UX (Turbo Streams, Stimulus), Deployment-Fixes |
+| `v0.4.0` | Production-Mode, systemd-Service, Backup-Script, Redis eliminiert |
+| `v0.5.0` | User Preferences, Enter-to-post, CSP-Fix Inline-Script |
+| `v0.5.1` | Theme-Auswahl-Fix (CSP Nonce + Swatches), Passwörter aus README entfernt |
