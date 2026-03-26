@@ -340,12 +340,13 @@ Nachricht entschlüsseln (Empfänger):
 ```
 ✅ [Q7] Max-Depth für Replies
 ✅ [N2] Rails-Migration                — Rails 8.1, PostgreSQL, Auth
+✅ [N0] Benutzerprofil (Avatar + Bio)  — Avatar, Bio, Profilseite, Sidebar-Nav
+✅ [Q1] Enter zum Posten               — Enter sendet, Shift+Enter = Zeilenumbruch
 ~~[D1] Hetzner CX22~~ → ersetzt durch Pi 5 + Cloudflare Tunnel
-1. [N0] Benutzerprofil (Avatar + Bio)  — 1 Tag
-2. [N1] Follow-System                  — 1–2 Tage, Kern-Sozialfeature
-3. [N3] Blockieren                     — 1 Tag, Safety
-4. [M6] PWA / Service Worker           — 1 Tag
-5. [N4] E2E-DMs                        — 3–5 Tage, nach allem anderen
+1. [N1] Follow-System                  — 1–2 Tage, Kern-Sozialfeature
+2. [N3] Blockieren                     — 1 Tag, Safety
+3. [M6] PWA / Service Worker           — 1 Tag
+4. [N4] E2E-DMs                        — 3–5 Tage, nach allem anderen
 ```
 
 ---
