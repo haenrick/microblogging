@@ -13,10 +13,15 @@
     </div>
     <%= link_to "@#{post.user.username}", profile_path(post.user.username), class: "username" %>
     <span class="post-time"><%= time_ago_in_words(post.created_at) %> ago</span>
-    <span class="expiry-badge expiry-<%= post.expiry_status %>">⏳ <%= post.expiry_label %></span>
   </div>
 
   <div class="post-content"><%= post.content %></div>
+
+  <% if post.expires_at %>
+    <div class="expiry-bar expiry-<%= post.expiry_status %>">
+      ⏳ <%= post.expiry_label %>
+    </div>
+  <% end %>
 
   <div class="post-actions">
     <%= button_to like_post_path(post), method: :post, class: "btn-action #{post.liked_by?(Current.user) ? "liked" : ""}" do %>
@@ -28,12 +33,26 @@
     </button>
 
     <% if post.user == Current.user %>
-      <%= button_to post_path(post), method: :delete, class: "btn-action btn-danger",
-          data: { turbo_confirm: "Delete this post?" } do %>
-        ✕
-      <% end %>
+      <button class="btn-action" onclick="this.closest('.post').querySelector('.edit-form').classList.toggle('hidden')">
+        ✎
+      </button>
     <% end %>
   </div>
+
+  <% if post.user == Current.user %>
+    <div class="edit-form hidden">
+      <%= form_with url: post_path(post), method: :patch, class: "post-form edit-form-inner" do |f| %>
+        <%= f.text_area :content, value: post.content, maxlength: 280, rows: 3,
+            data: { charcount: true } %>
+        <div class="form-footer">
+          <span class="char-counter"><span class="char-remaining"><%= 280 - post.content.length %></span> chars left</span>
+          <%= f.submit "Save", class: "btn-primary btn-small" %>
+          <%= button_to post_path(post), method: :delete, class: "btn-danger btn-small",
+              data: { turbo_confirm: "Delete this post?" } do %>Delete<% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
 
   <div class="reply-form hidden">
     <%= form_with url: reply_post_path(post), class: "post-form reply-form-inner" do |f| %>

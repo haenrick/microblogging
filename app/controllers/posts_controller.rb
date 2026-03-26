@@ -32,6 +32,15 @@ class PostsController < ApplicationController
     end
   end
 
+  def update
+    @post = Current.user.posts.find(params[:id])
+    if @post.update(post_params)
+      redirect_to root_path, notice: "Post updated."
+    else
+      redirect_to root_path, alert: @post.errors.full_messages.to_sentence
+    end
+  end
+
   def destroy
     @post = Current.user.posts.find(params[:id])
     @post.destroy

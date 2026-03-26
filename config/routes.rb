@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   get  "/register", to: "registrations#new",    as: :new_register
   post "/register", to: "registrations#create", as: :register
 
-  resources :posts, only: [:index, :create, :destroy] do
+  resources :posts, only: [:index, :create, :update, :destroy] do
     member do
       post :like
       post :reply
