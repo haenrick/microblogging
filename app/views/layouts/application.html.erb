@@ -11,6 +11,14 @@
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <script>
+      document.addEventListener("keydown", function(e) {
+        if (e.key === "Enter" && !e.shiftKey && e.target.matches(".post-form textarea")) {
+          e.preventDefault();
+          e.target.closest("form").requestSubmit();
+        }
+      });
+    </script>
   </head>
 
   <body>
