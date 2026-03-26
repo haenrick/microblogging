@@ -184,6 +184,35 @@ Optional: Backup via `rclone` zu Cloudflare R2 oder einem anderen S3-kompatiblen
 
 ---
 
+### Tech-Optimierungen (aus Code-Audit)
+
+#### 🔴 Hoch
+
+| # | Maßnahme | Aufwand | Beschreibung |
+|---|----------|---------|--------------|
+| T1 | Redis eliminieren | ~1h | solid_cable aktivieren, Redis aus docker-compose entfernen — Solid Stack läuft komplett ohne Redis |
+| T2 | `delete_all` statt `destroy_all` | 5 min | `PurgeExpiredPostsJob` lädt jeden Post einzeln — direkte DB-Deletion 100x schneller |
+| T3 | E-Mail / SMTP konfigurieren | ~2h | Passwort-Reset schlägt aktuell lautlos fehl (`from@example.com` Platzhalter) |
+
+#### 🟡 Mittel
+
+| # | Maßnahme | Aufwand | Beschreibung |
+|---|----------|---------|--------------|
+| T4 | Inline-JS → Stimulus | ~2h | Zeichenzähler, Datei-Upload-Label, Enter-to-Submit als Stimulus-Controller |
+| T5 | Fragment Caching | ~1h | Feed-Posts via `cache post do` — deutlich schnellere Ladezeiten bei wachsendem Inhalt |
+| T6 | PostgreSQL Full-Text Search | ~2h | `tsvector`/`tsquery` statt ILIKE — kein Extra-Gem, indexierbar, relevanter |
+| T7 | Admin-Hierarchie | ~1h | Admins können aktuell andere Admins löschen — Superadmin-Schutz fehlt |
+
+#### 🟢 Niedrig
+
+| # | Maßnahme | Aufwand | Beschreibung |
+|---|----------|---------|--------------|
+| T8 | Live-Feed via Turbo Streams | ~1 Tag | Neue Posts erscheinen ohne Reload (Turbo Broadcast) |
+| T9 | Fehler-Tracking | ~1h | Sentry o.ä. für Production-Errors — aktuell keine Sichtbarkeit bei Crashes |
+| T10 | Avatar Variant Caching | ~1h | Thumbnails werden on-demand generiert, kein Caching |
+
+---
+
 ### Nächste Feature-Schritte (priorisiert)
 
 | # | Feature | Aufwand | Beschreibung |
