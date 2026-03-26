@@ -12,6 +12,10 @@ class PostsController < ApplicationController
     @post = Post.new
   end
 
+  def show
+    @post = Post.active.includes(:user, :likes, replies: { user: [] }).find(params[:id])
+  end
+
   def create
     @post = Current.user.posts.new(post_params)
     if @post.save
