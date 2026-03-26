@@ -34,7 +34,7 @@ class PostsController < ApplicationController
 
   def update
     @post = Current.user.posts.find(params[:id])
-    if @post.update(post_params)
+    if @post.update(post_params.merge(edited_at: Time.current))
       redirect_to root_path, notice: "Post updated."
     else
       redirect_to root_path, alert: @post.errors.full_messages.to_sentence
