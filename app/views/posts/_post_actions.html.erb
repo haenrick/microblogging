@@ -1,0 +1,17 @@
+<div class="post-actions" id="<%= dom_id(post, :actions) %>">
+  <%= button_to like_post_path(post), method: :post,
+      class: "btn-action #{post.liked_by?(Current.user) ? "liked" : ""}",
+      data: { turbo_stream: true } do %>
+    ♥ <%= post.likes_count %>
+  <% end %>
+
+  <button class="btn-action" data-action="click->toggle#toggleReply">
+    ↩ <%= post.replies.size %>
+  </button>
+
+  <% if post.user == Current.user %>
+    <button class="btn-action" data-action="click->toggle#toggleEdit">
+      ✎
+    </button>
+  <% end %>
+</div>

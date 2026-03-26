@@ -275,7 +275,20 @@ body {
 }
 .btn-action:hover { border-color: var(--green); color: var(--green); background: var(--green-glow); }
 .btn-action.liked { color: var(--red); border-color: var(--red); }
-.btn-danger:hover { border-color: var(--red); color: var(--red); background: rgba(255,68,68,0.08); }
+.btn-danger {
+  background: transparent;
+  border: 1px solid var(--red);
+  color: var(--red);
+  border-radius: 3px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 1px;
+  display: inline-block;
+  transition: background 0.15s;
+}
+.btn-danger:hover { background: rgba(255,68,68,0.12); }
 
 .btn-ghost {
   background: transparent;

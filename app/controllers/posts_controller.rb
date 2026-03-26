@@ -61,7 +61,16 @@ class PostsController < ApplicationController
     else
       post.likes.create(user: Current.user)
     end
-    redirect_to root_path
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace(
+          ActionView::RecordIdentifier.dom_id(post, :actions),
+          partial: "posts/post_actions",
+          locals: { post: post.reload }
+        )
+      end
+      format.html { redirect_back fallback_location: root_path }
+    end
   end
 
   private
