@@ -1,25 +1,25 @@
 services:
   db:
     image: postgres:16
-    container_name: microblog_db
+    container_name: fl4re_db
     environment:
-      POSTGRES_USER: microblog
-      POSTGRES_PASSWORD: microblog_dev
-      POSTGRES_DB: microblog_development
+      POSTGRES_USER: fl4re
+      POSTGRES_PASSWORD: fl4re_dev
+      POSTGRES_DB: fl4re_development
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U microblog"]
+      test: ["CMD-SHELL", "pg_isready -U fl4re"]
       interval: 10s
       timeout: 5s
       retries: 5
 
   redis:
     image: redis:7-alpine
-    container_name: microblog_redis
+    container_name: fl4re_redis
     volumes:
       - redis_data:/data
     ports:

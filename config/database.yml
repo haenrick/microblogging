@@ -3,17 +3,17 @@ default: &default
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   host: <%= ENV.fetch("DB_HOST") { "localhost" } %>
-  username: <%= ENV.fetch("DB_USER") { "microblog" } %>
+  username: <%= ENV.fetch("DB_USER") { "fl4re" } %>
   password: <%= ENV["DB_PASSWORD"] %>
 
 development:
   <<: *default
-  database: microblog_development
+  database: fl4re_development
 
 test:
   <<: *default
-  database: microblog_test
+  database: fl4re_test
 
 production:
   <<: *default
-  database: microblog_production
+  database: fl4re_production

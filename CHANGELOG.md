@@ -1,27 +1,69 @@
 # Changelog
 
-## 2026-03-21
+Alle nennenswerten Änderungen werden hier dokumentiert.
+Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
-### Features
-- **User Settings Drawer** — Slide-in Panel (Klick auf `@username` im Header). Ermöglicht: Anzeigename + E-Mail ändern, Passwort ändern, Account löschen.
-- **Hashtags (Q5)** — `#tag` im Post-Inhalt wird als klickbarer Link gerendert und öffnet den Suchfilter.
-- **Post bearbeiten (Q6)** — Eigene Posts können inline bearbeitet werden (Stift-Icon). Bearbeitete Posts zeigen ein `(bearbeitet)`-Badge.
-- **Mention-Autocomplete (M3)** — `@name` beim Schreiben zeigt ein Dropdown mit passenden Usern aus PocketBase.
-- **Enter zum Posten** — `Enter` schickt den Post ab, `Shift+Enter` erzeugt einen Zeilenumbruch.
+---
 
-### Bugfixes
-- **Posts-Sortierung repariert** — Neue Posts erscheinen jetzt oben. Root Cause: Die `posts`-Collection hatte keine `created`/`updated`-Felder (wurden beim Erstellen nie angelegt). Behoben durch:
-  1. `ALTER TABLE posts ADD COLUMN created/updated` in SQLite
-  2. Collection-Definition in `_collections` aktualisiert
-  3. Sort im Frontend von `sort: '-id'` (zufällige IDs, nicht zeitgeordnet) auf `sort: '-created'` umgestellt
-- **PocketBase Auto-Cancellation** — `requestKey: null` verhindert, dass gleichzeitige `loadPosts()`-Aufrufe sich gegenseitig canceln.
-- **`created` ging beim Object-Spread verloren** — PocketBase SDK gibt `created`/`updated` als Prototyp-Getter zurück. Beim Spread `{ ...r }` gehen Getter verloren. Fix: explizit `created: r.created, updated: r.updated` kopieren.
+## [0.2.0] — 2026-03-26
 
-### Offen / Für Pi-Deployment merken
-Die SQLite-Migration für `created`/`updated` muss auf dem Pi manuell nachgezogen werden:
-```sql
-ALTER TABLE posts ADD COLUMN created TEXT NOT NULL DEFAULT '';
-ALTER TABLE posts ADD COLUMN updated TEXT NOT NULL DEFAULT '';
-UPDATE posts SET created = strftime('%Y-%m-%d %H:%M:%S.000Z', 'now'), updated = strftime('%Y-%m-%d %H:%M:%S.000Z', 'now') WHERE created = '';
-```
-Außerdem muss die `_collections`-Tabelle um die `autodate`-Felddefinitionen für `created`/`updated` ergänzt werden.
+### Neu
+- **Admin-Konsole** (`/admin`) — Dashboard mit Statistiken, User-Verwaltung (make/revoke admin, löschen), Post-Moderation
+- **Admin-Rolle** — `admin: boolean` auf User, Admin-Link in Sidebar (nur für Admins sichtbar)
+- **Umbenennung** — Projekt heißt jetzt **fl4re** (vorher: Microblog)
+
+### Gefixt
+- Registrierung war durch `require_authentication` blockiert — neue User konnten sich nicht anmelden
+- `stale_when_importmap_changes` entfernt (Projekt nutzt Propshaft, nicht Importmap)
+- RuboCop: doppeltes Leerzeichen in routes.rb
+
+### Infrastruktur
+- `db/schema.rb` hinzugefügt (fehlte, CI konnte DB nicht aufbauen)
+- CI: `scan_js` und `system-test` Jobs entfernt
+- Code-Cleanup: tote Scaffold-Views, `importmap-rails` / `jbuilder` / `capybara` aus Gemfile entfernt
+- Fehlende CSS-Klassen ergänzt
+- Tests für `DiscoverController`, `BlocksController`, `ProfilesController#change_password/destroy`
+- Roadmap vollständig überarbeitet
+
+---
+
+## [0.1.0] — 2026-03-25
+
+### Neu
+- **Rails-Migration** — vollständiger Wechsel von PocketBase + Vanilla JS zu Ruby on Rails 8.1
+- **Authentifizierung** — Rails 8 built-in Auth (has_secure_password, Sessions)
+- **Posts** — erstellen, löschen, bearbeiten ("edited"-Kennzeichnung), Permalink (random public_id)
+- **Ephemeral Posts** — 30-Tage-Ablauf mit Countdown-Badge (fresh/aging/critical), Auto-Purge via Solid Queue
+- **Replies** — verschachtelte Antworten
+- **Likes** — mit Counter-Cache
+- **Follow-System** — folgen/entfolgen, Following-Feed-Tab
+- **Blockieren** — Block/Unblock, Feed-Filter, Follow-Guard
+- **Suche** — Posts und User (ILIKE)
+- **User-Discover** — User-Grid mit Follow-Button
+- **Profile** — Avatar (ActiveStorage), Bio, Profilseite
+- **Terminal-Themes** — 6 Farbthemen (green, amber, purple, pink, cyan, white)
+- **Registrierung** — Terminal Boot-Aesthetic Signup-Seite
+- **Settings** — Passwort ändern, Account löschen
+- **Zeichenzähler** beim Verfassen
+- **Versionsnummer** in Sidebar-Footer
+- **DIVIDE Styleguide** — JetBrains Mono, neon green `#00ff88` auf schwarz
+
+---
+
+<!-- Template für neue Einträge:
+
+## [X.Y.Z] — YYYY-MM-DD
+
+### Neu
+-
+
+### Geändert
+-
+
+### Gefixt
+-
+
+### Entfernt
+-
+
+-->
