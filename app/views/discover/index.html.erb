@@ -1,0 +1,40 @@
+<h2 class="page-title">Discover</h2>
+
+<div class="user-grid">
+  <% @users.each do |user| %>
+    <div class="user-card">
+      <div class="user-card-avatar">
+        <% if user.avatar.attached? %>
+          <%= link_to profile_path(user.username) do %>
+            <%= image_tag user.avatar_thumbnail, class: "avatar-img avatar-large" %>
+          <% end %>
+        <% else %>
+          <%= link_to profile_path(user.username), class: "avatar-initials avatar-large" do %>
+            <%= user.initials %>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="user-card-info">
+        <%= link_to "@#{user.username}", profile_path(user.username), class: "username" %>
+        <% if user.bio.present? %>
+          <p class="user-card-bio"><%= truncate(user.bio, length: 80) %></p>
+        <% end %>
+        <div class="user-card-stats">
+          <span><%= user.posts.count %> posts</span>
+          <span><%= user.followers.count %> followers</span>
+        </div>
+      </div>
+      <div class="user-card-action">
+        <% if Current.user.following?(user) %>
+          <%= button_to "Unfollow", unfollow_user_path(user.username), method: :delete, class: "btn-ghost btn-small" %>
+        <% else %>
+          <%= button_to "Follow", follow_user_path(user.username), method: :post, class: "btn-primary btn-small" %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<% if @users.empty? %>
+  <p class="empty-state">No other users yet.</p>
+<% end %>

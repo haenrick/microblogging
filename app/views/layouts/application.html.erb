@@ -34,6 +34,13 @@
         }
       });
 
+      document.addEventListener("change", function(e) {
+        if (!e.target.classList.contains("attach-input")) return;
+        var label = e.target.closest(".btn-attach");
+        var file = e.target.files[0];
+        label.textContent = file ? "📎 " + file.name : "📎";
+      });
+
       document.addEventListener("input", function(e) {
         if (!e.target.dataset.charcount) return;
         var max = parseInt(e.target.getAttribute("maxlength") || 280);
@@ -57,6 +64,7 @@
             <ul class="nav-links">
               <li><%= link_to root_path, class: "nav-link #{current_page?(root_path) ? "active" : ""}" do %>> feed<% end %></li>
               <li><%= link_to search_path, class: "nav-link #{current_page?(search_path) ? "active" : ""}" do %>> search<% end %></li>
+              <li><%= link_to discover_path, class: "nav-link #{current_page?(discover_path) ? "active" : ""}" do %>> discover<% end %></li>
               <li><%= link_to profile_path(Current.user.username), class: "nav-link #{current_page?(profile_path(Current.user.username)) ? "active" : ""}" do %>> profile<% end %></li>
               <li><%= link_to edit_profile_path, class: "nav-link #{current_page?(edit_profile_path) ? "active" : ""}" do %>> settings<% end %></li>
             </ul>

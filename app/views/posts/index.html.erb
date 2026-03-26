@@ -3,7 +3,7 @@
   <%= link_to "Following", root_path(tab: "following"), class: "feed-tab #{@tab == "following" ? "active" : ""}" %>
 </div>
 
-<%= form_with model: @post, class: "post-form" do |f| %>
+<%= form_with model: @post, class: "post-form", multipart: true do |f| %>
   <% if @post.errors.any? %>
     <div class="error"><%= @post.errors.full_messages.to_sentence %></div>
   <% end %>
@@ -11,6 +11,9 @@
       data: { charcount: true } %>
   <div class="form-footer">
     <span class="char-counter"><span class="char-remaining">280</span> chars left</span>
+    <label class="btn-attach" title="Attach image">
+      📎 <%= f.file_field :media, accept: "image/*,video/*", class: "attach-input" %>
+    </label>
     <%= f.submit "Post", class: "btn-primary" %>
   </div>
 <% end %>

@@ -393,6 +393,41 @@ body {
 .user-result:hover { border-color: var(--green-dim); background: var(--green-glow); }
 .user-bio-preview { display: block; color: #444; font-size: 11px; margin-top: 3px; letter-spacing: 0.5px; }
 
+/* ── Discover ── */
+.user-grid { display: flex; flex-direction: column; gap: 6px; }
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  transition: border-color 0.15s;
+}
+.user-card:hover { border-color: #222; }
+.user-card-info { flex: 1; min-width: 0; }
+.user-card-bio { color: #444; font-size: 11px; margin-top: 3px; letter-spacing: 0.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.user-card-stats { display: flex; gap: 10px; margin-top: 5px; }
+.user-card-stats span { color: #333; font-size: 11px; letter-spacing: 0.5px; }
+.user-card-action { flex-shrink: 0; }
+
+/* ── Post Media ── */
+.post-media { margin: 8px 0; }
+.post-image { max-width: 100%; max-height: 400px; border-radius: 4px; border: 1px solid var(--border); display: block; }
+.post-video { max-width: 100%; max-height: 400px; border-radius: 4px; border: 1px solid var(--border); display: block; }
+
+/* ── Attach button ── */
+.btn-attach {
+  cursor: pointer;
+  color: #444;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  transition: color 0.15s;
+}
+.btn-attach:hover { color: var(--green); }
+.attach-input { display: none; }
+
 /* ── Registration ── */
 .register-layout {
   min-height: 100dvh;

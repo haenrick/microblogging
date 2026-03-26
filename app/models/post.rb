@@ -6,6 +6,7 @@ class Post < ApplicationRecord
   has_many :replies, class_name: "Post", foreign_key: :parent_id, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :liked_by_users, through: :likes, source: :user
+  has_one_attached :media
 
   validates :content, presence: true, length: { maximum: 280 }
 

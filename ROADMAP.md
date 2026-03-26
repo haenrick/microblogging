@@ -347,11 +347,11 @@ Nachricht entschlüsseln (Empfänger):
 ✅ [S1] Suche                          — Posts und User durchsuchen (ILIKE)
 ✅ [U1] Registrierung                  — Terminal Boot-Aesthetic Signup-Seite
 ✅ [N3] Blockieren                     — Block/Unblock, Feed-Filter, Follow-Guard
-1. [S2] User-Discover                  — Alle User browsen ohne Username kennen zu müssen
-2. [U2] Admin-Bereich                  — User verwalten, Posts moderieren, Rollen
-3. [U3] Privates Profil                — User kann Profil auf privat stellen, Follower-Anfragen
-4. [M6] PWA / Service Worker           — 1 Tag
-5. [X1] Medien                         — Bilder & Videos in Posts einbetten
+✅ [S2] User-Discover                  — User-Grid mit Follow-Button, geblockte ausgeblendet
+✅ [X1] Medien                         — Bilder & Videos in Posts einbetten
+1. [U2] Admin-Bereich                  — User verwalten, Posts moderieren, Rollen
+2. [U3] Privates Profil                — User kann Profil auf privat stellen, Follower-Anfragen
+3. [M6] PWA / Service Worker           — 1 Tag
 6. [X2] KI-Integration                 — KI-Features direkt in der App
 7. [N4] E2E-DMs                        — 3–5 Tage, nach allem anderen
 8. [I1] iOS App                        — Native iPhone App

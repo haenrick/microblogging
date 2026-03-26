@@ -12,7 +12,8 @@ Rails.application.routes.draw do
     end
   end
 
-  get "/search", to: "search#index", as: :search
+  get "/search",   to: "search#index",   as: :search
+  get "/discover", to: "discover#index", as: :discover
 
   post   "/:username/follow",  to: "follows#create",  as: :follow_user
   delete "/:username/follow",  to: "follows#destroy", as: :unfollow_user
