@@ -1,0 +1,60 @@
+<div class="admin-header">
+  <h2 class="page-title">> admin console</h2>
+  <nav class="admin-nav">
+    <%= link_to "> dashboard", admin_root_path, class: "admin-nav-link #{current_page?(admin_root_path) ? "active" : ""}" %>
+    <%= link_to "> users",     admin_users_path, class: "admin-nav-link #{current_page?(admin_users_path) ? "active" : ""}" %>
+    <%= link_to "> posts",     admin_posts_path, class: "admin-nav-link #{current_page?(admin_posts_path) ? "active" : ""}" %>
+  </nav>
+</div>
+
+<div class="admin-stats">
+  <div class="stat-card">
+    <div class="stat-value"><%= @stats[:users] %></div>
+    <div class="stat-label">users</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value"><%= @stats[:posts] %></div>
+    <div class="stat-label">total posts</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value"><%= @stats[:active_posts] %></div>
+    <div class="stat-label">active posts</div>
+  </div>
+  <div class="stat-card stat-warn">
+    <div class="stat-value"><%= @stats[:expired_posts] %></div>
+    <div class="stat-label">expired</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value"><%= @stats[:likes] %></div>
+    <div class="stat-label">likes</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value"><%= @stats[:follows] %></div>
+    <div class="stat-label">follows</div>
+  </div>
+</div>
+
+<div class="admin-columns">
+  <div class="admin-section">
+    <h3 class="admin-section-title">// recent users</h3>
+    <% @recent_users.each do |user| %>
+      <div class="admin-row">
+        <span class="admin-username">@<%= user.username %></span>
+        <span class="admin-meta"><%= time_ago_in_words(user.created_at) %> ago</span>
+        <% if user.admin? %><span class="admin-badge">admin</span><% end %>
+      </div>
+    <% end %>
+    <%= link_to "→ all users", admin_users_path, class: "admin-more-link" %>
+  </div>
+
+  <div class="admin-section">
+    <h3 class="admin-section-title">// recent posts</h3>
+    <% @recent_posts.each do |post| %>
+      <div class="admin-row">
+        <span class="admin-username">@<%= post.user.username %></span>
+        <span class="admin-meta"><%= post.content.truncate(50) %></span>
+      </div>
+    <% end %>
+    <%= link_to "→ all posts", admin_posts_path, class: "admin-more-link" %>
+  </div>
+</div>

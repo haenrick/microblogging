@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into version control.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_26_012235) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_26_092138) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -105,6 +105,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_26_012235) do
     t.string "username"
     t.string "bio", limit: 160
     t.string "theme", default: "green", null: false
+    t.boolean "admin", default: false, null: false
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
   end

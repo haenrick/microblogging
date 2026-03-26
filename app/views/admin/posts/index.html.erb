@@ -1,0 +1,46 @@
+<div class="admin-header">
+  <h2 class="page-title">> posts</h2>
+  <nav class="admin-nav">
+    <%= link_to "> dashboard", admin_root_path, class: "admin-nav-link" %>
+    <%= link_to "> users",     admin_users_path, class: "admin-nav-link" %>
+    <%= link_to "> posts",     admin_posts_path, class: "admin-nav-link active" %>
+  </nav>
+</div>
+
+<div class="admin-table-wrap">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>author</th>
+        <th>content</th>
+        <th>likes</th>
+        <th>expires</th>
+        <th>created</th>
+        <th>actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @posts.each do |post| %>
+        <tr class="<%= post.expiry_status == :critical ? "admin-row-warn" : "" %>">
+          <td>
+            <%= link_to "@#{post.user.username}", profile_path(post.user.username), class: "admin-link" %>
+          </td>
+          <td class="admin-content">
+            <%= link_to post.content.truncate(80), post_path(post), class: "admin-link" %>
+            <% if post.edited_at %><span class="admin-badge-edit">edited</span><% end %>
+          </td>
+          <td class="admin-num"><%= post.likes_count %></td>
+          <td class="admin-meta expiry-<%= post.expiry_status %>"><%= post.expiry_label %></td>
+          <td class="admin-meta"><%= post.created_at.strftime("%d.%m.%y %H:%M") %></td>
+          <td class="admin-actions">
+            <%= button_to "delete",
+                admin_post_path(post),
+                method: :delete,
+                class: "btn-admin-danger",
+                data: { turbo_confirm: "Delete this post?" } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

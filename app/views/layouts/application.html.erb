@@ -67,6 +67,9 @@
               <li><%= link_to discover_path, class: "nav-link #{current_page?(discover_path) ? "active" : ""}" do %>> discover<% end %></li>
               <li><%= link_to profile_path(Current.user.username), class: "nav-link #{current_page?(profile_path(Current.user.username)) ? "active" : ""}" do %>> profile<% end %></li>
               <li><%= link_to edit_profile_path, class: "nav-link #{current_page?(edit_profile_path) ? "active" : ""}" do %>> settings<% end %></li>
+              <% if Current.user.admin? %>
+                <li><%= link_to admin_root_path, class: "nav-link nav-admin #{request.path.start_with?("/admin") ? "active" : ""}" do %>> admin<% end %></li>
+              <% end %>
             </ul>
           </div>
           <div class="sidebar-bottom">

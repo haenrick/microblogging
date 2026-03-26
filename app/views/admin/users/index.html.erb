@@ -1,0 +1,59 @@
+<div class="admin-header">
+  <h2 class="page-title">> users</h2>
+  <nav class="admin-nav">
+    <%= link_to "> dashboard", admin_root_path, class: "admin-nav-link" %>
+    <%= link_to "> users",     admin_users_path, class: "admin-nav-link active" %>
+    <%= link_to "> posts",     admin_posts_path, class: "admin-nav-link" %>
+  </nav>
+</div>
+
+<div class="admin-table-wrap">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>username</th>
+        <th>email</th>
+        <th>posts</th>
+        <th>followers</th>
+        <th>following</th>
+        <th>joined</th>
+        <th>role</th>
+        <th>actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr class="<%= user.admin? ? "admin-row-highlight" : "" %>">
+          <td>
+            <%= link_to "@#{user.username}", profile_path(user.username), class: "admin-link" %>
+          </td>
+          <td class="admin-meta"><%= user.email_address %></td>
+          <td class="admin-num"><%= user.posts_count %></td>
+          <td class="admin-num"><%= user.followers_count %></td>
+          <td class="admin-num"><%= user.following_count %></td>
+          <td class="admin-meta"><%= user.created_at.strftime("%d.%m.%Y") %></td>
+          <td>
+            <% if user.admin? %>
+              <span class="admin-badge">admin</span>
+            <% else %>
+              <span class="admin-badge-user">user</span>
+            <% end %>
+          </td>
+          <td class="admin-actions">
+            <%= button_to user.admin? ? "revoke admin" : "make admin",
+                toggle_admin_admin_user_path(user),
+                method: :patch,
+                class: "btn-admin-sm" %>
+            <% unless user == Current.user %>
+              <%= button_to "delete",
+                  admin_user_path(user),
+                  method: :delete,
+                  class: "btn-admin-danger",
+                  data: { turbo_confirm: "Delete @#{user.username} and all their posts?" } %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
