@@ -1,0 +1,23 @@
+<div class="profile-header">
+  <div class="profile-avatar">
+    <% if @user.avatar.attached? %>
+      <%= image_tag @user.avatar_thumbnail, class: "avatar-img" %>
+    <% else %>
+      <div class="avatar-initials"><%= @user.initials %></div>
+    <% end %>
+  </div>
+  <div class="profile-info">
+    <h1>@<%= @user.username %></h1>
+    <% if @user.bio.present? %>
+      <p class="bio"><%= @user.bio %></p>
+    <% end %>
+    <p class="stat"><%= @user.posts.count %> Posts</p>
+  </div>
+  <% if @user == Current.user %>
+    <%= link_to "Edit profile", edit_profile_path, class: "btn-ghost" %>
+  <% end %>
+</div>
+
+<div class="posts-feed">
+  <%= render @posts %>
+</div>

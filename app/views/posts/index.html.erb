@@ -1,6 +1,6 @@
 <div class="feed-header">
   <h1>Feed</h1>
-  <span class="current-user">@<%= Current.user.username %></span>
+  <%= link_to "@#{Current.user.username}", profile_path(Current.user.username), class: "current-user" %>
   <%= button_to "Sign out", session_path, method: :delete, class: "btn-ghost" %>
 </div>
 

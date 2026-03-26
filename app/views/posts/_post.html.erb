@@ -1,6 +1,17 @@
 <div class="post <%= "reply" if post.parent_id %>">
   <div class="post-meta">
-    <span class="username">@<%= post.user.username %></span>
+    <div class="post-avatar">
+      <% if post.user.avatar.attached? %>
+        <%= link_to profile_path(post.user.username) do %>
+          <%= image_tag post.user.avatar_thumbnail, class: "avatar-img avatar-small" %>
+        <% end %>
+      <% else %>
+        <%= link_to profile_path(post.user.username), class: "avatar-initials avatar-small" do %>
+          <%= post.user.initials %>
+        <% end %>
+      <% end %>
+    </div>
+    <%= link_to "@#{post.user.username}", profile_path(post.user.username), class: "username" %>
     <span class="post-time"><%= time_ago_in_words(post.created_at) %> ago</span>
   </div>
 

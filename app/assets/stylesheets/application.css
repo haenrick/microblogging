@@ -56,9 +56,55 @@ body {
   border-left: 2px solid #333;
   border-radius: 0 8px 8px 0;
 }
-.post-meta { display: flex; gap: 0.75rem; margin-bottom: 0.5rem; }
-.username { color: #a78bfa; font-weight: 600; font-size: 0.9rem; }
+.post-meta { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; }
+.username { color: #a78bfa; font-weight: 600; font-size: 0.9rem; text-decoration: none; }
+.username:hover { text-decoration: underline; }
 .post-time { color: #555; font-size: 0.85rem; }
+
+/* Avatars */
+.avatar-img { border-radius: 50%; object-fit: cover; display: block; }
+.avatar-initials {
+  border-radius: 50%;
+  background: #3b1fa3;
+  color: #e0e0e0;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 0.75rem;
+}
+.avatar-small { width: 32px; height: 32px; }
+.avatar-large { width: 80px; height: 80px; font-size: 1.5rem; }
+
+/* Profile page */
+.profile-header {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #2a2a2a;
+}
+.profile-info { flex: 1; }
+.profile-info h1 { font-size: 1.25rem; margin-bottom: 0.4rem; }
+.bio { color: #aaa; margin-bottom: 0.4rem; line-height: 1.4; }
+.stat { color: #555; font-size: 0.85rem; }
+
+/* Profile edit */
+.avatar-upload { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.avatar-preview { flex-shrink: 0; }
+.file-input { color: #888; font-size: 0.85rem; }
+.bio-input {
+  width: 100%;
+  background: #0f0f0f;
+  border: 1px solid #333;
+  border-radius: 6px;
+  color: #e0e0e0;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  resize: none;
+}
 .post-content { line-height: 1.5; margin-bottom: 0.75rem; word-break: break-word; }
 
 .post-actions { display: flex; gap: 0.5rem; }
