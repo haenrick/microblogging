@@ -1,6 +1,8 @@
-# Microblog
+# fl4re
 
-A personal microblogging platform with a retro terminal aesthetic. Built with Ruby on Rails, designed to be self-hosted on a Raspberry Pi 5.
+A personal microblogging platform with a retro terminal aesthetic and ephemeral posts. Built with Ruby on Rails, self-hosted on a Raspberry Pi 5.
+
+Part of the [DIVIDE](https://github.com/haenrick/divide) product family.
 
 ## Stack
 
@@ -14,13 +16,14 @@ A personal microblogging platform with a retro terminal aesthetic. Built with Ru
 
 ## Features
 
-- Posts with 280 character limit and 30-day ephemeral expiry
+- Posts with 280 character limit and 30-day ephemeral expiry with countdown
 - Nested replies, likes, follow system
-- User profiles with avatar, bio, terminal color theme
+- User profiles with avatar, bio, terminal color theme (6 colors)
 - Search (posts + users), user discovery page
 - Image attachments on posts
 - Block system, edit & delete own posts
 - Unique permalink per post (random public ID)
+- Admin console (dashboard, user management, post moderation)
 - Registration with terminal boot aesthetic
 
 ## Development Setup
@@ -41,22 +44,31 @@ bundle install
 # Start services
 docker compose up -d
 
-# Setup database
-DB_HOST=localhost DB_USER=microblog DB_PASSWORD=microblog_dev bin/rails db:create db:migrate
+# Setup database (DB_USER matches docker-compose.yml)
+DB_HOST=localhost DB_USER=fl4re DB_PASSWORD=fl4re_dev bin/rails db:create db:migrate
 
 # Start server
-DB_HOST=localhost DB_USER=microblog DB_PASSWORD=microblog_dev bin/rails server
+DB_HOST=localhost DB_USER=fl4re DB_PASSWORD=fl4re_dev bin/rails server
 ```
 
 Open [http://localhost:3000](http://localhost:3000)
+
+> **Pi note:** The existing Pi setup uses `DB_USER=microblog DB_PASSWORD=microblog_dev` — these ENV vars override the defaults and keep working as-is.
 
 ### Environment variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `DB_HOST` | `localhost` | PostgreSQL host |
-| `DB_USER` | `microblog` | PostgreSQL user |
+| `DB_USER` | `fl4re` | PostgreSQL user |
 | `DB_PASSWORD` | *(none)* | PostgreSQL password |
+
+### First admin user
+
+```bash
+bin/rails console
+User.find_by(username: "your_username").update!(admin: true)
+```
 
 ## Deployment (Raspberry Pi 5)
 
@@ -71,13 +83,10 @@ DB_HOST=localhost DB_USER=microblog DB_PASSWORD=microblog_dev bin/rails server -
 
 Exposed via Cloudflare Tunnel — no open firewall ports required.
 
-## Versioning
+## Versioning & Changelog
 
+See [CHANGELOG.md](CHANGELOG.md) for full version history.
 Version is defined in `config/initializers/version.rb` and displayed in the sidebar footer.
-
-| Version | Notes |
-|---------|-------|
-| `v0.1.0` | Initial release |
 
 ## Roadmap
 
