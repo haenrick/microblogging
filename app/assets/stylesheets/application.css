@@ -225,6 +225,15 @@ body {
 .edit-form { margin-top: 10px; }
 .edit-form.hidden { display: none; }
 
+/* ── Feed & layout helpers ── */
+.posts-feed { display: flex; flex-direction: column; gap: 0; }
+.post-avatar  { flex-shrink: 0; }
+.profile-avatar { margin-bottom: 1rem; }
+.user-card-avatar { flex-shrink: 0; }
+.avatar-preview { margin-bottom: 0.75rem; }
+.edit-form-inner  { display: flex; flex-direction: column; gap: 8px; }
+.reply-form-inner { display: flex; flex-direction: column; gap: 8px; }
+
 /* ── Avatars ── */
 .avatar-img { border-radius: 3px; object-fit: cover; display: block; }
 .avatar-initials {
