@@ -142,6 +142,33 @@ Suggeriert Klickbarkeit (z.B. für Detailansicht), aber kein Handler implementie
 
 ## Teil 4b: Neue Features (hinzugefügt März 2026)
 
+### N0 — Benutzerprofil (Avatar + Bio)
+
+**Ziel:** Jeder User hat ein Profilbild und eine kurze Selbstbeschreibung.
+
+**Datenbankschema:**
+```
+users (Erweiterung)
+  bio        string (max. 160 Zeichen)
+  avatar     ActiveStorage attachment
+```
+
+**Frontend:**
+- Profilseite `/profile` — Avatar, Username, Bio, eigene Posts
+- Einstellungsseite `/profile/edit` — Bio bearbeiten, Avatar hochladen
+- Avatar-Thumbnail neben jedem Post im Feed
+
+**Backend-Logik:**
+- `has_one_attached :avatar` in `User`
+- Bild-Resize via ActiveStorage Variant (100×100px)
+- Fallback: Initials-Avatar wenn kein Bild gesetzt
+
+**Abhängigkeiten:** Rails-Migration (erledigt), ActiveStorage (bereits in Rails enthalten)
+**Aufwand:** ~1 Tag
+**Priorität:** Mittel — verbessert Erkennbarkeit im Feed
+
+---
+
 ### N1 — User abonnieren (Follow-System)
 
 **Ziel:** Usern folgen und einen personalisierten Feed aus deren Posts sehen.
@@ -312,13 +339,13 @@ Nachricht entschlüsseln (Empfänger):
 
 ```
 ✅ [Q7] Max-Depth für Replies
+✅ [N2] Rails-Migration                — Rails 8.1, PostgreSQL, Auth
 ~~[D1] Hetzner CX22~~ → ersetzt durch Pi 5 + Cloudflare Tunnel
-1. [N2] Rails-Migration                — 3–5 Tage, strategische Basis
+1. [N0] Benutzerprofil (Avatar + Bio)  — 1 Tag
 2. [N1] Follow-System                  — 1–2 Tage, Kern-Sozialfeature
 3. [N3] Blockieren                     — 1 Tag, Safety
-4. [M2] Username/Auth (via Devise)     — in N2 integriert
-5. [M6] PWA / Service Worker           — 1 Tag
-6. [N4] E2E-DMs                        — 3–5 Tage, nach allem anderen
+4. [M6] PWA / Service Worker           — 1 Tag
+5. [N4] E2E-DMs                        — 3–5 Tage, nach allem anderen
 ```
 
 ---
