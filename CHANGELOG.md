@@ -5,6 +5,23 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.3.2] — 2026-03-26
+
+### Neu
+- **Turbo Streams** — Like-Button aktualisiert sich ohne Seitenreload (nur Zähler + Farbe wechselt)
+- **Stimulus Toggle-Controller** — Reply- und Edit-Button nutzen jetzt Stimulus statt inline-onclick (CSP-konform)
+
+### Gefixt
+- **Reply-/Edit-Button reagierte nicht** — inline `onclick` wurde von Content Security Policy blockiert
+- **Block-Button ohne Design** — `btn-danger` hatte keine Basis-CSS-Definition, nur einen Hover-State
+
+### Infrastruktur
+- `importmap-rails` wieder hinzugefügt (wird von `turbo-rails` + `stimulus-rails` benötigt)
+- Stimulus-Controller-Setup: `app/javascript/controllers/`
+- Like-Actions-Partial `_post_actions.html.erb` extrahiert für Turbo-Stream-Targeting
+
+---
+
 ## [0.3.1] — 2026-03-26
 
 ### Gefixt

@@ -1,4 +1,4 @@
-<div class="post <%= "reply" if post.parent_id %>">
+<div class="post <%= "reply" if post.parent_id %>" data-controller="toggle">
   <div class="post-meta">
     <div class="post-avatar">
       <% if post.user.avatar.attached? %>
@@ -32,24 +32,10 @@
     </div>
   <% end %>
 
-  <div class="post-actions">
-    <%= button_to like_post_path(post), method: :post, class: "btn-action #{post.liked_by?(Current.user) ? "liked" : ""}" do %>
-      ♥ <%= post.likes_count %>
-    <% end %>
-
-    <button class="btn-action" onclick="this.closest('.post').querySelector('.reply-form').classList.toggle('hidden')">
-      ↩ <%= post.replies.size %>
-    </button>
-
-    <% if post.user == Current.user %>
-      <button class="btn-action" onclick="this.closest('.post').querySelector('.edit-form').classList.toggle('hidden')">
-        ✎
-      </button>
-    <% end %>
-  </div>
+  <%= render "posts/post_actions", post: post %>
 
   <% if post.user == Current.user %>
-    <div class="edit-form hidden">
+    <div class="edit-form hidden" data-toggle-target="editForm">
       <%= form_with url: post_path(post), method: :patch, class: "post-form edit-form-inner" do |f| %>
         <%= f.text_area :content, value: post.content, maxlength: 280, rows: 3,
             data: { charcount: true } %>
@@ -63,7 +49,7 @@
     </div>
   <% end %>
 
-  <div class="reply-form hidden">
+  <div class="reply-form hidden" data-toggle-target="replyForm">
     <%= form_with url: reply_post_path(post), class: "post-form reply-form-inner" do |f| %>
       <%= f.text_area :content, placeholder: "Write a reply...", maxlength: 280, rows: 2,
           name: "post[content]", data: { charcount: true } %>
