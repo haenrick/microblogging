@@ -5,6 +5,22 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.4.0] — 2026-03-26
+
+### Infrastruktur
+- **Production-Mode** — `bin/start` lädt `.env`, startet standardmäßig mit `RAILS_ENV=production`
+- **assume_ssl** — aktiviert für Cloudflare-Tunnel-Betrieb (HTTPS-Header korrekt)
+- **systemd-Service** — Template in `config/fl4re.service` für Auto-Restart + Boot-Start
+- **bin/backup** — Backup-Script für täglichen `pg_dump` mit automatischer Rotation
+- **.env.example** — vollständige Vorlage für Umgebungsvariablen inkl. `RAILS_MASTER_KEY`
+
+### Optimierungen
+- **T1 Redis eliminiert** — `solid_cable` in Production aktiv, Redis-Container aus docker-compose entfernt
+- **T2 delete_all** — `PurgeExpiredPostsJob` nutzt `delete_all` statt `destroy_all` (direkte DB-Deletion)
+- **Mailer-Host** — auf `fl4re.datenkistchen.de` gesetzt (Passwort-Reset-Links korrekt)
+
+---
+
 ## [0.3.2] — 2026-03-26
 
 ### Neu

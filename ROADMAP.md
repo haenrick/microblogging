@@ -25,6 +25,11 @@
 | U2 | Admin-Konsole — Dashboard, User- und Post-Verwaltung |
 | SE | Sicherheit (Basis) — Rate Limiting, Datei-Validierung, CSP, Rack::Attack |
 | UX | UX-Polish — Turbo Streams (Like), Stimulus Toggle (Reply/Edit), btn-danger |
+| D1 | Production-Mode — RAILS_ENV=production, assume_ssl, .env-Setup |
+| D2 | systemd-Service — Template `config/fl4re.service`, Auto-Restart + Boot |
+| D4 | Backup — `bin/backup` mit pg_dump + 30-Tage-Rotation |
+| T1 | Redis eliminiert — solid_cable aktiv, Redis aus docker-compose entfernt |
+| T2 | delete_all — PurgeExpiredPostsJob direkte DB-Deletion statt N+1 |
 
 ---
 
