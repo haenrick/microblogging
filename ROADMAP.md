@@ -347,11 +347,13 @@ Nachricht entschlüsseln (Empfänger):
 ✅ [S1] Suche                          — Posts und User durchsuchen (ILIKE)
 ✅ [U1] Registrierung                  — Terminal Boot-Aesthetic Signup-Seite
 ✅ [N3] Blockieren                     — Block/Unblock, Feed-Filter, Follow-Guard
-2. [S2] User-Discover                  — Alle User browsen ohne Username kennen zu müssen
-3. [U2] Admin-Bereich                  — User verwalten, Posts moderieren, Rollen
-4. [U3] Privates Profil                — User kann Profil auf privat stellen, Follower-Anfragen
-5. [M6] PWA / Service Worker           — 1 Tag
-6. [N4] E2E-DMs                        — 3–5 Tage, nach allem anderen
+1. [S2] User-Discover                  — Alle User browsen ohne Username kennen zu müssen
+2. [U2] Admin-Bereich                  — User verwalten, Posts moderieren, Rollen
+3. [U3] Privates Profil                — User kann Profil auf privat stellen, Follower-Anfragen
+4. [M6] PWA / Service Worker           — 1 Tag
+5. [X1] Medien                         — Bilder & Videos in Posts einbetten
+6. [X2] KI-Integration                 — KI-Features direkt in der App
+7. [N4] E2E-DMs                        — 3–5 Tage, nach allem anderen
 ```
 
 ---
@@ -401,6 +403,57 @@ Nachricht entschlüsseln (Empfänger):
 
 **Aufwand:** ~1–2 Tage
 **Abhängigkeiten:** N1 (Follow-System, erledigt)
+
+---
+
+---
+
+### X1 — Medien (Bilder & Videos)
+
+**Ziel:** Nutzer können Bilder und Videos direkt in Posts hochladen oder verlinken.
+
+**Umfang:**
+
+- **Bilder:** Upload via ActiveStorage (wie Avatar), max. 10 MB, JPEG/PNG/GIF/WebP
+- **Videos:** Upload kleiner Clips (max. ~50 MB) oder Einbettung externer Links (YouTube, Vimeo) via URL-Erkennung
+- Vorschau im Feed (Bild direkt sichtbar, Video als Thumbnail mit Play-Button)
+- Auf der Permalink-Seite vollständig dargestellt
+- Optionale Bildkompression via libvips (bereits auf Pi installiert)
+
+**Datenbankschema:**
+```
+posts (Erweiterung)
+  media   ActiveStorage attachment (has_one_attached)
+```
+
+**Abhängigkeiten:** ActiveStorage (bereits eingerichtet), libvips (bereits auf Pi)
+**Aufwand:** ~1 Tag
+**Priorität:** Mittel — großer UX-Gewinn, technisch überschaubar
+
+---
+
+### X2 — KI-Integration
+
+**Ziel:** KI-Features direkt in der App, die den Mehrwert für Nutzer erhöhen.
+
+**Mögliche Features (Priorisierung offen):**
+
+| # | Feature | Beschreibung |
+|---|---------|--------------|
+| X2a | **Post-Assistent** | KI schlägt Formulierungen vor oder verbessert den Entwurf auf Knopfdruck |
+| X2b | **Auto-Zusammenfassung** | Lange Threads werden auf der Permalink-Seite zusammengefasst |
+| X2c | **Smart Search** | Semantische Suche statt nur ILIKE — findet Posts nach Bedeutung, nicht nur Stichwort |
+| X2d | **Content-Moderation** | Automatisches Flaggen von toxischen Posts (Unterstützung für U2 Admin-Bereich) |
+| X2e | **Feed-Kuratierung** | KI gewichtet den Feed nach persönlichem Leseinteresse |
+
+**Technischer Ansatz:**
+- Claude API (Anthropic) — passt zum bestehenden Stack, kein eigenes Modell nötig
+- Einfacher Einstieg: X2a (Post-Assistent) als Stimulus-Controller mit fetch → `/ai/suggest`
+- Rails-Controller ruft Claude API auf, gibt Vorschläge zurück
+
+**Abhängigkeiten:** Anthropic API Key, `anthropic-rb` Gem oder HTTP-Client
+**Aufwand:** X2a ~1 Tag; X2c–X2e jeweils 2–3 Tage
+**Priorität:** Hoch — starkes Differenzierungsmerkmal
 
 ---
 
