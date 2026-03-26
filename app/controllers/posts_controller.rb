@@ -13,7 +13,7 @@ class PostsController < ApplicationController
   end
 
   def show
-    @post = Post.active.includes(:user, :likes, replies: { user: [] }).find(params[:id])
+    @post = Post.active.includes(:user, :likes, replies: { user: [] }).find_by!(public_id: params[:id])
   end
 
   def create
@@ -27,7 +27,7 @@ class PostsController < ApplicationController
   end
 
   def reply
-    parent = Post.find(params[:id])
+    parent = Post.find_by!(public_id: params[:id])
     @post = Current.user.posts.new(post_params.merge(parent: parent))
     if @post.save
       redirect_to root_path, notice: "Reply posted."
@@ -37,7 +37,7 @@ class PostsController < ApplicationController
   end
 
   def update
-    @post = Current.user.posts.find(params[:id])
+    @post = Current.user.posts.find_by!(public_id: params[:id])
     if @post.update(post_params.merge(edited_at: Time.current))
       redirect_to root_path, notice: "Post updated."
     else
@@ -46,13 +46,13 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    @post = Current.user.posts.find(params[:id])
+    @post = Current.user.posts.find_by!(public_id: params[:id])
     @post.destroy
     redirect_to root_path, notice: "Post deleted."
   end
 
   def like
-    post = Post.find(params[:id])
+    post = Post.find_by!(public_id: params[:id])
     existing = post.likes.find_by(user: Current.user)
     if existing
       existing.destroy

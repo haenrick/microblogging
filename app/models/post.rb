@@ -9,7 +9,7 @@ class Post < ApplicationRecord
 
   validates :content, presence: true, length: { maximum: 280 }
 
-  before_create :set_expiry
+  before_create :set_expiry, :set_public_id
 
   scope :top_level,   -> { where(parent_id: nil) }
   scope :recent,      -> { order(created_at: :desc) }
@@ -54,9 +54,17 @@ class Post < ApplicationRecord
     end
   end
 
+  def to_param
+    public_id
+  end
+
   private
 
   def set_expiry
     self.expires_at ||= EXPIRY_DAYS.days.from_now
+  end
+
+  def set_public_id
+    self.public_id ||= SecureRandom.urlsafe_base64(8)
   end
 end
