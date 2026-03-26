@@ -564,3 +564,43 @@ body {
 
 /* session-form footer link */
 .session-form .register-footer { margin-top: 1.25rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+
+/* ── Admin ── */
+.nav-admin { color: var(--cyan) !important; }
+.nav-admin:hover, .nav-admin.active { color: var(--cyan) !important; text-shadow: 0 0 12px var(--cyan); }
+.admin-header { margin-bottom: 1.5rem; }
+.admin-nav { display: flex; gap: 1rem; margin-top: 0.5rem; }
+.admin-nav-link { color: #555; font-size: 12px; letter-spacing: 1px; transition: color 0.15s; }
+.admin-nav-link:hover, .admin-nav-link.active { color: var(--green); }
+.admin-stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+.stat-card { border: 1px solid var(--border); border-radius: 4px; padding: 1rem; text-align: center; }
+.stat-card.stat-warn { border-color: rgba(255,68,68,0.3); }
+.stat-value { font-size: 2rem; font-weight: 700; color: var(--green); line-height: 1; }
+.stat-warn .stat-value { color: var(--red); }
+.stat-label { font-size: 10px; letter-spacing: 2px; color: #555; margin-top: 4px; text-transform: uppercase; }
+.admin-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.admin-section { border: 1px solid var(--border); border-radius: 4px; padding: 1rem; }
+.admin-section-title { font-size: 11px; letter-spacing: 2px; color: #555; margin-bottom: 0.75rem; }
+.admin-row { display: flex; align-items: center; gap: 0.75rem; padding: 4px 0; border-bottom: 1px solid #111; font-size: 12px; }
+.admin-row:last-of-type { border-bottom: none; }
+.admin-row-highlight { background: rgba(0,229,255,0.03); }
+.admin-row-warn { background: rgba(255,68,68,0.04); }
+.admin-username { color: var(--green); font-size: 12px; }
+.admin-meta { color: #555; font-size: 11px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.admin-badge { font-size: 9px; letter-spacing: 1px; padding: 1px 5px; border: 1px solid var(--cyan); color: var(--cyan); border-radius: 2px; }
+.admin-badge-user { font-size: 9px; letter-spacing: 1px; padding: 1px 5px; border: 1px solid #333; color: #555; border-radius: 2px; }
+.admin-badge-edit { font-size: 9px; letter-spacing: 1px; padding: 1px 5px; border: 1px solid #333; color: #555; border-radius: 2px; margin-left: 4px; }
+.admin-more-link { display: block; margin-top: 0.75rem; font-size: 11px; color: var(--green); letter-spacing: 1px; }
+.admin-table-wrap { overflow-x: auto; }
+.admin-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.admin-table th { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--border); color: #555; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
+.admin-table td { padding: 8px 10px; border-bottom: 1px solid #111; vertical-align: middle; }
+.admin-num { text-align: right; color: var(--text-bright); }
+.admin-content { max-width: 400px; }
+.admin-link { color: var(--green); }
+.admin-link:hover { text-shadow: 0 0 8px var(--green); }
+.admin-actions { display: flex; gap: 6px; white-space: nowrap; }
+.btn-admin-sm { background: transparent; border: 1px solid #333; color: #888; padding: 2px 8px; font-family: var(--mono); font-size: 10px; letter-spacing: 1px; cursor: pointer; border-radius: 2px; transition: all 0.15s; }
+.btn-admin-sm:hover { border-color: var(--cyan); color: var(--cyan); }
+.btn-admin-danger { background: transparent; border: 1px solid rgba(255,68,68,0.4); color: var(--red); padding: 2px 8px; font-family: var(--mono); font-size: 10px; letter-spacing: 1px; cursor: pointer; border-radius: 2px; transition: all 0.15s; }
+.btn-admin-danger:hover { background: rgba(255,68,68,0.1); }

@@ -5,9 +5,11 @@ one:
   username: userone
   password_digest: <%= password_digest %>
   theme: green
+  admin: true
 
 two:
   email_address: two@example.com
   username: usertwo
   password_digest: <%= password_digest %>
   theme: green
+  admin: false

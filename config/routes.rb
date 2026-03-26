@@ -27,6 +27,14 @@ Rails.application.routes.draw do
   delete "/profile",                 to: "profiles#destroy",         as: :delete_account
   get  "/:username",    to: "profiles#show",   as: :profile, constraints: { username: /[a-z0-9_]+/ }
 
+  namespace :admin do
+    root "dashboard#index"
+    resources :users, only: [:index, :destroy] do
+      member { patch :toggle_admin }
+    end
+    resources :posts, only: [:index, :destroy]
+  end
+
   root "posts#index"
 
   get "up" => "rails/health#show", as: :rails_health_check

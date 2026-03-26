@@ -56,4 +56,8 @@ class User < ApplicationRecord
   def theme_colors
     THEMES[theme] || THEMES["green"]
   end
+
+  def admin?
+    admin == true
+  end
 end
