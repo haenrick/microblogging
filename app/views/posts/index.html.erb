@@ -1,4 +1,7 @@
-<h2 class="page-title">Feed</h2>
+<div class="feed-tabs">
+  <%= link_to "All", root_path, class: "feed-tab #{@tab == "all" ? "active" : ""}" %>
+  <%= link_to "Following", root_path(tab: "following"), class: "feed-tab #{@tab == "following" ? "active" : ""}" %>
+</div>
 
 <%= form_with model: @post, class: "post-form" do |f| %>
   <% if @post.errors.any? %>
@@ -11,5 +14,15 @@
 <% end %>
 
 <div class="posts-feed">
-  <%= render @posts %>
+  <% if @posts.empty? %>
+    <p class="empty-state">
+      <% if @tab == "following" %>
+        Nobody you follow has posted yet.
+      <% else %>
+        No posts yet. Be the first!
+      <% end %>
+    </p>
+  <% else %>
+    <%= render @posts %>
+  <% end %>
 </div>

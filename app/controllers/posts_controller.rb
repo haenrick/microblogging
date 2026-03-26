@@ -2,7 +2,13 @@ class PostsController < ApplicationController
   before_action :require_authentication
 
   def index
-    @posts = Post.top_level.includes(:user, :likes, replies: :user).recent
+    @tab = params[:tab] == "following" ? "following" : "all"
+    base = if @tab == "following"
+      Post.top_level.where(user: Current.user.following)
+    else
+      Post.top_level
+    end
+    @posts = base.includes(:user, :likes, replies: :user).recent
     @post = Post.new
   end
 
