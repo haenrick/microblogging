@@ -8,7 +8,7 @@ default: &default
 
 development:
   <<: *default
-  database: fl4re_development
+  database: <%= ENV.fetch("DB_NAME") { "fl4re_development" } %>
 
 test:
   <<: *default
@@ -16,4 +16,4 @@ test:
 
 production:
   <<: *default
-  database: fl4re_production
+  database: <%= ENV.fetch("DB_NAME") { "fl4re_production" } %>

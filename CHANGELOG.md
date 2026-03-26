@@ -5,6 +5,18 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.3.0] — 2026-03-26
+
+### Neu
+- **Rack::Attack** — Brute-Force-Schutz: Login 10/20s pro IP, 5/min pro E-Mail, Registrierung 5/h pro IP
+- **Rate Limiting Posts** — max. 20 Posts/Replies pro Minute pro User
+- **Datei-Validierung** — Media-Uploads: nur PNG/JPEG/GIF/WebP, max. 10 MB (serverseitig)
+- **Content Security Policy** — CSP-Header aktiv, schützt gegen XSS
+- **Sicherheitsdokumentation** — `docs/security.md` mit vollständigem Überblick
+- **Roadmap** — Sicherheits-Backlog mit offenen Punkten (S1–S5)
+
+---
+
 ## [0.2.0] — 2026-03-26
 
 ### Neu

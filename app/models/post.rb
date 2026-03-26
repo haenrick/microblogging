@@ -8,7 +8,10 @@ class Post < ApplicationRecord
   has_many :liked_by_users, through: :likes, source: :user
   has_one_attached :media
 
+  ALLOWED_MEDIA_TYPES = %w[image/png image/jpeg image/gif image/webp image/jpg].freeze
+
   validates :content, presence: true, length: { maximum: 280 }
+  validate :acceptable_media, if: -> { media.attached? }
 
   before_create :set_expiry, :set_public_id
 
@@ -67,5 +70,14 @@ class Post < ApplicationRecord
 
   def set_public_id
     self.public_id ||= SecureRandom.urlsafe_base64(8)
+  end
+
+  def acceptable_media
+    unless media.content_type.in?(ALLOWED_MEDIA_TYPES)
+      errors.add(:media, "must be a PNG, JPEG, GIF or WebP image")
+    end
+    if media.byte_size > 10.megabytes
+      errors.add(:media, "must be under 10 MB")
+    end
   end
 end
