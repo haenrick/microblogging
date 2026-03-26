@@ -1,4 +1,4 @@
-# Microblog — Roadmap
+# fl4re — Roadmap
 
 > Stand: März 2026 · Stack: Ruby on Rails 8.1 · PostgreSQL 16 · Pi 5 + Cloudflare Tunnel
 
@@ -23,6 +23,7 @@
 | PL | Post-Permalink — zufällige public_id in URL |
 | CC | Zeichenzähler beim Verfassen |
 | U2 | Admin-Konsole — Dashboard, User- und Post-Verwaltung |
+| SE | Sicherheit (Basis) — Rate Limiting Posts, Datei-Validierung, CSP, Rack::Attack |
 
 ---
 
@@ -45,6 +46,18 @@
 | X2 | KI-Integration | ~1–3 Tage | Post-Assistent via Claude API (X2a), Smart Search (X2c) |
 | N4 | E2E-DMs | ~3–5 Tage | Ende-zu-Ende-verschlüsselte Direktnachrichten (X25519 + AES-GCM) |
 | I1 | iOS App | Später | Erst PWA, dann SwiftUI wenn Nutzerbasis es rechtfertigt |
+
+### Sicherheit (ausstehend)
+
+| # | Risiko | Aufwand | Maßnahme |
+|---|--------|---------|----------|
+| S1 | Kein Account-Lockout | ~1h | Rack::Attack blocklist nach 20 Fehlversuchen |
+| S2 | Kein Admin-Audit-Log | ~2h | Admin-Aktionen in DB loggen |
+| S3 | Kein 2FA | ~1 Tag | TOTP via `rotp` Gem |
+| S4 | Keine E-Mail-Verifikation | ~1 Tag | Token-basierte Verifikation bei Registrierung |
+| S5 | Kein Session-Ablauf | ~1h | Sessions nach 30 Tagen invalidieren |
+
+> Vollständige Dokumentation: [docs/security.md](docs/security.md)
 
 ---
 

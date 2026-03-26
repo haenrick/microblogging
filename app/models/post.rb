@@ -9,6 +9,11 @@ class Post < ApplicationRecord
   has_one_attached :media
 
   validates :content, presence: true, length: { maximum: 280 }
+  validates :media,
+            content_type: { in: %w[image/png image/jpeg image/gif image/webp image/jpg],
+                            message: "must be a PNG, JPEG, GIF or WebP image" },
+            size: { less_than: 10.megabytes, message: "must be under 10 MB" },
+            allow_blank: true
 
   before_create :set_expiry, :set_public_id
 
