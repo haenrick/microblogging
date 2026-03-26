@@ -5,6 +5,17 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.3.1] — 2026-03-26
+
+### Gefixt
+- **Routing-Konflikt** — `/admin` wurde von `/:username`-Route abgefangen; Admin-Namespace jetzt vor Wildcard-Route, Username-Constraint schließt `admin` aus
+- **Media-Validierung** — `ContentTypeValidator` (benötigt nicht installiertes Gem) durch native `validate`-Methode ersetzt
+- **Server-Binding** — Puma lauschte nur auf `localhost`; `bin/start` bindet jetzt auf `0.0.0.0`
+- **Datenbank-Name** — `DB_NAME` ENV-Variable für Pi-Deployment ohne Rename (default: `fl4re_development`)
+- **Gemfile** — `importmap-rails`, `jbuilder`, `capybara`, `selenium-webdriver` entfernt (Überbleibsel aus Scaffold)
+
+---
+
 ## [0.3.0] — 2026-03-26
 
 ### Neu
