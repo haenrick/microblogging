@@ -17,6 +17,10 @@ module Fl4re
     config.autoload_lib(ignore: %w[assets tasks])
     config.middleware.use Rack::Attack
 
+    # Allowed hosts — extend via RAILS_ALLOWED_HOSTS env var (comma-separated)
+    config.hosts << "fl4re.datenkistchen.de"
+    config.hosts << ENV["RAILS_ALLOWED_HOSTS"].split(",") if ENV["RAILS_ALLOWED_HOSTS"].present?
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
