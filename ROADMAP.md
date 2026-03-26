@@ -354,6 +354,7 @@ Nachricht entschlüsseln (Empfänger):
 5. [X1] Medien                         — Bilder & Videos in Posts einbetten
 6. [X2] KI-Integration                 — KI-Features direkt in der App
 7. [N4] E2E-DMs                        — 3–5 Tage, nach allem anderen
+8. [I1] iOS App                        — Native iPhone App
 ```
 
 ---
@@ -454,6 +455,35 @@ posts (Erweiterung)
 **Abhängigkeiten:** Anthropic API Key, `anthropic-rb` Gem oder HTTP-Client
 **Aufwand:** X2a ~1 Tag; X2c–X2e jeweils 2–3 Tage
 **Priorität:** Hoch — starkes Differenzierungsmerkmal
+
+---
+
+---
+
+### I1 — iOS App
+
+**Ziel:** Native iPhone App für Microblog im App Store.
+
+**Ansatz-Optionen:**
+
+| Ansatz | Aufwand | Pros | Cons |
+|--------|---------|------|------|
+| **PWA (M6 first)** | Gering | Kein App Store nötig, eine Codebase | Kein Push, kein App Store Listing |
+| **SwiftUI + REST API** | Hoch | Vollständig nativ, beste UX | Neue Codebase, Swift-Kenntnisse nötig |
+| **React Native / Expo** | Mittel | JS-nah, iOS + Android gleichzeitig | Nicht nativ, größere Bundle-Size |
+
+**Empfohlene Reihenfolge:**
+1. Zuerst **M6 PWA** umsetzen — damit ist die App bereits auf dem Home-Screen installierbar, funktioniert offline und sieht nativ aus. Für viele Nutzer reicht das.
+2. Falls App-Store-Präsenz gewünscht: **SwiftUI**-App die die bestehende Rails-API konsumiert (`/posts`, `/users`, Sessions via Cookie). Die API ist bereits vorhanden — kein Backend-Umbau nötig.
+
+**Voraussetzungen für App Store:**
+- Apple Developer Account (99 $/Jahr)
+- API muss HTTPS haben (bereits via Cloudflare Tunnel erfüllt)
+- Push Notifications: Action Cable oder APNs-Integration im Rails-Backend
+
+**Abhängigkeiten:** Stabile API, M6 (PWA) sinnvoll zuerst
+**Aufwand:** PWA ~1 Tag; SwiftUI-App ~2–4 Wochen
+**Priorität:** Später — erst Web-Version stabilisieren
 
 ---
 
