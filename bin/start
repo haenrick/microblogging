@@ -1,14 +1,25 @@
 #!/usr/bin/env bash
 # fl4re — App starten
 # Verwendung: bin/start [PORT]
+# Env-Variablen werden aus .env geladen (falls vorhanden)
 
 set -e
 
-PORT=${1:-4000}
+# .env laden falls vorhanden
+if [ -f "$(dirname "$0")/../.env" ]; then
+  set -a
+  source "$(dirname "$0")/../.env"
+  set +a
+fi
 
-export DB_HOST=localhost
-export DB_USER=microblog
-export DB_PASSWORD=microblog_dev
-export PORT=$PORT
-echo "[fl4re] Starte auf Port $PORT ..."
+PORT=${PORT:-4000}
+RAILS_ENV=${RAILS_ENV:-production}
+
+export DB_HOST=${DB_HOST:-localhost}
+export DB_USER=${DB_USER:-microblog}
+export DB_PASSWORD=${DB_PASSWORD:-microblog_dev}
+export PORT
+export RAILS_ENV
+
+echo "[fl4re] Starte auf Port $PORT (RAILS_ENV=$RAILS_ENV) ..."
 exec bin/rails server -b 0.0.0.0

@@ -1,0 +1,19 @@
+[Unit]
+Description=fl4re Rails App
+After=network.target docker.service
+Requires=docker.service
+
+[Service]
+Type=simple
+User=henrik
+WorkingDirectory=/home/henrik/microblog
+EnvironmentFile=/home/henrik/microblog/.env
+ExecStart=/home/henrik/microblog/bin/start
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=fl4re
+
+[Install]
+WantedBy=multi-user.target
