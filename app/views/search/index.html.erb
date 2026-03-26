@@ -1,0 +1,48 @@
+<h2 class="page-title">Search</h2>
+
+<%= form_with url: search_path, method: :get, class: "search-form" do |f| %>
+  <%= f.search_field :q, value: @query, placeholder: "Search posts and users...",
+      autofocus: true, class: "search-input" %>
+<% end %>
+
+<% if @query.length >= 2 %>
+  <% if @users.any? %>
+    <div class="search-section">
+      <h3 class="search-section-title">Users</h3>
+      <div class="user-results">
+        <% @users.each do |user| %>
+          <%= link_to profile_path(user.username), class: "user-result" do %>
+            <div class="post-avatar">
+              <% if user.avatar.attached? %>
+                <%= image_tag user.avatar_thumbnail, class: "avatar-img avatar-small" %>
+              <% else %>
+                <div class="avatar-initials avatar-small"><%= user.initials %></div>
+              <% end %>
+            </div>
+            <div>
+              <span class="username">@<%= user.username %></span>
+              <% if user.bio.present? %>
+                <span class="user-bio-preview"><%= truncate(user.bio, length: 60) %></span>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @posts.any? %>
+    <div class="search-section">
+      <h3 class="search-section-title">Posts</h3>
+      <div class="posts-feed">
+        <%= render @posts %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @users.empty? && @posts.empty? %>
+    <p class="empty-state">No results for "<%= @query %>"</p>
+  <% end %>
+<% elsif @query.length == 1 %>
+  <p class="empty-state">Type at least 2 characters.</p>
+<% end %>

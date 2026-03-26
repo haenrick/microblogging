@@ -9,12 +9,14 @@ Rails.application.routes.draw do
     end
   end
 
-  post   "/:username/follow",   to: "follows#create",  as: :follow_user
-  delete "/:username/follow",   to: "follows#destroy",  as: :unfollow_user
+  get "/search", to: "search#index", as: :search
 
-  get  "/profile/edit",  to: "profiles#edit",   as: :edit_profile
-  patch "/profile",      to: "profiles#update",  as: :update_profile
-  get  "/:username",     to: "profiles#show",   as: :profile, constraints: { username: /[a-z0-9_]+/ }
+  post   "/:username/follow",  to: "follows#create",  as: :follow_user
+  delete "/:username/follow",  to: "follows#destroy", as: :unfollow_user
+
+  get  "/profile/edit", to: "profiles#edit",   as: :edit_profile
+  patch "/profile",     to: "profiles#update", as: :update_profile
+  get  "/:username",    to: "profiles#show",   as: :profile, constraints: { username: /[a-z0-9_]+/ }
 
   root "posts#index"
 

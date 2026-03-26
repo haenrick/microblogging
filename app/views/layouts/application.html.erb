@@ -29,6 +29,7 @@
             <%= link_to "◆ Microblog", root_path, class: "sidebar-logo" %>
             <ul class="nav-links">
               <li><%= link_to "🏠 Feed", root_path, class: "nav-link #{current_page?(root_path) ? "active" : ""}" %></li>
+              <li><%= link_to "🔍 Search", search_path, class: "nav-link #{current_page?(search_path) ? "active" : ""}" %></li>
               <li><%= link_to "👤 Profile", profile_path(Current.user.username), class: "nav-link #{current_page?(profile_path(Current.user.username)) ? "active" : ""}" %></li>
               <li><%= link_to "⚙ Settings", edit_profile_path, class: "nav-link #{current_page?(edit_profile_path) ? "active" : ""}" %></li>
             </ul>
