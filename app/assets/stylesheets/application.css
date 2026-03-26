@@ -388,6 +388,12 @@ body {
   transition: border-color 0.2s;
 }
 .settings-input:focus { outline: none; border-color: var(--green-dim); }
+.preference-list { display: flex; flex-direction: column; gap: 10px; }
+.preference-item { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
+.preference-item strong { color: var(--text-bright); font-size: 13px; display: block; }
+.preference-item .hint { margin-top: 2px; }
+.preference-checkbox { accent-color: var(--green); width: 15px; height: 15px; flex-shrink: 0; margin-top: 2px; cursor: pointer; }
+
 .danger-zone { border-color: rgba(255,68,68,0.2) !important; }
 .danger-zone h3 { color: var(--red) !important; border-color: rgba(255,68,68,0.2) !important; }
 .block-list { display: flex; flex-direction: column; gap: 8px; }

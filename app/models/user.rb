@@ -60,4 +60,15 @@ class User < ApplicationRecord
   def admin?
     admin == true
   end
+
+  store_accessor :preferences, :enter_to_post
+
+  def enter_to_post
+    val = preferences["enter_to_post"]
+    val.nil? ? true : val
+  end
+
+  def enter_to_post=(val)
+    preferences["enter_to_post"] = ActiveModel::Type::Boolean.new.cast(val)
+  end
 end

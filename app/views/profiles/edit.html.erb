@@ -46,6 +46,19 @@
       </div>
     </div>
 
+    <div class="settings-section">
+      <h3>Preferences</h3>
+      <div class="preference-list">
+        <label class="preference-item">
+          <%= f.check_box :enter_to_post, class: "preference-checkbox" %>
+          <span>
+            <strong>Submit post with Enter</strong>
+            <span class="hint">When off, use Shift+Enter to post (Enter adds a new line)</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
     <div class="settings-actions">
       <%= f.submit "Save changes", class: "btn-primary" %>
     </div>
