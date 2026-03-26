@@ -1,4 +1,13 @@
 class User < ApplicationRecord
+  THEMES = {
+    "green"  => { primary: "#00ff88", dim: "#00cc6a", glow: "rgba(0,255,136,0.15)" },
+    "amber"  => { primary: "#ffaa00", dim: "#cc8800", glow: "rgba(255,170,0,0.15)" },
+    "purple" => { primary: "#bf5fff", dim: "#9933cc", glow: "rgba(191,95,255,0.15)" },
+    "pink"   => { primary: "#ff44aa", dim: "#cc2288", glow: "rgba(255,68,170,0.15)" },
+    "cyan"   => { primary: "#00e5ff", dim: "#00b8cc", glow: "rgba(0,229,255,0.15)" },
+    "white"  => { primary: "#e0e0e0", dim: "#aaaaaa", glow: "rgba(224,224,224,0.15)" }
+  }.freeze
+
   has_secure_password validations: true
   has_many :sessions, dependent: :destroy
   has_many :posts, dependent: :destroy
@@ -42,5 +51,9 @@ class User < ApplicationRecord
 
   def initials
     username.first(2).upcase
+  end
+
+  def theme_colors
+    THEMES[theme] || THEMES["green"]
   end
 end

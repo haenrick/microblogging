@@ -16,6 +16,16 @@
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <% if user_signed_in? %>
+      <% colors = Current.user.theme_colors %>
+      <style>
+        :root {
+          --green:      <%= colors[:primary] %>;
+          --green-dim:  <%= colors[:dim] %>;
+          --green-glow: <%= colors[:glow] %>;
+        }
+      </style>
+    <% end %>
     <script>
       document.addEventListener("keydown", function(e) {
         if (e.key === "Enter" && !e.shiftKey && e.target.matches(".post-form textarea")) {

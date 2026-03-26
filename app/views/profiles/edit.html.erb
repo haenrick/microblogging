@@ -30,6 +30,19 @@
       <span class="hint">Max. 160 characters</span>
     </div>
 
+    <div class="settings-section">
+      <h3>Terminal color</h3>
+      <div class="theme-picker">
+        <% User::THEMES.each do |name, colors| %>
+          <label class="theme-swatch-label">
+            <%= f.radio_button :theme, name, class: "theme-radio" %>
+            <span class="theme-swatch" style="--swatch: <%= colors[:primary] %>;"
+                  title="<%= name %>"></span>
+          </label>
+        <% end %>
+      </div>
+    </div>
+
     <div class="settings-actions">
       <%= f.submit "Save changes", class: "btn-primary" %>
       <%= link_to "Cancel", profile_path(@user.username), class: "btn-ghost" %>
