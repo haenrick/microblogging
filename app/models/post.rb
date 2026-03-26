@@ -11,9 +11,13 @@ class Post < ApplicationRecord
 
   before_create :set_expiry
 
-  scope :top_level, -> { where(parent_id: nil) }
-  scope :recent,    -> { order(created_at: :desc) }
-  scope :active,    -> { where("expires_at > ?", Time.current) }
+  scope :top_level,   -> { where(parent_id: nil) }
+  scope :recent,      -> { order(created_at: :desc) }
+  scope :active,      -> { where("expires_at > ?", Time.current) }
+  scope :visible_to,  ->(user) {
+    blocked_ids = user.blocked_users.pluck(:id) + user.blocked_by_users.pluck(:id)
+    blocked_ids.empty? ? all : where.not(user_id: blocked_ids)
+  }
 
   def liked_by?(user)
     likes.exists?(user: user)

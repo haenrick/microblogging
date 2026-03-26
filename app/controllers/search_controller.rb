@@ -4,8 +4,12 @@ class SearchController < ApplicationController
   def index
     @query = params[:q].to_s.strip
     if @query.length >= 2
-      @users = User.where("username ILIKE ?", "%#{@query}%").limit(10)
-      @posts = Post.active.where("content ILIKE ?", "%#{@query}%")
+      blocked_ids = Current.user.blocked_users.pluck(:id) + Current.user.blocked_by_users.pluck(:id)
+      @users = User.where("username ILIKE ?", "%#{@query}%")
+                   .where.not(id: [Current.user.id] + blocked_ids)
+                   .limit(10)
+      @posts = Post.active.visible_to(Current.user)
+                   .where("content ILIKE ?", "%#{@query}%")
                    .includes(:user, :likes)
                    .order(created_at: :desc)
                    .limit(30)

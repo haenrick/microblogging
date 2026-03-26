@@ -24,16 +24,24 @@
   <div class="profile-actions">
     <% if @user == Current.user %>
       <%= link_to "Edit profile", edit_profile_path, class: "btn-ghost" %>
+    <% elsif @blocked %>
+      <%= button_to "Unblock", unblock_user_path(@user.username), method: :delete, class: "btn-ghost" %>
     <% else %>
       <% if Current.user.following?(@user) %>
         <%= button_to "Unfollow", unfollow_user_path(@user.username), method: :delete, class: "btn-ghost" %>
       <% else %>
         <%= button_to "Follow", follow_user_path(@user.username), method: :post, class: "btn-primary" %>
       <% end %>
+      <%= button_to "Block", block_user_path(@user.username), method: :post, class: "btn-danger btn-small",
+          data: { turbo_confirm: "Block @#{@user.username}? They won't see your posts and you won't see theirs." } %>
     <% end %>
   </div>
 </div>
 
-<div class="posts-feed">
-  <%= render @posts %>
-</div>
+<% if @blocked %>
+  <p class="empty-state">You have blocked @<%= @user.username %>.</p>
+<% else %>
+  <div class="posts-feed">
+    <%= render @posts %>
+  </div>
+<% end %>

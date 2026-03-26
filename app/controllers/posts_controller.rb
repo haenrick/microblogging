@@ -4,9 +4,9 @@ class PostsController < ApplicationController
   def index
     @tab = params[:tab] == "following" ? "following" : "all"
     base = if @tab == "following"
-      Post.top_level.active.where(user: Current.user.following)
+      Post.top_level.active.visible_to(Current.user).where(user: Current.user.following)
     else
-      Post.top_level.active
+      Post.top_level.active.visible_to(Current.user)
     end
     @posts = base.includes(:user, :likes, replies: :user).recent
     @post = Post.new

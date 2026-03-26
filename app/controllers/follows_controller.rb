@@ -3,7 +3,9 @@ class FollowsController < ApplicationController
 
   def create
     user = User.find_by!(username: params[:username])
-    Current.user.follows.create(following: user) unless Current.user == user
+    unless Current.user == user || Current.user.blocking?(user) || user.blocking?(Current.user)
+      Current.user.follows.create(following: user)
+    end
     redirect_to profile_path(user.username)
   end
 

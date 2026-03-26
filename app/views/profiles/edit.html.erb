@@ -36,3 +36,19 @@
     </div>
   <% end %>
 </div>
+
+<% if Current.user.blocked_users.any? %>
+  <div class="settings-form">
+    <div class="settings-section">
+      <h3>Blocked users</h3>
+      <div class="block-list">
+        <% Current.user.blocked_users.each do |user| %>
+          <div class="block-list-item">
+            <%= link_to "@#{user.username}", profile_path(user.username), class: "username" %>
+            <%= button_to "Unblock", unblock_user_path(user.username), method: :delete, class: "btn-ghost btn-small" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

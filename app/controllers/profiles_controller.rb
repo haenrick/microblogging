@@ -3,7 +3,8 @@ class ProfilesController < ApplicationController
 
   def show
     @user = User.find_by!(username: params[:username])
-    @posts = @user.posts.top_level.active.includes(:likes, replies: :user).recent
+    @blocked = Current.user.blocking?(@user)
+    @posts = @blocked ? [] : @user.posts.top_level.active.includes(:likes, replies: :user).recent
   end
 
   def edit

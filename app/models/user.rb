@@ -11,6 +11,11 @@ class User < ApplicationRecord
   has_many :reverse_follows, class_name: "Follow", foreign_key: :following_id, dependent: :destroy
   has_many :followers, through: :reverse_follows, source: :follower
 
+  has_many :blocks, foreign_key: :blocker_id, dependent: :destroy
+  has_many :blocked_users, through: :blocks, source: :blocked
+  has_many :reverse_blocks, class_name: "Block", foreign_key: :blocked_id, dependent: :destroy
+  has_many :blocked_by_users, through: :reverse_blocks, source: :blocker
+
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
   validates :username, presence: true, uniqueness: true,
@@ -20,6 +25,14 @@ class User < ApplicationRecord
 
   def following?(user)
     following.include?(user)
+  end
+
+  def blocking?(user)
+    blocked_users.include?(user)
+  end
+
+  def blocked_by?(user)
+    blocked_by_users.include?(user)
   end
 
   def avatar_thumbnail

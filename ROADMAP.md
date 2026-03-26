@@ -346,7 +346,7 @@ Nachricht entschlüsseln (Empfänger):
 ✅ [N1] Follow-System                  — Follow/Unfollow, Following-Feed-Tab
 ✅ [S1] Suche                          — Posts und User durchsuchen (ILIKE)
 ✅ [U1] Registrierung                  — Terminal Boot-Aesthetic Signup-Seite
-1. [N3] Blockieren                     — 1 Tag, Safety
+✅ [N3] Blockieren                     — Block/Unblock, Feed-Filter, Follow-Guard
 2. [S2] User-Discover                  — Alle User browsen ohne Username kennen zu müssen
 3. [U2] Admin-Bereich                  — User verwalten, Posts moderieren, Rollen
 4. [U3] Privates Profil                — User kann Profil auf privat stellen, Follower-Anfragen
