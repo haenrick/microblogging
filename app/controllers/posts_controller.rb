@@ -8,12 +8,12 @@ class PostsController < ApplicationController
     else
       Post.top_level.active.visible_to(Current.user)
     end
-    @posts = base.includes(:user, :likes, replies: :user).recent
+    @posts = base.includes(:user, :likes, replies: :user).with_attached_media.recent
     @post = Post.new
   end
 
   def show
-    @post = Post.active.includes(:user, :likes, replies: { user: [] }).find_by!(public_id: params[:id])
+    @post = Post.active.includes(:user, :likes, replies: { user: [] }).with_attached_media.find_by!(public_id: params[:id])
   end
 
   def create
@@ -21,7 +21,7 @@ class PostsController < ApplicationController
     if @post.save
       redirect_to root_path, notice: "Post created."
     else
-      @posts = Post.top_level.includes(:user, :likes, replies: :user).recent
+      @posts = Post.top_level.includes(:user, :likes, replies: :user).with_attached_media.recent
       render :index, status: :unprocessable_entity
     end
   end

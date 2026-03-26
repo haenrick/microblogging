@@ -11,6 +11,7 @@ class SearchController < ApplicationController
       @posts = Post.active.visible_to(Current.user)
                    .where("content ILIKE ?", "%#{@query}%")
                    .includes(:user, :likes)
+                   .with_attached_media
                    .order(created_at: :desc)
                    .limit(30)
     else
