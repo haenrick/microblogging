@@ -13,15 +13,12 @@
     </div>
     <%= link_to "@#{post.user.username}", profile_path(post.user.username), class: "username" %>
     <span class="post-time"><%= time_ago_in_words(post.created_at) %> ago</span>
+    <% if post.expires_at %>
+      <span class="expiry-badge expiry-<%= post.expiry_status %>">⏳ <%= post.expiry_label %></span>
+    <% end %>
   </div>
 
   <div class="post-content"><%= post.content %></div>
-
-  <% if post.expires_at %>
-    <div class="expiry-bar expiry-<%= post.expiry_status %>">
-      ⏳ <%= post.expiry_label %>
-    </div>
-  <% end %>
 
   <div class="post-actions">
     <%= button_to like_post_path(post), method: :post, class: "btn-action #{post.liked_by?(Current.user) ? "liked" : ""}" do %>
