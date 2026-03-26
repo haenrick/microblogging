@@ -10,7 +10,5 @@ export DB_HOST=localhost
 export DB_USER=microblog
 export DB_PASSWORD=microblog_dev
 export PORT=$PORT
-export SOLID_QUEUE_IN_PUMA=1
-
 echo "[fl4re] Starte auf Port $PORT ..."
 exec bin/rails server -b 0.0.0.0
