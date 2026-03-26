@@ -13,4 +13,4 @@ export PORT=$PORT
 export SOLID_QUEUE_IN_PUMA=1
 
 echo "[fl4re] Starte auf Port $PORT ..."
-exec bin/rails server
+exec bin/rails server -b 0.0.0.0
