@@ -1,0 +1,80 @@
+<div class="register-layout">
+  <div class="register-terminal">
+
+    <div class="terminal-header">
+      <span class="terminal-dot red"></span>
+      <span class="terminal-dot yellow"></span>
+      <span class="terminal-dot green-dot"></span>
+      <span class="terminal-title">microblog — new_user.sh</span>
+    </div>
+
+    <div class="terminal-body">
+      <div class="boot-lines">
+        <p class="boot-line"><span class="green-text">[  OK  ]</span> Starting microblog daemon...</p>
+        <p class="boot-line"><span class="green-text">[  OK  ]</span> Loaded user authentication module</p>
+        <p class="boot-line"><span class="cyan-text">[ INFO ]</span> Ready to initialize new account</p>
+        <p class="boot-line dim">───────────────────────────────────────</p>
+      </div>
+
+      <div class="terminal-prompt-block">
+        <p class="prompt-title">$ ./create_account<span class="cursor">_</span></p>
+      </div>
+
+      <% if @user.errors.any? %>
+        <div class="terminal-errors">
+          <% @user.errors.full_messages.each do |msg| %>
+            <p class="error">[!] <%= msg %></p>
+          <% end %>
+        </div>
+      <% end %>
+
+      <%= form_with model: @user, url: register_path, class: "terminal-form" do |f| %>
+        <div class="terminal-field">
+          <label>// choose your handle</label>
+          <div class="input-row">
+            <span class="prompt-char">@</span>
+            <%= f.text_field :username, placeholder: "username", autocomplete: "off",
+                autofocus: true, class: "terminal-input" %>
+          </div>
+          <span class="field-hint">// 3–30 chars, lowercase, a–z 0–9 _</span>
+        </div>
+
+        <div class="terminal-field">
+          <label>// your email address</label>
+          <div class="input-row">
+            <span class="prompt-char">$</span>
+            <%= f.email_field :email_address, placeholder: "you@example.com",
+                autocomplete: "email", class: "terminal-input" %>
+          </div>
+        </div>
+
+        <div class="terminal-field">
+          <label>// set a password</label>
+          <div class="input-row">
+            <span class="prompt-char">$</span>
+            <%= f.password_field :password, placeholder: "min. 8 characters",
+                autocomplete: "new-password", class: "terminal-input" %>
+          </div>
+        </div>
+
+        <div class="terminal-field">
+          <label>// confirm password</label>
+          <div class="input-row">
+            <span class="prompt-char">$</span>
+            <%= f.password_field :password_confirmation, placeholder: "repeat password",
+                autocomplete: "new-password", class: "terminal-input" %>
+          </div>
+        </div>
+
+        <div class="terminal-submit">
+          <%= f.submit "> initialize account", class: "btn-primary btn-block" %>
+        </div>
+      <% end %>
+
+      <p class="register-footer">
+        // already have an account?
+        <%= link_to "> sign in", new_session_path, class: "green-link" %>
+      </p>
+    </div>
+  </div>
+</div>

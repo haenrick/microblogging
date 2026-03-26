@@ -2,6 +2,9 @@ Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
 
+  get  "/register", to: "registrations#new",    as: :new_register
+  post "/register", to: "registrations#create", as: :register
+
   resources :posts, only: [:index, :create, :destroy] do
     member do
       post :like
