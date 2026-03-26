@@ -38,8 +38,11 @@
   <div class="reply-form hidden">
     <%= form_with url: reply_post_path(post), class: "post-form reply-form-inner" do |f| %>
       <%= f.text_area :content, placeholder: "Write a reply...", maxlength: 280, rows: 2,
-          name: "post[content]" %>
-      <%= f.submit "Reply", class: "btn-primary btn-small" %>
+          name: "post[content]", data: { charcount: true } %>
+      <div class="form-footer">
+        <span class="char-counter"><span class="char-remaining">280</span> chars left</span>
+        <%= f.submit "Reply", class: "btn-primary btn-small" %>
+      </div>
     <% end %>
   </div>
 

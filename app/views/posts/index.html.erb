@@ -7,8 +7,10 @@
   <% if @post.errors.any? %>
     <div class="error"><%= @post.errors.full_messages.to_sentence %></div>
   <% end %>
-  <%= f.text_area :content, placeholder: "What's happening?", maxlength: 280, rows: 3 %>
+  <%= f.text_area :content, placeholder: "What's happening?", maxlength: 280, rows: 3,
+      data: { charcount: true } %>
   <div class="form-footer">
+    <span class="char-counter"><span class="char-remaining">280</span> chars left</span>
     <%= f.submit "Post", class: "btn-primary" %>
   </div>
 <% end %>

@@ -24,6 +24,7 @@ class Post < ApplicationRecord
   end
 
   def expires_in_seconds
+    return 0 unless expires_at
     [(expires_at - Time.current).to_i, 0].max
   end
 

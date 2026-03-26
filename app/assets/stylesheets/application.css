@@ -179,7 +179,9 @@ body {
   caret-color: var(--green);
 }
 .post-form textarea::placeholder { color: #333; }
-.form-footer { display: flex; justify-content: flex-end; margin-top: 8px; }
+.form-footer { display: flex; justify-content: flex-end; align-items: center; gap: 10px; margin-top: 8px; }
+.char-counter { font-size: 11px; color: #444; letter-spacing: 1px; margin-right: auto; }
+.char-counter[data-warn="true"] { color: var(--red); }
 
 /* ── Posts ── */
 .post {
