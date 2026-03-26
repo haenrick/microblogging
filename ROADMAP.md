@@ -346,9 +346,60 @@ Nachricht entschlüsseln (Empfänger):
 ✅ [N1] Follow-System                  — Follow/Unfollow, Following-Feed-Tab
 ✅ [S1] Suche                          — Posts und User durchsuchen (ILIKE)
 1. [N3] Blockieren                     — 1 Tag, Safety
-2. [M6] PWA / Service Worker           — 1 Tag
-3. [N4] E2E-DMs                        — 3–5 Tage, nach allem anderen
+2. [U1] Registrierung                  — Signup-Seite, Email-Bestätigung optional
+3. [U2] Admin-Bereich                  — User verwalten, Posts moderieren, Rollen
+4. [U3] Privates Profil                — User kann Profil auf privat stellen, Follower-Anfragen
+5. [M6] PWA / Service Worker           — 1 Tag
+6. [N4] E2E-DMs                        — 3–5 Tage, nach allem anderen
 ```
+
+---
+
+## Teil 4d: User-Verwaltung (hinzugefügt März 2026)
+
+### U1 — Registrierung
+
+**Ziel:** Neue User können sich selbst registrieren, ohne dass jemand per Console einen Account anlegen muss.
+
+**Umfang:**
+- Signup-Formular: Username, Email, Passwort
+- Optional: Email-Bestätigung via Token (verhindert Fake-Accounts)
+- Weiterleitung nach Registrierung direkt in den Feed
+- Passwort-Anforderungen (min. 8 Zeichen)
+
+**Aufwand:** ~2–3h
+**Abhängigkeiten:** Auth (erledigt)
+
+---
+
+### U2 — Admin-Bereich
+
+**Ziel:** Ein geschützter Bereich um die App zu verwalten ohne Rails Console.
+
+**Umfang:**
+- Admin-Rolle auf `User` (`admin: boolean`)
+- Geschützter Bereich `/admin` (nur für Admins)
+- User-Liste: einsehen, sperren, löschen
+- Post-Moderation: anstößige Posts löschen
+- Einfache Statistiken: Anzahl User, Posts, Likes
+
+**Aufwand:** ~1 Tag
+**Abhängigkeiten:** U1 (Registrierung)
+
+---
+
+### U3 — Privates Profil
+
+**Ziel:** User können ihr Profil auf privat stellen. Posts sind dann nur für Follower sichtbar.
+
+**Umfang:**
+- `private_profile: boolean` auf `User`
+- Follower-Anfragen statt direktem Follow (`pending` Status auf `Follow`)
+- Anfragen annehmen / ablehnen auf Profilseite
+- Nicht-Follower sehen nur Avatar + Bio, keine Posts
+
+**Aufwand:** ~1–2 Tage
+**Abhängigkeiten:** N1 (Follow-System, erledigt)
 
 ---
 
