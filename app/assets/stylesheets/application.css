@@ -313,7 +313,7 @@ body {
 .back-link:hover { color: var(--green); }
 
 /* ── Settings ── */
-.settings-form { max-width: 480px; }
+.settings-form { max-width: 480px; border: 1px solid var(--border); border-radius: 4px; padding: 1.25rem; margin-bottom: 1rem; }
 .settings-section { margin-bottom: 2rem; }
 .settings-section h3 {
   font-size: 11px;
@@ -358,6 +358,24 @@ body {
 .theme-swatch:hover { transform: scale(1.15); }
 .theme-radio:checked + .theme-swatch { border-color: #fff; transform: scale(1.15); }
 
+.profile-link { color: var(--green); font-size: 12px; letter-spacing: 1px; transition: text-shadow 0.15s; }
+.profile-link:hover { text-shadow: 0 0 12px var(--green); }
+.stacked-fields { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+.settings-input {
+  width: 100%;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text-bright);
+  padding: 8px 12px;
+  font-family: var(--mono);
+  font-size: 14px;
+  caret-color: var(--green);
+  transition: border-color 0.2s;
+}
+.settings-input:focus { outline: none; border-color: var(--green-dim); }
+.danger-zone { border-color: rgba(255,68,68,0.2) !important; }
+.danger-zone h3 { color: var(--red) !important; border-color: rgba(255,68,68,0.2) !important; }
 .block-list { display: flex; flex-direction: column; gap: 8px; }
 .block-list-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
 

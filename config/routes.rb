@@ -21,8 +21,10 @@ Rails.application.routes.draw do
   post   "/:username/block",   to: "blocks#create",   as: :block_user
   delete "/:username/block",   to: "blocks#destroy",  as: :unblock_user
 
-  get  "/profile/edit", to: "profiles#edit",   as: :edit_profile
-  patch "/profile",     to: "profiles#update", as: :update_profile
+  get    "/profile/edit",            to: "profiles#edit",            as: :edit_profile
+  patch  "/profile",                 to: "profiles#update",          as: :update_profile
+  patch  "/profile/change_password", to: "profiles#change_password", as: :change_password
+  delete "/profile",                 to: "profiles#destroy",         as: :delete_account
   get  "/:username",    to: "profiles#show",   as: :profile, constraints: { username: /[a-z0-9_]+/ }
 
   root "posts#index"
