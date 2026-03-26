@@ -8,7 +8,9 @@ Type=simple
 User=henrik
 WorkingDirectory=/home/henrik/microblog
 EnvironmentFile=/home/henrik/microblog/.env
-ExecStart=/bin/bash -lc 'exec /home/henrik/microblog/bin/start'
+Environment="PATH=/home/henrik/.rbenv/shims:/home/henrik/.rbenv/bin:/usr/local/bin:/usr/bin:/bin"
+Environment="RBENV_ROOT=/home/henrik/.rbenv"
+ExecStart=/home/henrik/microblog/bin/start
 Restart=on-failure
 RestartSec=5
 StandardOutput=journal
