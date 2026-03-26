@@ -5,6 +5,16 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.5.0] — 2026-03-26
+
+### Neu
+- **User Preferences** — erweiterbare Einstellungen als JSONB-Spalte (`preferences`) auf dem User-Model
+- **Enter-to-post** — erste Preference: Enter-Taste zum Posten ein-/ausschaltbar in den Settings
+- **CSP-Fix** — Inline-Script in `application.html.erb` erhält korrekten Nonce (war durch Content Security Policy blockiert)
+- **Styleguide** — `docs/styleguide.md` ins Repo übernommen und für fl4re angepasst (Themes, Terminal-Sprache)
+
+---
+
 ## [0.4.0] — 2026-03-26
 
 ### Infrastruktur

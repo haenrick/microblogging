@@ -25,6 +25,7 @@ Part of the [DIVIDE](https://github.com/haenrick/divide) product family.
 - Unique permalink per post (random public ID)
 - Admin console (dashboard, user management, post moderation)
 - Registration with terminal boot aesthetic
+- User preferences (Enter-to-post toggle, extensible via JSONB)
 
 ## Development Setup
 
@@ -94,5 +95,5 @@ See [ROADMAP.md](ROADMAP.md) for planned and completed features.
 
 ## Style
 
-Terminal aesthetic based on the [DIVIDE styleguide](https://github.com/haenrick/divide/blob/saas/docs/styleguide.md).
+Terminal aesthetic documented in [docs/styleguide.md](docs/styleguide.md), based on the [DIVIDE styleguide](https://github.com/haenrick/divide/blob/saas/docs/styleguide.md).
 Font: JetBrains Mono · Primary color: `#00ff88` on `#000000`
