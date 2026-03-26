@@ -2,12 +2,17 @@
 <html>
   <head>
     <title><%= content_for(:title) || "Microblog" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= yield :head %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
@@ -26,12 +31,14 @@
       <div class="app-layout">
         <nav class="sidebar">
           <div class="sidebar-top">
-            <%= link_to "◆ Microblog", root_path, class: "sidebar-logo" %>
+            <%= link_to root_path, class: "sidebar-logo" do %>
+              > microblog<span class="cursor">_</span>
+            <% end %>
             <ul class="nav-links">
-              <li><%= link_to "🏠 Feed", root_path, class: "nav-link #{current_page?(root_path) ? "active" : ""}" %></li>
-              <li><%= link_to "🔍 Search", search_path, class: "nav-link #{current_page?(search_path) ? "active" : ""}" %></li>
-              <li><%= link_to "👤 Profile", profile_path(Current.user.username), class: "nav-link #{current_page?(profile_path(Current.user.username)) ? "active" : ""}" %></li>
-              <li><%= link_to "⚙ Settings", edit_profile_path, class: "nav-link #{current_page?(edit_profile_path) ? "active" : ""}" %></li>
+              <li><%= link_to root_path, class: "nav-link #{current_page?(root_path) ? "active" : ""}" do %>> feed<% end %></li>
+              <li><%= link_to search_path, class: "nav-link #{current_page?(search_path) ? "active" : ""}" do %>> search<% end %></li>
+              <li><%= link_to profile_path(Current.user.username), class: "nav-link #{current_page?(profile_path(Current.user.username)) ? "active" : ""}" do %>> profile<% end %></li>
+              <li><%= link_to edit_profile_path, class: "nav-link #{current_page?(edit_profile_path) ? "active" : ""}" do %>> settings<% end %></li>
             </ul>
           </div>
           <div class="sidebar-bottom">
@@ -45,20 +52,20 @@
               </div>
               <span class="sidebar-username">@<%= Current.user.username %></span>
             </div>
-            <%= button_to "Sign out", session_path, method: :delete, class: "btn-signout" %>
+            <%= button_to session_path, method: :delete, class: "btn-signout" do %>// sign out<% end %>
           </div>
         </nav>
 
         <main class="main-content">
-          <% if flash[:notice] %><p class="flash-notice"><%= flash[:notice] %></p><% end %>
-          <% if flash[:alert] %><p class="flash-alert"><%= flash[:alert] %></p><% end %>
+          <% if flash[:notice] %><p class="flash-notice">[ok] <%= flash[:notice] %></p><% end %>
+          <% if flash[:alert] %><p class="flash-alert">[!] <%= flash[:alert] %></p><% end %>
           <%= yield %>
         </main>
       </div>
     <% else %>
       <div class="auth-layout">
-        <% if flash[:notice] %><p class="flash-notice"><%= flash[:notice] %></p><% end %>
-        <% if flash[:alert] %><p class="flash-alert"><%= flash[:alert] %></p><% end %>
+        <% if flash[:notice] %><p class="flash-notice">[ok] <%= flash[:notice] %></p><% end %>
+        <% if flash[:alert] %><p class="flash-alert">[!] <%= flash[:alert] %></p><% end %>
         <%= yield %>
       </div>
     <% end %>
