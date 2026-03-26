@@ -23,7 +23,8 @@
 | PL | Post-Permalink — zufällige public_id in URL |
 | CC | Zeichenzähler beim Verfassen |
 | U2 | Admin-Konsole — Dashboard, User- und Post-Verwaltung |
-| SE | Sicherheit (Basis) — Rate Limiting Posts, Datei-Validierung, CSP, Rack::Attack |
+| SE | Sicherheit (Basis) — Rate Limiting, Datei-Validierung, CSP, Rack::Attack |
+| UX | UX-Polish — Turbo Streams (Like), Stimulus Toggle (Reply/Edit), btn-danger |
 
 ---
 
@@ -37,7 +38,153 @@
 
 ## Geplant 📋
 
-### Nächste Schritte (priorisiert)
+### Infrastruktur & CI/CD (priorisiert für 24/7-Betrieb)
+
+| # | Feature | Aufwand | Beschreibung |
+|---|---------|---------|--------------|
+| D1 | Production-Mode auf Pi | ~2h | RAILS_ENV=production, Secret-Setup, Asset-Precompile |
+| D2 | systemd-Service | ~1h | Auto-Restart bei Crash, Start beim Pi-Boot |
+| D3 | CD via GitHub Actions | ~2h | Push to main → Pi automatisch updated via SSH |
+| D4 | pg_dump Backup-Cronjob | ~1h | Tägliches DB-Backup lokal + optional remote |
+| D5 | Kamal Deployment | ~1 Tag | Zero-Downtime-Deploys, Docker-basiert, Rails 8 nativ |
+| D6 | Hetzner-Migration | ~1 Tag | CX22 (~5€/Monat) für öffentlichen Launch, Kamal-Deploy |
+
+### D1 — Production-Mode
+
+**Problem:** Pi läuft aktuell im `development`-Modus — langsam, Debug-Info sichtbar, Assets nicht optimiert.
+
+**Maßnahmen:**
+- `RAILS_ENV=production` in `bin/start` setzen
+- `RAILS_MASTER_KEY` als Env-Variable oder Datei setzen
+- `SECRET_KEY_BASE` generieren und setzen
+- `bin/rails assets:precompile` einmalig ausführen
+- `bin/rails db:migrate RAILS_ENV=production`
+
+**Aufwand:** ~2h
+
+---
+
+### D2 — systemd-Service
+
+**Problem:** App läuft in einer screen-Session. Beim Crash oder Pi-Neustart bleibt die App unten.
+
+**Lösung:** systemd-Unit `/etc/systemd/system/fl4re.service`
+
+```ini
+[Unit]
+Description=fl4re Rails App
+After=network.target docker.service
+
+[Service]
+Type=simple
+User=henrik
+WorkingDirectory=/home/henrik/microblog
+EnvironmentFile=/home/henrik/microblog/.env
+ExecStart=/home/henrik/microblog/bin/start
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Credentials in `/home/henrik/microblog/.env` (nicht in Git):
+```
+DB_HOST=localhost
+DB_USER=microblog
+DB_PASSWORD=microblog_dev
+RAILS_ENV=production
+PORT=4000
+```
+
+Steuerbefehle: `sudo systemctl start|stop|restart|status fl4re`
+
+**Aufwand:** ~1h · **Abhängigkeit:** D1
+
+---
+
+### D3 — CD via GitHub Actions
+
+**Problem:** Deploys sind manuell — SSH → git pull → bundle install → restart.
+
+**Lösung:** GitHub Actions SSH-Deploy-Job nach erfolgreichem CI:
+
+```yaml
+deploy:
+  needs: [scan_ruby, lint, test]
+  runs-on: ubuntu-latest
+  if: github.ref == 'refs/heads/main'
+  steps:
+    - uses: appleboy/ssh-action@v1
+      with:
+        host: ${{ secrets.PI_HOST }}
+        username: henrik
+        key: ${{ secrets.PI_SSH_KEY }}
+        script: |
+          cd ~/microblog
+          git pull
+          bundle install --without development test
+          bin/rails assets:precompile RAILS_ENV=production
+          bin/rails db:migrate RAILS_ENV=production
+          sudo systemctl restart fl4re
+```
+
+**GitHub Secrets:** `PI_HOST`, `PI_SSH_KEY`
+
+**Aufwand:** ~2h · **Abhängigkeiten:** D1, D2
+
+---
+
+### D4 — Datenbank-Backup
+
+**Problem:** Postgres-Daten liegen nur im Docker-Volume — kein Backup.
+
+**Lösung:** Cronjob mit `pg_dump`:
+
+```bash
+# crontab -e
+0 3 * * * docker exec microblog_db pg_dump -U microblog fl4re_development > ~/backups/fl4re_$(date +\%Y\%m\%d).sql
+# Backups älter als 30 Tage löschen
+0 4 * * * find ~/backups -name "fl4re_*.sql" -mtime +30 -delete
+```
+
+Optional: Backup via `rclone` zu Cloudflare R2 oder einem anderen S3-kompatiblen Dienst.
+
+**Aufwand:** ~1h
+
+---
+
+### D5 — Kamal Deployment
+
+**Ziel:** Zero-Downtime-Deploys mit Docker, ohne manuelles SSH.
+
+- `config/deploy.yml` konfigurieren (Server-IP, Image, Env-Vars)
+- Docker-Image auf Pi oder GitHub Container Registry bauen
+- `kamal deploy` rollt neues Image aus ohne Downtime
+
+**Hinweis:** Pi 5 ist ARM64 — Multi-Platform-Build oder direkt auf Pi bauen nötig.
+
+**Aufwand:** ~1 Tag · **Sinnvoll ab D6 (Hetzner)**
+
+---
+
+### D6 — Hetzner-Migration
+
+**Wann:** Bei öffentlichem Launch oder wenn Pi-Risiken (Stromausfall, SD-Karte) nicht mehr akzeptabel sind.
+
+| Aspekt | Pi 5 | Hetzner CX22 |
+|--------|------|--------------|
+| Kosten | €0 | ~€5/Monat |
+| RAM | 4–8 GB | 4 GB |
+| Redundanz | Keine | Rechenzentrum |
+| Backup | Manuell | Snapshot-Option |
+| Uptime | ~99% | ~99.9% |
+
+**Empfehlung:** Pi für Entwicklung/Beta, Hetzner für Launch.
+
+---
+
+### Nächste Feature-Schritte (priorisiert)
 
 | # | Feature | Aufwand | Beschreibung |
 |---|---------|---------|--------------|
@@ -132,7 +279,7 @@ user_keys: user_id, public_key
 ## Deployment
 
 ```
-microblog.datenkistchen.de
+fl4re.datenkistchen.de
         │
   Cloudflare Tunnel (HTTPS automatisch)
         │
@@ -156,3 +303,5 @@ Für öffentlichen Launch: Hetzner CX22 (~5 €/Monat) + Kamal (bereits im Gemfi
 | Version | Inhalt |
 |---------|--------|
 | `v0.1.0` | Basis-Features: Posts, Replies, Likes, Follow, Search, Discover, Profile, Themes, Ephemeral Posts, Edit, Permalink, Admin |
+| `v0.2.0` | Admin-Konsole, fl4re-Rename, Bugfixes, CI-Stabilisierung |
+| `v0.3.x` | Sicherheit (Rack::Attack, CSP, Rate Limiting), UX (Turbo Streams, Stimulus), Deployment-Fixes |
