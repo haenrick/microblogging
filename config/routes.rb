@@ -38,4 +38,7 @@ Rails.application.routes.draw do
   root "posts#index"
 
   get "up" => "rails/health#show", as: :rails_health_check
+
+  get "/manifest.webmanifest" => "pwa#manifest", as: :pwa_manifest
+  get "/service-worker.js"    => "pwa#service_worker", as: :pwa_service_worker
 end

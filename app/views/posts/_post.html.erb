@@ -36,11 +36,12 @@
 
   <% if post.user == Current.user %>
     <div class="edit-form hidden" data-toggle-target="editForm">
-      <%= form_with url: post_path(post), method: :patch, class: "post-form edit-form-inner" do |f| %>
+      <%= form_with url: post_path(post), method: :patch, class: "post-form edit-form-inner",
+          data: { controller: "post-form" } do |f| %>
         <%= f.text_area :content, value: post.content, maxlength: 280, rows: 3,
-            data: { charcount: true } %>
+            data: { action: "input->post-form#updateCount keydown->post-form#submitOnEnter" } %>
         <div class="form-footer">
-          <span class="char-counter"><span class="char-remaining"><%= 280 - post.content.length %></span> chars left</span>
+          <span class="char-counter"><span class="char-remaining" data-post-form-target="counter"><%= 280 - post.content.length %></span> chars left</span>
           <%= f.submit "Save", class: "btn-primary btn-small" %>
           <%= button_to post_path(post), method: :delete, class: "btn-danger btn-small",
               data: { turbo_confirm: "Delete this post?" } do %>Delete<% end %>
@@ -50,11 +51,12 @@
   <% end %>
 
   <div class="reply-form hidden" data-toggle-target="replyForm">
-    <%= form_with url: reply_post_path(post), class: "post-form reply-form-inner" do |f| %>
+    <%= form_with url: reply_post_path(post), class: "post-form reply-form-inner",
+        data: { controller: "post-form" } do |f| %>
       <%= f.text_area :content, placeholder: "Write a reply...", maxlength: 280, rows: 2,
-          name: "post[content]", data: { charcount: true } %>
+          name: "post[content]", data: { action: "input->post-form#updateCount keydown->post-form#submitOnEnter" } %>
       <div class="form-footer">
-        <span class="char-counter"><span class="char-remaining">280</span> chars left</span>
+        <span class="char-counter"><span class="char-remaining" data-post-form-target="counter">280</span> chars left</span>
         <%= f.submit "Reply", class: "btn-primary btn-small" %>
       </div>
     <% end %>

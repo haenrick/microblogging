@@ -15,6 +15,8 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+    <link rel="manifest" href="/manifest.webmanifest">
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <% if user_signed_in? %>
@@ -27,33 +29,6 @@
         }
       </style>
     <% end %>
-    <script nonce="<%= content_security_policy_nonce %>">
-      document.addEventListener("keydown", function(e) {
-        if (e.key === "Enter" && !e.shiftKey && e.target.matches(".post-form textarea")) {
-          if (document.body.dataset.enterToPost === "true") {
-            e.preventDefault();
-            e.target.closest("form").requestSubmit();
-          }
-        }
-      });
-
-      document.addEventListener("change", function(e) {
-        if (!e.target.classList.contains("attach-input")) return;
-        var label = e.target.closest(".btn-attach");
-        var file = e.target.files[0];
-        label.textContent = file ? "📎 " + file.name : "📎";
-      });
-
-      document.addEventListener("input", function(e) {
-        if (!e.target.dataset.charcount) return;
-        var max = parseInt(e.target.getAttribute("maxlength") || 280);
-        var remaining = max - e.target.value.length;
-        var counter = e.target.closest("form").querySelector(".char-remaining");
-        if (!counter) return;
-        counter.textContent = remaining;
-        counter.closest(".char-counter").dataset.warn = remaining <= 20 ? "true" : "false";
-      });
-    </script>
   </head>
 
   <body data-enter-to-post="<%= Current.user&.enter_to_post != false %>">
