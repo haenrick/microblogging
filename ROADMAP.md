@@ -30,6 +30,10 @@
 | D4 | Backup — `bin/backup` mit pg_dump + 30-Tage-Rotation |
 | T1 | Redis eliminiert — solid_cable aktiv, Redis aus docker-compose entfernt |
 | T2 | delete_all — PurgeExpiredPostsJob direkte DB-Deletion statt N+1 |
+| T4 | Inline-JS → Stimulus — PostForm-Controller (Charcount, File-Label, Enter-to-Post) |
+| T7 | Admin-Hierarchie — Admins können andere Admins nicht löschen/degradieren |
+| S5 | Session-Ablauf — Sessions nach 30 Tagen serverseitig invalidieren |
+| M6 | PWA-Basis — manifest.webmanifest, PwaController, apple-touch-icon |
 
 ---
 
@@ -200,18 +204,14 @@ Optional: Backup via `rclone` zu Cloudflare R2 oder einem anderen S3-kompatiblen
 
 | # | Maßnahme | Aufwand | Beschreibung |
 |---|----------|---------|--------------|
-| T1 | Redis eliminieren | ~1h | solid_cable aktivieren, Redis aus docker-compose entfernen — Solid Stack läuft komplett ohne Redis |
-| T2 | `delete_all` statt `destroy_all` | 5 min | `PurgeExpiredPostsJob` lädt jeden Post einzeln — direkte DB-Deletion 100x schneller |
 | T3 | E-Mail / SMTP konfigurieren | ~2h | Passwort-Reset schlägt aktuell lautlos fehl (`from@example.com` Platzhalter) |
 
 #### 🟡 Mittel
 
 | # | Maßnahme | Aufwand | Beschreibung |
 |---|----------|---------|--------------|
-| T4 | Inline-JS → Stimulus | ~2h | Zeichenzähler, Datei-Upload-Label, Enter-to-Submit als Stimulus-Controller |
 | T5 | Fragment Caching | ~1h | Feed-Posts via `cache post do` — deutlich schnellere Ladezeiten bei wachsendem Inhalt |
 | T6 | PostgreSQL Full-Text Search | ~2h | `tsvector`/`tsquery` statt ILIKE — kein Extra-Gem, indexierbar, relevanter |
-| T7 | Admin-Hierarchie | ~1h | Admins können aktuell andere Admins löschen — Superadmin-Schutz fehlt |
 
 #### 🟢 Niedrig
 
@@ -228,7 +228,7 @@ Optional: Backup via `rclone` zu Cloudflare R2 oder einem anderen S3-kompatiblen
 | # | Feature | Aufwand | Beschreibung |
 |---|---------|---------|--------------|
 | U3 | Privates Profil | ~1–2 Tage | Profil auf privat stellen, Follower-Anfragen mit pending-Status |
-| M6 | PWA / Service Worker | ~1 Tag | App-Icon auf Home-Screen, Vollbild, Offline-Fähigkeit |
+| M6 | PWA — Service Worker | ~0.5 Tag | Offline-Cache der letzten Posts, Push-Notifications vorbereiten (Basis-Manifest ✅) |
 | X2 | KI-Integration | ~1–3 Tage | Post-Assistent via Claude API (X2a), Smart Search (X2c) |
 | N4 | E2E-DMs | ~3–5 Tage | Ende-zu-Ende-verschlüsselte Direktnachrichten (X25519 + AES-GCM) |
 | I1 | iOS App | Später | Erst PWA, dann SwiftUI wenn Nutzerbasis es rechtfertigt |
@@ -241,7 +241,6 @@ Optional: Backup via `rclone` zu Cloudflare R2 oder einem anderen S3-kompatiblen
 | S2 | Kein Admin-Audit-Log | ~2h | Admin-Aktionen in DB loggen |
 | S3 | Kein 2FA | ~1 Tag | TOTP via `rotp` Gem |
 | S4 | Keine E-Mail-Verifikation | ~1 Tag | Token-basierte Verifikation bei Registrierung |
-| S5 | Kein Session-Ablauf | ~1h | Sessions nach 30 Tagen invalidieren |
 
 > Vollständige Dokumentation: [docs/security.md](docs/security.md)
 
@@ -347,3 +346,4 @@ Für öffentlichen Launch: Hetzner CX22 (~5 €/Monat) + Kamal (bereits im Gemfi
 | `v0.4.0` | Production-Mode, systemd-Service, Backup-Script, Redis eliminiert |
 | `v0.5.0` | User Preferences, Enter-to-post, CSP-Fix Inline-Script |
 | `v0.5.1` | Theme-Auswahl-Fix (CSP Nonce + Swatches), Passwörter aus README entfernt |
+| `v0.6.0` | Stimulus PostForm-Controller, Admin-Hierarchie, Session-Ablauf, PWA-Basis |

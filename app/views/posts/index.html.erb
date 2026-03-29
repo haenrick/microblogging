@@ -3,16 +3,19 @@
   <%= link_to "Following", root_path(tab: "following"), class: "feed-tab #{@tab == "following" ? "active" : ""}" %>
 </div>
 
-<%= form_with model: @post, class: "post-form", multipart: true do |f| %>
+<%= form_with model: @post, class: "post-form", multipart: true,
+    data: { controller: "post-form" } do |f| %>
   <% if @post.errors.any? %>
     <div class="error"><%= @post.errors.full_messages.to_sentence %></div>
   <% end %>
   <%= f.text_area :content, placeholder: "What's happening?", maxlength: 280, rows: 3,
-      data: { charcount: true } %>
+      data: { action: "input->post-form#updateCount keydown->post-form#submitOnEnter" } %>
   <div class="form-footer">
-    <span class="char-counter"><span class="char-remaining">280</span> chars left</span>
+    <span class="char-counter"><span class="char-remaining" data-post-form-target="counter">280</span> chars left</span>
     <label class="btn-attach" title="Attach image">
-      📎 <%= f.file_field :media, accept: "image/*,video/*", class: "attach-input" %>
+      📎<span data-post-form-target="fileName"></span>
+      <%= f.file_field :media, accept: "image/*,video/*", class: "attach-input",
+          data: { action: "change->post-form#fileSelected" } %>
     </label>
     <%= f.submit "Post", class: "btn-primary" %>
   </div>

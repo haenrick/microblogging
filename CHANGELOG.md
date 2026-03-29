@@ -5,6 +5,21 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.6.0] — 2026-03-29
+
+### Neu
+- **T4 Stimulus PostForm-Controller** — Zeichenzähler, Datei-Upload-Label und Enter-to-Post aus globalem Inline-`<script>` in einen dedizierten Stimulus-Controller (`post_form_controller.js`) ausgelagert; Layout hat nun kein Inline-JavaScript mehr
+- **M6 PWA-Basis** — `manifest.webmanifest`-Route + `PwaController`, fl4re-Daten in `manifest.json.erb` (Name, Farben, Beschreibung), `apple-touch-icon` + `<link rel="manifest">` im Layout
+
+### Sicherheit
+- **T7 Admin-Hierarchie** — Admins können andere Admins weder löschen noch degradieren; verhindert versehentliche oder böswillige Rechte-Eskalation
+- **S5 Session-Ablauf** — Sessions laufen serverseitig nach 30 Tagen ab (`expires_at`-Spalte + Index); abgelaufene Sessions werden beim nächsten Request automatisch ignoriert
+
+### Infrastruktur
+- **docker-compose.yml** — Postgres-Port nur noch auf `127.0.0.1` gebunden (kein externer Zugriff), Memory-Limits gesetzt; Redis-Service endgültig entfernt (war nach v0.4.0 fälschlicherweise wieder hinzugefügt worden)
+
+---
+
 ## [0.5.1] — 2026-03-26
 
 ### Gefixt

@@ -11,6 +11,8 @@ class Admin::UsersController < Admin::BaseController
     user = User.find(params[:id])
     if user == Current.user
       redirect_to admin_users_path, alert: "You cannot delete your own account here."
+    elsif user.admin?
+      redirect_to admin_users_path, alert: "You cannot delete another admin."
     else
       user.destroy
       redirect_to admin_users_path, notice: "@#{user.username} deleted."
@@ -19,6 +21,10 @@ class Admin::UsersController < Admin::BaseController
 
   def toggle_admin
     user = User.find(params[:id])
+    if user.admin? && user != Current.user
+      redirect_to admin_users_path, alert: "You cannot revoke another admin's privileges."
+      return
+    end
     user.update!(admin: !user.admin?)
     redirect_to admin_users_path, notice: "@#{user.username} admin status updated."
   end
