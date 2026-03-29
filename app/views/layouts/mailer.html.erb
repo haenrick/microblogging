@@ -2,12 +2,31 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <style>
-      /* Email styles need to be inline */
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
-
-  <body>
-    <%= yield %>
+  <body style="margin:0;padding:0;background-color:#0a0a0a;font-family:'JetBrains Mono',monospace,sans-serif;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#0a0a0a;padding:40px 20px;">
+      <tr>
+        <td align="center">
+          <table width="560" cellpadding="0" cellspacing="0" style="background-color:#111;border:1px solid #00ff88;border-radius:4px;max-width:560px;width:100%;">
+            <tr>
+              <td style="padding:24px 32px;border-bottom:1px solid #1a2a1a;">
+                <span style="color:#00ff88;font-size:20px;font-weight:bold;letter-spacing:2px;">fl4re_</span>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:32px;">
+                <%= yield %>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 32px;border-top:1px solid #1a2a1a;">
+                <p style="margin:0;color:#444;font-size:11px;">fl4re · <a href="https://fl4re.datenkistchen.de" style="color:#00ff88;text-decoration:none;">fl4re.datenkistchen.de</a></p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
   </body>
 </html>

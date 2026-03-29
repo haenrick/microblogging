@@ -37,6 +37,7 @@
 | T5 | Fragment Caching — `cache [post, user.id]` in Feed-Posts |
 | S1 | Account-Lockout — Rack::Attack throttle 20 Login-Versuche/h pro IP |
 | D3 | GitHub Actions Deploy-Job — self-hosted Runner auf Pi, `bin/deploy` |
+| T3 | E-Mail via Brevo — Passwort-Reset, fl4re-Mail-Template, Absender `noreply@fl4re.datenkistchen.de` |
 
 ---
 
@@ -207,7 +208,7 @@ Optional: Backup via `rclone` zu Cloudflare R2 oder einem anderen S3-kompatiblen
 
 | # | Maßnahme | Aufwand | Beschreibung |
 |---|----------|---------|--------------|
-| T3 | E-Mail via Resend | ~1h | Passwort-Reset + transaktionale Mails; Domain `fl4re.datenkistchen.de` in Resend verifizieren, ActionMailer konfigurieren |
+| ~~T3~~ | ~~E-Mail via Brevo~~ | ✅ | Brevo SMTP konfiguriert, Absender `noreply@fl4re.datenkistchen.de`, Passwort-Reset aktiv |
 
 #### 🟡 Mittel
 

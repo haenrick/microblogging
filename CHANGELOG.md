@@ -5,6 +5,14 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.8.0] — 2026-03-29
+
+### Neu
+- **T3 E-Mail via Brevo** — ActionMailer über Brevo SMTP konfiguriert; Passwort-Reset funktioniert in Production; Absender: `noreply@fl4re.datenkistchen.de`; SMTP-Credentials via `BREVO_SMTP_USER` + `BREVO_SMTP_KEY` in `.env`
+- **Mail-Template** — fl4re-Terminal-Stil (schwarz/neongrün) für HTML-Mails, Plaintext-Fallback
+
+---
+
 ## [0.7.0] — 2026-03-29
 
 ### Gefixt
