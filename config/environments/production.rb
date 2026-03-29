@@ -78,4 +78,7 @@ Rails.application.configure do
   # Allowed hosts — extend via RAILS_ALLOWED_HOSTS env var (comma-separated)
   config.hosts << "fl4re.datenkistchen.de"
   config.hosts << ENV["RAILS_ALLOWED_HOSTS"].split(",") if ENV["RAILS_ALLOWED_HOSTS"].present?
+
+  # Falls keine credentials.yml.enc vorhanden, SECRET_KEY_BASE-Env-Variable als Fallback
+  config.secret_key_base = ENV["SECRET_KEY_BASE"] if ENV["SECRET_KEY_BASE"].present?
 end
