@@ -19,6 +19,11 @@ class Rack::Attack
     req.ip if req.path == "/register" && req.post?
   end
 
+  # Account-Lockout: nach 20 Login-Versuchen pro Stunde pro IP für 1 Stunde gesperrt
+  throttle("login/ip/lockout", limit: 20, period: 1.hour) do |req|
+    req.ip if req.path == "/session" && req.post?
+  end
+
   # Antwort bei Überschreitung
   self.throttled_responder = lambda do |req|
     [ 429,
