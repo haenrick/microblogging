@@ -10,6 +10,8 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 ### Gefixt
 - **Post-Edit speicherte nicht** — `form_with url:` ohne Model-Objekt generierte `name="content"` statt `name="post[content]"`, `params.require(:post)` fand nichts; auf `form_with model: post` umgestellt
 - **Theme-Wechsel erst nach Reload sichtbar (Safari)** — Turbo-Page-Cache restaurierte alten DOM-Snapshot mit altem `<style>`-Tag; neuer `theme_controller.js` setzt CSS-Variablen sofort per JS beim Klick auf einen Swatch — kein Reload mehr nötig, funktioniert als Live-Preview
+- **Likes und Replies nach Reload weg** — Fragment-Cache hatte keinen Mechanismus zur Invalidierung bei Like/Reply-Änderungen; `touch: true` auf `Like→Post` und `Reply→Parent-Post` sorgt dafür dass `updated_at` sich ändert und der Cache-Key automatisch bricht
+- **Fragment Cache zeigte veraltete Zeitangaben** — `time_ago_in_words` und `expiry_label` wurden dauerhaft gecacht; `expires_in: 1.hour` begrenzt die maximale Staleness
 
 ### Neu
 - **T5 Fragment Caching** — `_post.html.erb` wrapped in `cache [post, Current.user.id]`; Cache invalidiert automatisch bei Post-Update (cache_key_with_version)
