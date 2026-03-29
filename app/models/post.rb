@@ -2,7 +2,7 @@ class Post < ApplicationRecord
   EXPIRY_DAYS = 30
 
   belongs_to :user
-  belongs_to :parent, class_name: "Post", optional: true
+  belongs_to :parent, class_name: "Post", optional: true, touch: true
   has_many :replies, class_name: "Post", foreign_key: :parent_id, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :liked_by_users, through: :likes, source: :user
