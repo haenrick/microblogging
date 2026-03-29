@@ -8,11 +8,14 @@ Part of the [DIVIDE](https://github.com/haenrick/divide) product family.
 
 - **Ruby on Rails 8.1** — backend & views
 - **PostgreSQL 16** — database (via Docker on Pi)
-- **Redis 7** — cache & Action Cable
 - **Solid Queue** — background jobs (ephemeral post cleanup)
+- **Solid Cable** — Action Cable without Redis
+- **Solid Cache** — fragment caching in DB
 - **ActiveStorage** — avatar & media uploads (libvips)
 - **Propshaft** — asset pipeline
+- **Hotwire** (Turbo + Stimulus) — reactive UI without a JS framework
 - **Cloudflare Tunnel** — expose Pi to internet without port forwarding
+- **Brevo** — transactional email (password reset)
 
 ## Features
 
@@ -26,6 +29,10 @@ Part of the [DIVIDE](https://github.com/haenrick/divide) product family.
 - Admin console (dashboard, user management, post moderation)
 - Registration with terminal boot aesthetic
 - User preferences (Enter-to-post toggle, extensible via JSONB)
+- Password reset via email
+- Session expiry after 30 days
+- PWA manifest + apple-touch-icon (installable on iOS)
+- Fragment caching with automatic cache invalidation
 
 ## Development Setup
 
@@ -33,7 +40,6 @@ Part of the [DIVIDE](https://github.com/haenrick/divide) product family.
 
 - Ruby 3.3.6 (`rbenv` recommended)
 - PostgreSQL running locally or via Docker
-- Redis running locally or via Docker
 
 ### Quick start
 
@@ -45,7 +51,7 @@ bundle install
 # Start services
 docker compose up -d
 
-# Setup database (DB_USER matches docker-compose.yml)
+# Setup database
 DB_HOST=localhost DB_USER=fl4re DB_PASSWORD=<your-password> bin/rails db:create db:migrate
 
 # Start server
@@ -54,15 +60,19 @@ DB_HOST=localhost DB_USER=fl4re DB_PASSWORD=<your-password> bin/rails server
 
 Open [http://localhost:3000](http://localhost:3000)
 
-> **Pi note:** The existing Pi setup overrides `DB_USER` and `DB_PASSWORD` via `.env` — these ENV vars are set on the server and keep working as-is.
-
 ### Environment variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `DB_HOST` | `localhost` | PostgreSQL host |
-| `DB_USER` | `fl4re` | PostgreSQL user |
-| `DB_PASSWORD` | *(required)* | PostgreSQL password |
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `DB_HOST` | yes | PostgreSQL host |
+| `DB_USER` | yes | PostgreSQL user |
+| `DB_PASSWORD` | yes | PostgreSQL password |
+| `RAILS_MASTER_KEY` | production | Content of `config/master.key` |
+| `SECRET_KEY_BASE` | production | Rails secret key base |
+| `BREVO_SMTP_USER` | production | Brevo SMTP login (from Brevo dashboard → SMTP & API) |
+| `BREVO_SMTP_KEY` | production | Brevo SMTP key |
+
+See `.env.example` for a full template.
 
 ### First admin user
 
@@ -73,14 +83,15 @@ User.find_by(username: "your_username").update!(admin: true)
 
 ## Deployment (Raspberry Pi 5)
 
-```bash
-# Pull latest and migrate
-git pull
-bin/rails db:migrate
+Deployments run automatically via GitHub Actions on every push to `main` (self-hosted runner on the Pi).
 
-# Start server on port 4000
-bin/start
+Manual deploy:
+
+```bash
+bin/deploy
 ```
+
+The script loads `.env`, runs `git pull`, `bundle install`, `assets:precompile`, `db:migrate`, and restarts the systemd service.
 
 Exposed via Cloudflare Tunnel — no open firewall ports required.
 
