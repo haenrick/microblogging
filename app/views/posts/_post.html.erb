@@ -1,3 +1,4 @@
+<% cache [post, Current.user.id] do %>
 <div class="post <%= "reply" if post.parent_id %>" data-controller="toggle">
   <div class="post-meta">
     <div class="post-avatar">
@@ -36,9 +37,9 @@
 
   <% if post.user == Current.user %>
     <div class="edit-form hidden" data-toggle-target="editForm">
-      <%= form_with url: post_path(post), method: :patch, class: "post-form edit-form-inner",
+      <%= form_with model: post, class: "post-form edit-form-inner",
           data: { controller: "post-form" } do |f| %>
-        <%= f.text_area :content, value: post.content, maxlength: 280, rows: 3,
+        <%= f.text_area :content, maxlength: 280, rows: 3,
             data: { action: "input->post-form#updateCount keydown->post-form#submitOnEnter" } %>
         <div class="form-footer">
           <span class="char-counter"><span class="char-remaining" data-post-form-target="counter"><%= 280 - post.content.length %></span> chars left</span>
@@ -68,3 +69,4 @@
     </div>
   <% end %>
 </div>
+<% end %>

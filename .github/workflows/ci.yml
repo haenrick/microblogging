@@ -90,3 +90,12 @@ jobs:
         run: bin/rails db:test:prepare test
 
   # system-test: disabled until system tests are written (requires Chrome/Selenium)
+
+  deploy:
+    needs: [scan_ruby, lint, test]
+    runs-on: self-hosted
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy to Pi
+        working-directory: /home/henrik/microblog
+        run: bin/deploy

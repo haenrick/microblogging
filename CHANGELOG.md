@@ -5,6 +5,22 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.7.0] — 2026-03-29
+
+### Gefixt
+- **Post-Edit speicherte nicht** — `form_with url:` ohne Model-Objekt generierte `name="content"` statt `name="post[content]"`, `params.require(:post)` fand nichts; auf `form_with model: post` umgestellt
+- **Theme-Wechsel erst nach Reload sichtbar (Safari)** — Turbo-Page-Cache restaurierte alten DOM-Snapshot mit altem `<style>`-Tag; neuer `theme_controller.js` setzt CSS-Variablen sofort per JS beim Klick auf einen Swatch — kein Reload mehr nötig, funktioniert als Live-Preview
+
+### Neu
+- **T5 Fragment Caching** — `_post.html.erb` wrapped in `cache [post, Current.user.id]`; Cache invalidiert automatisch bei Post-Update (cache_key_with_version)
+- **S1 Account-Lockout** — Rack::Attack throttelt Login-Versuche zusätzlich auf 20/Stunde pro IP (war vorher nur 10/20s und 5/min)
+- **D3 GitHub Actions Deploy** — Deploy-Job in `ci.yml`; läuft nach scan_ruby + lint + test, nur auf `main`, via `bin/deploy` auf dem self-hosted Pi-Runner
+
+### Hinweis D3
+Der Deploy-Job setzt einen **Self-hosted Runner auf dem Pi** voraus. Einmalig einrichten: GitHub → repo Settings → Actions → Runners → „New self-hosted runner" → Anweisungen für Linux/ARM64 folgen → als systemd-Service registrieren.
+
+---
+
 ## [0.6.0] — 2026-03-29
 
 ### Neu

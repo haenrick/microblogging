@@ -34,6 +34,9 @@
 | T7 | Admin-Hierarchie — Admins können andere Admins nicht löschen/degradieren |
 | S5 | Session-Ablauf — Sessions nach 30 Tagen serverseitig invalidieren |
 | M6 | PWA-Basis — manifest.webmanifest, PwaController, apple-touch-icon |
+| T5 | Fragment Caching — `cache [post, user.id]` in Feed-Posts |
+| S1 | Account-Lockout — Rack::Attack throttle 20 Login-Versuche/h pro IP |
+| D3 | GitHub Actions Deploy-Job — self-hosted Runner auf Pi, `bin/deploy` |
 
 ---
 
@@ -210,7 +213,6 @@ Optional: Backup via `rclone` zu Cloudflare R2 oder einem anderen S3-kompatiblen
 
 | # | Maßnahme | Aufwand | Beschreibung |
 |---|----------|---------|--------------|
-| T5 | Fragment Caching | ~1h | Feed-Posts via `cache post do` — deutlich schnellere Ladezeiten bei wachsendem Inhalt |
 | T6 | PostgreSQL Full-Text Search | ~2h | `tsvector`/`tsquery` statt ILIKE — kein Extra-Gem, indexierbar, relevanter |
 
 #### 🟢 Niedrig
@@ -237,7 +239,6 @@ Optional: Backup via `rclone` zu Cloudflare R2 oder einem anderen S3-kompatiblen
 
 | # | Risiko | Aufwand | Maßnahme |
 |---|--------|---------|----------|
-| S1 | Kein Account-Lockout | ~1h | Rack::Attack blocklist nach 20 Fehlversuchen |
 | S2 | Kein Admin-Audit-Log | ~2h | Admin-Aktionen in DB loggen |
 | S3 | Kein 2FA | ~1 Tag | TOTP via `rotp` Gem |
 | S4 | Keine E-Mail-Verifikation | ~1 Tag | Token-basierte Verifikation bei Registrierung |
@@ -325,7 +326,6 @@ fl4re.datenkistchen.de
   ┌──────────────────────────┐
   │  Rails (Puma)  :4000     │
   │  PostgreSQL    :5432     │
-  │  Redis         :6379     │
   │  (Docker Compose)        │
   └──────────────────────────┘
 ```
@@ -347,3 +347,4 @@ Für öffentlichen Launch: Hetzner CX22 (~5 €/Monat) + Kamal (bereits im Gemfi
 | `v0.5.0` | User Preferences, Enter-to-post, CSP-Fix Inline-Script |
 | `v0.5.1` | Theme-Auswahl-Fix (CSP Nonce + Swatches), Passwörter aus README entfernt |
 | `v0.6.0` | Stimulus PostForm-Controller, Admin-Hierarchie, Session-Ablauf, PWA-Basis |
+| `v0.7.0` | Bugfixes (Post-Edit, Theme-Preview), Fragment Caching, Account-Lockout, CD via GitHub Actions |
