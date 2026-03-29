@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# fl4re — Manuelles Deployment
+# Verwendung: bin/deploy
+# Voraussetzung: auf dem Pi ausführen, im ~/microblog-Verzeichnis
+
+set -e
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+cd "$SCRIPT_DIR/.."
+
+echo "[deploy] Lade Env-Variablen..."
+if [ -f .env ]; then
+  set -a
+  source .env
+  set +a
+else
+  echo "[deploy] FEHLER: .env nicht gefunden" >&2
+  exit 1
+fi
+
+echo "[deploy] Hole neuen Code..."
+git pull
+
+echo "[deploy] Installiere Gems..."
+bundle install
+
+echo "[deploy] Migriere Datenbank..."
+bin/rails db:migrate RAILS_ENV=production
+
+echo "[deploy] Kompiliere Assets..."
+bin/rails assets:precompile RAILS_ENV=production
+
+echo "[deploy] Starte Service neu..."
+sudo systemctl restart fl4re
+
+echo "[deploy] Fertig. Status:"
+sudo systemctl status fl4re --no-pager -l
