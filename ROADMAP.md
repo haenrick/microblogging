@@ -207,7 +207,7 @@ Optional: Backup via `rclone` zu Cloudflare R2 oder einem anderen S3-kompatiblen
 
 | # | Maßnahme | Aufwand | Beschreibung |
 |---|----------|---------|--------------|
-| T3 | E-Mail / SMTP konfigurieren | ~2h | Passwort-Reset schlägt aktuell lautlos fehl (`from@example.com` Platzhalter) |
+| T3 | E-Mail via Resend | ~1h | Passwort-Reset + transaktionale Mails; Domain `fl4re.datenkistchen.de` in Resend verifizieren, ActionMailer konfigurieren |
 
 #### 🟡 Mittel
 
@@ -230,7 +230,9 @@ Optional: Backup via `rclone` zu Cloudflare R2 oder einem anderen S3-kompatiblen
 | # | Feature | Aufwand | Beschreibung |
 |---|---------|---------|--------------|
 | U3 | Privates Profil | ~1–2 Tage | Profil auf privat stellen, Follower-Anfragen mit pending-Status |
-| M6 | PWA — Service Worker | ~0.5 Tag | Offline-Cache der letzten Posts, Push-Notifications vorbereiten (Basis-Manifest ✅) |
+| N5 | In-App Benachrichtigungen | ~1.5 Tage | Glocken-Icon + Badge, Notification-Feed; Events: neuer Follower, Like, Reply; real-time via Turbo Broadcast (solid_cable ✅) |
+| N6 | Push Notifications | ~1 Tag | Browser/OS-Benachrichtigungen auch wenn App geschlossen; Web Push API + Service Worker; baut auf N5 + M6 auf |
+| M6 | PWA — Service Worker | ~0.5 Tag | Offline-Cache, Voraussetzung für N6 (Basis-Manifest ✅) |
 | X2 | KI-Integration | ~1–3 Tage | Post-Assistent via Claude API (X2a), Smart Search (X2c) |
 | N4 | E2E-DMs | ~3–5 Tage | Ende-zu-Ende-verschlüsselte Direktnachrichten (X25519 + AES-GCM) |
 | I1 | iOS App | Später | Erst PWA, dann SwiftUI wenn Nutzerbasis es rechtfertigt |
@@ -284,6 +286,43 @@ Optional: Backup via `rclone` zu Cloudflare R2 oder einem anderen S3-kompatiblen
 | X2d | Content-Moderation | Automatisches Flaggen toxischer Posts | ~2 Tage |
 
 **Technischer Ansatz:** Claude API (Anthropic) · `anthropic-rb` Gem · Stimulus-Controller → `/ai/suggest`
+
+---
+
+### N5 — In-App Benachrichtigungen
+
+**Events:** neuer Follower, Like auf eigenen Post, Reply auf eigenen Post
+
+**Datenbankschema:**
+```
+notifications: id, recipient_id, actor_id, notifiable_type, notifiable_id, type, read_at, created_at
+```
+
+**Ausbaustufen:**
+1. `notifications`-Tabelle + Glocken-Icon mit Badge in der Sidebar (ungelesene Anzahl)
+2. Notification-Feed (eigene Seite oder Dropdown)
+3. Real-time Badge-Update via Turbo Broadcast — solid_cable ist bereits konfiguriert ✅
+4. E-Mail-Benachrichtigung optional pro Event in den Settings (setzt T3 voraus)
+
+**Aufwand:** ~1.5 Tage · **Abhängigkeiten:** T3 für E-Mail-Notifications (optional)
+
+---
+
+### N6 — Push Notifications
+
+**Ziel:** Browser/OS-Benachrichtigungen auch wenn fl4re geschlossen ist.
+
+**Technischer Ansatz:** Web Push API
+- Service Worker empfängt Push-Events vom Server
+- Server sendet Push via `web-push` Gem an gespeicherte Subscriptions
+- Nutzer muss Berechtigung erteilen (Browser-Dialog)
+
+**Datenbankschema:**
+```
+push_subscriptions: id, user_id, endpoint, p256dh_key, auth_key, created_at
+```
+
+**Aufwand:** ~1 Tag · **Abhängigkeiten:** N5 ✅ (Notification-System), M6 (Service Worker)
 
 ---
 
