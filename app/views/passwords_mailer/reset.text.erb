@@ -1,4 +1,14 @@
-You can reset your password on
+Passwort zurücksetzen — fl4re
+==============================
+
+Jemand hat einen Passwort-Reset für deinen Account angefordert.
+
+Öffne diesen Link, um ein neues Passwort zu setzen:
+
 <%= edit_password_url(@user.password_reset_token) %>
 
-This link will expire in <%= distance_of_time_in_words(0, @user.password_reset_token_expires_in) %>.
+Dieser Link läuft in <%= distance_of_time_in_words(0, @user.password_reset_token_expires_in) %> ab.
+Falls du keinen Reset angefordert hast, kannst du diese Mail ignorieren.
+
+--
+fl4re · https://fl4re.datenkistchen.de

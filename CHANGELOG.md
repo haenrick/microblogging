@@ -5,11 +5,21 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.8.0] — 2026-03-29
+
+### Neu
+- **T3 E-Mail via Brevo** — ActionMailer über Brevo SMTP konfiguriert; Passwort-Reset funktioniert in Production; Absender: `noreply@fl4re.datenkistchen.de`; SMTP-Credentials via `BREVO_SMTP_USER` + `BREVO_SMTP_KEY` in `.env`
+- **Mail-Template** — fl4re-Terminal-Stil (schwarz/neongrün) für HTML-Mails, Plaintext-Fallback
+
+---
+
 ## [0.7.0] — 2026-03-29
 
 ### Gefixt
 - **Post-Edit speicherte nicht** — `form_with url:` ohne Model-Objekt generierte `name="content"` statt `name="post[content]"`, `params.require(:post)` fand nichts; auf `form_with model: post` umgestellt
 - **Theme-Wechsel erst nach Reload sichtbar (Safari)** — Turbo-Page-Cache restaurierte alten DOM-Snapshot mit altem `<style>`-Tag; neuer `theme_controller.js` setzt CSS-Variablen sofort per JS beim Klick auf einen Swatch — kein Reload mehr nötig, funktioniert als Live-Preview
+- **Likes und Replies nach Reload weg** — Fragment-Cache hatte keinen Mechanismus zur Invalidierung bei Like/Reply-Änderungen; `touch: true` auf `Like→Post` und `Reply→Parent-Post` sorgt dafür dass `updated_at` sich ändert und der Cache-Key automatisch bricht
+- **Fragment Cache zeigte veraltete Zeitangaben** — `time_ago_in_words` und `expiry_label` wurden dauerhaft gecacht; `expires_in: 1.hour` begrenzt die maximale Staleness
 
 ### Neu
 - **T5 Fragment Caching** — `_post.html.erb` wrapped in `cache [post, Current.user.id]`; Cache invalidiert automatisch bei Post-Update (cache_key_with_version)

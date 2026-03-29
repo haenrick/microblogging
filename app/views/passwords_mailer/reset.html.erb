@@ -1,6 +1,25 @@
-<p>
-  You can reset your password on
-  <%= link_to "this password reset page", edit_password_url(@user.password_reset_token) %>.
+<p style="color:#ccc;font-size:14px;line-height:1.6;margin:0 0 24px;">
+  Jemand hat einen Passwort-Reset für deinen Account angefordert.
+  Klicke auf den Button, um ein neues Passwort zu setzen:
+</p>
 
-  This link will expire in <%= distance_of_time_in_words(0, @user.password_reset_token_expires_in) %>.
+<table cellpadding="0" cellspacing="0" style="margin:0 0 24px;">
+  <tr>
+    <td style="background-color:#00ff88;border-radius:4px;">
+      <%= link_to "Passwort zurücksetzen", edit_password_url(@user.password_reset_token),
+            style: "display:inline-block;padding:12px 24px;color:#0a0a0a;font-weight:bold;text-decoration:none;font-size:14px;" %>
+    </td>
+  </tr>
+</table>
+
+<p style="color:#666;font-size:12px;line-height:1.6;margin:0 0 8px;">
+  Oder kopiere diesen Link in deinen Browser:
+</p>
+<p style="color:#00ff88;font-size:12px;word-break:break-all;margin:0 0 24px;">
+  <%= edit_password_url(@user.password_reset_token) %>
+</p>
+
+<p style="color:#555;font-size:12px;margin:0;">
+  Dieser Link läuft in <%= distance_of_time_in_words(0, @user.password_reset_token_expires_in) %> ab.
+  Falls du keinen Reset angefordert hast, kannst du diese Mail ignorieren.
 </p>
