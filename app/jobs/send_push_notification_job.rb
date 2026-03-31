@@ -16,8 +16,8 @@ class SendPushNotificationJob < ApplicationJob
 
     vapid = {
       subject:    "mailto:#{Rails.application.config.x.app_email}",
-      public_key:  Rails.application.credentials.dig(:vapid, :public_key),
-      private_key: Rails.application.credentials.dig(:vapid, :private_key)
+      public_key:  ENV["VAPID_PUBLIC_KEY"],
+      private_key: ENV["VAPID_PRIVATE_KEY"]
     }
 
     recipient.push_subscriptions.each do |sub|

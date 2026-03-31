@@ -32,9 +32,9 @@
   </head>
 
   <body data-enter-to-post="<%= Current.user&.enter_to_post != false %>"
-        <% if user_signed_in? && Rails.application.credentials.dig(:vapid, :public_key).present? %>
+        <% if user_signed_in? && ENV["VAPID_PUBLIC_KEY"].present? %>
           data-controller="push-notifications"
-          data-push-notifications-vapid-key-value="<%= Rails.application.credentials.dig(:vapid, :public_key) %>"
+          data-push-notifications-vapid-key-value="<%= ENV["VAPID_PUBLIC_KEY"] %>"
         <% end %>>
     <% if user_signed_in? %>
       <%= turbo_stream_from "notifications_#{Current.user.id}" %>
