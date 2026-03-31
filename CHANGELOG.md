@@ -5,6 +5,20 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.9.0] — 2026-03-31
+
+### Neu
+- **N5 In-App Notifications** — Notification-Model (polymorphic) für drei Events: Like auf eigenen Post, neuer Follower, Reply auf eigenen Post; kein Self-Notify; Badge in der Sidebar mit ungelesener Anzahl; Notifications-Feed unter `/notifications` mit Auto-Mark-Read beim Öffnen; "clear all"-Aktion
+- **Real-time Badge** — Turbo Broadcast aktualisiert den Badge sofort ohne Seitenreload (solid_cable, kein Redis)
+- **N6 Push Notifications** — Browser-/OS-Benachrichtigungen auch wenn fl4re geschlossen ist; Web Push API mit VAPID; Opt-in per Browser-Permission-Dialog; `web-push` Gem; `SendPushNotificationJob` mit automatischem Cleanup abgelaufener Subscriptions
+- **M6 PWA Service Worker** — aktiver Service Worker unter `/service-worker.js`; Offline-Cache für Assets (Cache-first); Push-Handler + notificationclick-Navigation (vervollständigt M6, Basis-Manifest war bereits in v0.6.0)
+
+### Infrastruktur
+- VAPID-Keys werden auf dem Server generiert und in `.env` gesetzt — kein Secret landet im Repository
+- `action_text-trix` auf 2.1.18 aktualisiert (XSS-Fix GHSA-53p3-c7vp-4mcc)
+
+---
+
 ## [0.8.0] — 2026-03-29
 
 ### Neu
