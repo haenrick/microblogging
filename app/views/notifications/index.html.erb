@@ -1,0 +1,18 @@
+<% content_for :title, "notifications — fl4re" %>
+
+<div class="page-header">
+  <h1 class="page-title">&gt; notifications_</h1>
+  <% if @notifications.any? %>
+    <%= button_to destroy_all_notifications_path, method: :delete, class: "btn-sm" do %>
+      // clear all
+    <% end %>
+  <% end %>
+</div>
+
+<% if @notifications.empty? %>
+  <p class="empty-state">// no notifications yet</p>
+<% else %>
+  <div class="notif-list">
+    <%= render @notifications %>
+  </div>
+<% end %>

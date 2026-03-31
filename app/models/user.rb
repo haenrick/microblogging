@@ -25,6 +25,9 @@ class User < ApplicationRecord
   has_many :reverse_blocks, class_name: "Block", foreign_key: :blocked_id, dependent: :destroy
   has_many :blocked_by_users, through: :reverse_blocks, source: :blocker
 
+  has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
+  has_many :push_subscriptions, dependent: :destroy
+
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
   validates :username, presence: true, uniqueness: true,

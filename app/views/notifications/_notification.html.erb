@@ -1,0 +1,5 @@
+<div class="notif-item <%= notification.unread? ? "notif-unread" : "" %>">
+  <span class="notif-prefix">&gt;</span>
+  <%= link_to notification.message, notification.path, class: "notif-link" %>
+  <span class="notif-time"><%= time_ago_in_words(notification.created_at) %> ago</span>
+</div>

@@ -33,11 +33,13 @@
 | T4 | Inline-JS → Stimulus — PostForm-Controller (Charcount, File-Label, Enter-to-Post) |
 | T7 | Admin-Hierarchie — Admins können andere Admins nicht löschen/degradieren |
 | S5 | Session-Ablauf — Sessions nach 30 Tagen serverseitig invalidieren |
-| M6 | PWA-Basis — manifest.webmanifest, PwaController, apple-touch-icon |
+| M6 | PWA — Service Worker, Offline-Cache, Push-Grundlage (manifest.webmanifest, PwaController, apple-touch-icon) |
 | T5 | Fragment Caching — `cache [post, user.id]` in Feed-Posts |
 | S1 | Account-Lockout — Rack::Attack throttle 20 Login-Versuche/h pro IP |
 | D3 | GitHub Actions Deploy-Job — self-hosted Runner auf Pi, `bin/deploy` |
 | T3 | E-Mail via Brevo — Passwort-Reset, fl4re-Mail-Template, Absender `noreply@fl4re.datenkistchen.de` |
+| N5 | In-App Benachrichtigungen — Like, Follow, Reply; Badge in Sidebar; Real-time via Turbo Broadcast |
+| N6 | Push Notifications — Web Push API, VAPID, `web-push` Gem, Service Worker Push-Handler |
 
 ---
 
@@ -231,9 +233,6 @@ Optional: Backup via `rclone` zu Cloudflare R2 oder einem anderen S3-kompatiblen
 | # | Feature | Aufwand | Beschreibung |
 |---|---------|---------|--------------|
 | U3 | Privates Profil | ~1–2 Tage | Profil auf privat stellen, Follower-Anfragen mit pending-Status |
-| N5 | In-App Benachrichtigungen | ~1.5 Tage | Glocken-Icon + Badge, Notification-Feed; Events: neuer Follower, Like, Reply; real-time via Turbo Broadcast (solid_cable ✅) |
-| N6 | Push Notifications | ~1 Tag | Browser/OS-Benachrichtigungen auch wenn App geschlossen; Web Push API + Service Worker; baut auf N5 + M6 auf |
-| M6 | PWA — Service Worker | ~0.5 Tag | Offline-Cache, Voraussetzung für N6 (Basis-Manifest ✅) |
 | X2 | KI-Integration | ~1–3 Tage | Post-Assistent via Claude API (X2a), Smart Search (X2c) |
 | N4 | E2E-DMs | ~3–5 Tage | Ende-zu-Ende-verschlüsselte Direktnachrichten (X25519 + AES-GCM) |
 | I1 | iOS App | Später | Erst PWA, dann SwiftUI wenn Nutzerbasis es rechtfertigt |
@@ -388,3 +387,5 @@ Für öffentlichen Launch: Hetzner CX22 (~5 €/Monat) + Kamal (bereits im Gemfi
 | `v0.5.1` | Theme-Auswahl-Fix (CSP Nonce + Swatches), Passwörter aus README entfernt |
 | `v0.6.0` | Stimulus PostForm-Controller, Admin-Hierarchie, Session-Ablauf, PWA-Basis |
 | `v0.7.0` | Bugfixes (Post-Edit, Theme-Preview), Fragment Caching, Account-Lockout, CD via GitHub Actions |
+| `v0.8.0` | E-Mail via Brevo SMTP, Passwort-Reset, Login-Link |
+| `v0.9.0` | In-App Notifications (N5), Push Notifications (N6), PWA Service Worker (M6) |

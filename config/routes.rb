@@ -15,6 +15,12 @@ Rails.application.routes.draw do
   get "/search",   to: "search#index",   as: :search
   get "/discover", to: "discover#index", as: :discover
 
+  resources :notifications, only: [:index] do
+    collection { delete :destroy_all }
+  end
+
+  resources :push_subscriptions, only: [:create, :destroy]
+
   post   "/:username/follow",  to: "follows#create",  as: :follow_user
   delete "/:username/follow",  to: "follows#destroy", as: :unfollow_user
 

@@ -17,6 +17,7 @@ module Fl4re
     config.autoload_lib(ignore: %w[assets tasks])
     config.middleware.use Rack::Attack
 
+    config.x.app_email = "noreply@fl4re.datenkistchen.de"
 
     # Configuration for the application, engines, and railties goes here.
     #
