@@ -9,7 +9,7 @@ class PushSubscriptionsController < ApplicationController
   end
 
   def destroy
-    Current.user.push_subscriptions.find_by(endpoint: params[:id])&.destroy
+    Current.user.push_subscriptions.find_by(id: params[:id])&.destroy
     head :no_content
   end
 end

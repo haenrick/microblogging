@@ -13,3 +13,10 @@ two:
   password_digest: <%= password_digest %>
   theme: green
   admin: false
+
+three:
+  email_address: three@example.com
+  username: userthree
+  password_digest: <%= password_digest %>
+  theme: amber
+  admin: false

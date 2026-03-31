@@ -1,0 +1,5 @@
+one_sub:
+  user: one
+  endpoint: https://push.example.com/sub/one
+  p256dh_key: dGVzdHB1YmxpY2tleW9uZQ==
+  auth_key: dGVzdGF1dGhvbmU=

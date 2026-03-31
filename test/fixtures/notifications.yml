@@ -1,0 +1,21 @@
+like_unread:
+  recipient: one
+  actor: two
+  notifiable_type: Post
+  notifiable_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
+  notification_type: like
+
+like_read:
+  recipient: one
+  actor: two
+  notifiable_type: Post
+  notifiable_id: <%= ActiveRecord::FixtureSet.identify(:two) %>
+  notification_type: like
+  read_at: 2026-03-30 10:00:00
+
+follow_unread:
+  recipient: one
+  actor: three
+  notifiable_type: User
+  notifiable_id: <%= ActiveRecord::FixtureSet.identify(:three) %>
+  notification_type: follow

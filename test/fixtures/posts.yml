@@ -11,3 +11,16 @@ two:
   user: two
   public_id: xyz789fg
   expires_at: <%= 30.days.from_now %>
+
+reply_from_two:
+  content: Reply from usertwo
+  user: two
+  parent: one
+  public_id: rep456hi
+  expires_at: <%= 30.days.from_now %>
+
+expired:
+  content: This post has expired
+  user: one
+  public_id: exp000xx
+  expires_at: <%= 1.day.ago %>
