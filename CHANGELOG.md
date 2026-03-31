@@ -5,6 +5,22 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.9.1] — 2026-03-31
+
+### Tests & Qualität
+- **Teststrategie** — vollständige Testabdeckung eingeführt; 102 Tests, 252 Assertions, 0 Failures (Baseline: 29 Tests)
+- **Model-Tests** — `User`, `Post`, `Follow`, `Like`, `Notification`, `PushSubscription`: Validierungen, Callbacks, Business-Logik
+- **Controller-Tests** — `NotificationsController`, `PushSubscriptionsController`, `BlocksController` neu; `PostsController` um Like/Reply/Destroy-Tests erweitert
+- **Job-Tests** — `PurgeExpiredPostsJob` (löscht abgelaufene, lässt aktive, idempotent) und `SendPushNotificationJob` (Push-Versand, expired Subscription Cleanup)
+- **Fixtures** — erweitert: 3 User, 4 Posts (inkl. Reply + Expired), Likes, Notifications, PushSubscriptions
+- **`stub_method`-Helper** — in `test_helper.rb` für minitest 6 (kein `minitest/mock` mehr verfügbar)
+- **Dokumentation** — `docs/testing.md` mit Teststrategie, Konventionen und Anleitung
+
+### Bugfix
+- `PushSubscriptionsController#destroy` nutzt jetzt numerische ID statt Endpoint-URL als Pfad-Segment
+
+---
+
 ## [0.9.0] — 2026-03-31
 
 ### Neu

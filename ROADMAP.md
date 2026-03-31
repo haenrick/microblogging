@@ -40,6 +40,7 @@
 | T3 | E-Mail via Brevo — Passwort-Reset, fl4re-Mail-Template, Absender `noreply@fl4re.datenkistchen.de` |
 | N5 | In-App Benachrichtigungen — Like, Follow, Reply; Badge in Sidebar; Real-time via Turbo Broadcast |
 | N6 | Push Notifications — Web Push API, VAPID, `web-push` Gem, Service Worker Push-Handler |
+| QA | Teststrategie — 102 Tests, 252 Assertions; Models, Controller, Jobs; `docs/testing.md` |
 
 ---
 
@@ -389,3 +390,4 @@ Für öffentlichen Launch: Hetzner CX22 (~5 €/Monat) + Kamal (bereits im Gemfi
 | `v0.7.0` | Bugfixes (Post-Edit, Theme-Preview), Fragment Caching, Account-Lockout, CD via GitHub Actions |
 | `v0.8.0` | E-Mail via Brevo SMTP, Passwort-Reset, Login-Link |
 | `v0.9.0` | In-App Notifications (N5), Push Notifications (N6), PWA Service Worker (M6) |
+| `v0.9.1` | Teststrategie: 102 Tests, 252 Assertions — Models, Controller, Jobs vollständig abgedeckt |

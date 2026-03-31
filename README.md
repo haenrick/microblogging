@@ -31,7 +31,9 @@ Part of the [DIVIDE](https://github.com/haenrick/divide) product family.
 - User preferences (Enter-to-post toggle, extensible via JSONB)
 - Password reset via email
 - Session expiry after 30 days
-- PWA manifest + apple-touch-icon (installable on iOS)
+- In-app notifications (like, follow, reply) with real-time badge via Turbo Broadcast
+- Push notifications (Web Push API, VAPID, opt-in browser permission)
+- PWA: installable, service worker with offline cache
 - Fragment caching with automatic cache invalidation
 
 ## Development Setup
@@ -71,6 +73,8 @@ Open [http://localhost:3000](http://localhost:3000)
 | `SECRET_KEY_BASE` | production | Rails secret key base |
 | `BREVO_SMTP_USER` | production | Brevo SMTP login (from Brevo dashboard → SMTP & API) |
 | `BREVO_SMTP_KEY` | production | Brevo SMTP key |
+| `VAPID_PUBLIC_KEY` | production | Web Push VAPID public key — generate once on the server: `bundle exec ruby -e "require 'web_push'; kp = WebPush::VapidKey.new.to_h; puts 'VAPID_PUBLIC_KEY=' + kp[:public_key]; puts 'VAPID_PRIVATE_KEY=' + kp[:private_key]"` |
+| `VAPID_PRIVATE_KEY` | production | Web Push VAPID private key (see above) |
 
 See `.env.example` for a full template.
 
@@ -80,6 +84,14 @@ See `.env.example` for a full template.
 bin/rails console
 User.find_by(username: "your_username").update!(admin: true)
 ```
+
+## Testing
+
+```bash
+DB_HOST=localhost DB_USER=microblog DB_PASSWORD=microblog_dev RAILS_ENV=test bin/rails test
+```
+
+102 tests, 252 assertions. See [docs/testing.md](docs/testing.md) for the full test strategy.
 
 ## Deployment (Raspberry Pi 5)
 
