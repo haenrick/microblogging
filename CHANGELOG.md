@@ -5,6 +5,15 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.9.2] — 2026-03-31
+
+### Assets
+- **Favicons** — vollständiges favicon.io-Paket eingebunden: `favicon.ico` (16+32px), `favicon-16x16.png`, `favicon-32x32.png`, `apple-touch-icon.png` (180×180), `android-chrome-192x192.png`, `android-chrome-512x512.png`
+- **PWA-Manifest** — `manifest.webmanifest` mit korrektem `name`/`short_name` ("fl4re"), passenden Icon-Pfaden und `theme_color`/`background_color` #000000
+- **Layout** — `<head>` referenziert jetzt spezifische Favicon-Größen statt generischem `icon.png`
+
+---
+
 ## [0.9.1] — 2026-03-31
 
 ### Tests & Qualität

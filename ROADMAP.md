@@ -391,3 +391,4 @@ Für öffentlichen Launch: Hetzner CX22 (~5 €/Monat) + Kamal (bereits im Gemfi
 | `v0.8.0` | E-Mail via Brevo SMTP, Passwort-Reset, Login-Link |
 | `v0.9.0` | In-App Notifications (N5), Push Notifications (N6), PWA Service Worker (M6) |
 | `v0.9.1` | Teststrategie: 102 Tests, 252 Assertions — Models, Controller, Jobs vollständig abgedeckt |
+| `v0.9.2` | Favicons: vollständiges favicon.io-Paket (ICO, PNG 16/32/180/192/512), manifest.webmanifest |
