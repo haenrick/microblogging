@@ -14,6 +14,7 @@ class Post < ApplicationRecord
   validate :acceptable_media, if: -> { media.attached? }
 
   before_create :set_expiry, :set_public_id
+  after_create_commit :notify_parent_author, if: -> { parent_id.present? }
 
   scope :top_level,   -> { where(parent_id: nil) }
   scope :recent,      -> { order(created_at: :desc) }
@@ -63,6 +64,16 @@ class Post < ApplicationRecord
   end
 
   private
+
+  def notify_parent_author
+    return if user_id == parent.user_id
+    Notification.create!(
+      recipient: parent.user,
+      actor: user,
+      notifiable: self,
+      notification_type: "reply"
+    )
+  end
 
   def set_expiry
     self.expires_at ||= EXPIRY_DAYS.days.from_now

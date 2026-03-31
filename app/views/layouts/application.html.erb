@@ -31,8 +31,13 @@
     <% end %>
   </head>
 
-  <body data-enter-to-post="<%= Current.user&.enter_to_post != false %>">
+  <body data-enter-to-post="<%= Current.user&.enter_to_post != false %>"
+        <% if user_signed_in? && Rails.application.credentials.dig(:vapid, :public_key).present? %>
+          data-controller="push-notifications"
+          data-push-notifications-vapid-key-value="<%= Rails.application.credentials.dig(:vapid, :public_key) %>"
+        <% end %>>
     <% if user_signed_in? %>
+      <%= turbo_stream_from "notifications_#{Current.user.id}" %>
       <div class="app-layout">
         <nav class="sidebar">
           <div class="sidebar-top">
@@ -43,6 +48,12 @@
               <li><%= link_to root_path, class: "nav-link #{current_page?(root_path) ? "active" : ""}" do %>> feed<% end %></li>
               <li><%= link_to search_path, class: "nav-link #{current_page?(search_path) ? "active" : ""}" do %>> search<% end %></li>
               <li><%= link_to discover_path, class: "nav-link #{current_page?(discover_path) ? "active" : ""}" do %>> discover<% end %></li>
+              <li>
+                <%= link_to notifications_path, class: "nav-link notif-nav-link #{current_page?(notifications_path) ? "active" : ""}" do %>
+                  &gt; notifications
+                  <%= render "notifications/badge", unread_count: Current.user.notifications.unread.count %>
+                <% end %>
+              </li>
               <li><%= link_to profile_path(Current.user.username), class: "nav-link #{current_page?(profile_path(Current.user.username)) ? "active" : ""}" do %>> profile<% end %></li>
               <li><%= link_to edit_profile_path, class: "nav-link #{current_page?(edit_profile_path) ? "active" : ""}" do %>> settings<% end %></li>
               <% if Current.user.admin? %>

@@ -629,3 +629,19 @@ body {
 .btn-admin-sm:hover { border-color: var(--cyan); color: var(--cyan); }
 .btn-admin-danger { background: transparent; border: 1px solid rgba(255,68,68,0.4); color: var(--red); padding: 2px 8px; font-family: var(--mono); font-size: 10px; letter-spacing: 1px; cursor: pointer; border-radius: 2px; transition: all 0.15s; }
 .btn-admin-danger:hover { background: rgba(255,68,68,0.1); }
+
+/* ── Notifications ── */
+.page-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 1.5rem; gap: 1rem; }
+.btn-sm { background: transparent; border: 1px solid #333; color: #555; padding: 3px 10px; font-family: var(--mono); font-size: 11px; letter-spacing: 1px; cursor: pointer; border-radius: 2px; transition: all 0.15s; }
+.btn-sm:hover { border-color: var(--red); color: var(--red); }
+.notif-nav-link { display: flex; align-items: center; gap: 4px; }
+.notif-count { color: var(--green); font-size: 11px; animation: blink 1.2s step-start infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.notif-list { display: flex; flex-direction: column; gap: 2px; }
+.notif-item { display: flex; align-items: baseline; gap: 8px; padding: 10px 12px; border: 1px solid #111; background: #0a0a0a; border-radius: 2px; font-size: 13px; letter-spacing: 0.5px; transition: border-color 0.15s; }
+.notif-item:hover { border-color: #222; }
+.notif-unread { border-left: 2px solid var(--green); }
+.notif-prefix { color: var(--green-dim); flex-shrink: 0; }
+.notif-link { color: var(--text-bright); text-decoration: none; flex: 1; }
+.notif-link:hover { color: var(--green); }
+.notif-time { color: #333; font-size: 11px; white-space: nowrap; flex-shrink: 0; }
