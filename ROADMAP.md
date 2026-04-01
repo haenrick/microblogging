@@ -150,18 +150,6 @@
 
 ---
 
-### M6 — PWA / Service Worker
-
-**Ziel:** App auf dem iPhone Home-Screen installierbar, Vollbild ohne Browser-Chrome.
-
-- `manifest.json` mit Icon, Theme-Color, Display-Mode
-- Service Worker für Offline-Cache der letzten Posts
-- `apple-touch-icon` für iOS
-
-**Aufwand:** ~1 Tag · Kein Backend-Umbau nötig
-
----
-
 ### X2 — KI-Integration
 
 **Mögliche Features:**
@@ -174,43 +162,6 @@
 | X2d | Content-Moderation | Automatisches Flaggen toxischer Posts | ~2 Tage |
 
 **Technischer Ansatz:** Claude API (Anthropic) · `anthropic-rb` Gem · Stimulus-Controller → `/ai/suggest`
-
----
-
-### N5 — In-App Benachrichtigungen
-
-**Events:** neuer Follower, Like auf eigenen Post, Reply auf eigenen Post
-
-**Datenbankschema:**
-```
-notifications: id, recipient_id, actor_id, notifiable_type, notifiable_id, type, read_at, created_at
-```
-
-**Ausbaustufen:**
-1. `notifications`-Tabelle + Glocken-Icon mit Badge in der Sidebar (ungelesene Anzahl)
-2. Notification-Feed (eigene Seite oder Dropdown)
-3. Real-time Badge-Update via Turbo Broadcast — solid_cable ist bereits konfiguriert ✅
-4. E-Mail-Benachrichtigung optional pro Event in den Settings (setzt T3 voraus)
-
-**Aufwand:** ~1.5 Tage · **Abhängigkeiten:** T3 für E-Mail-Notifications (optional)
-
----
-
-### N6 — Push Notifications
-
-**Ziel:** Browser/OS-Benachrichtigungen auch wenn fl4re geschlossen ist.
-
-**Technischer Ansatz:** Web Push API
-- Service Worker empfängt Push-Events vom Server
-- Server sendet Push via `web-push` Gem an gespeicherte Subscriptions
-- Nutzer muss Berechtigung erteilen (Browser-Dialog)
-
-**Datenbankschema:**
-```
-push_subscriptions: id, user_id, endpoint, p256dh_key, auth_key, created_at
-```
-
-**Aufwand:** ~1 Tag · **Abhängigkeiten:** N5 ✅ (Notification-System), M6 (Service Worker)
 
 ---
 
@@ -235,7 +186,7 @@ user_keys: user_id, public_key
 ### I1 — iOS App
 
 **Empfohlene Reihenfolge:**
-1. Erst **M6 PWA** — für die meisten Nutzer ausreichend, kein App Store nötig
+1. Erst PWA nutzen (bereits aktiv ✅) — für die meisten Nutzer ausreichend, kein App Store nötig
 2. Dann SwiftUI-App die die bestehende Rails-API konsumiert
 
 **Voraussetzungen:** Apple Developer Account (99 $/Jahr), HTTPS (via Cloudflare ✅)
