@@ -39,6 +39,8 @@ Rails.application.routes.draw do
   patch  "/profile",                 to: "profiles#update",          as: :update_profile
   patch  "/profile/change_password", to: "profiles#change_password", as: :change_password
   delete "/profile",                 to: "profiles#destroy",         as: :delete_account
+  get "/:username/followers", to: "profiles#followers", as: :profile_followers, constraints: { username: /(?!admin)[a-z0-9_]+/ }
+  get "/:username/following", to: "profiles#following", as: :profile_following, constraints: { username: /(?!admin)[a-z0-9_]+/ }
   get "/:username", to: "profiles#show", as: :profile, constraints: { username: /(?!admin)[a-z0-9_]+/ }
 
   root "posts#index"

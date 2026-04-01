@@ -1,6 +1,6 @@
 # fl4re — Roadmap
 
-> Stand: März 2026 · Stack: Ruby on Rails 8.1 · PostgreSQL 16 · Pi 5 + Cloudflare Tunnel
+> Stand: April 2026 · Stack: Ruby on Rails 8.1 · PostgreSQL 16 · Pi 5 + Cloudflare Tunnel
 
 ---
 
@@ -41,6 +41,7 @@
 | N5 | In-App Benachrichtigungen — Like, Follow, Reply; Badge in Sidebar; Real-time via Turbo Broadcast |
 | N6 | Push Notifications — Web Push API, VAPID, `web-push` Gem, Service Worker Push-Handler |
 | QA | Teststrategie — 102 Tests, 252 Assertions; Models, Controller, Jobs; `docs/testing.md` |
+| BF | Like 500-Bugfix — Race-Condition (Safari Doppel-Tap) behoben; Follower-/Following-Listen (`/:username/followers`, `/:username/following`) |
 
 ---
 

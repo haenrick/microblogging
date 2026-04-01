@@ -321,6 +321,8 @@ body {
 .profile-stats { display: flex; gap: 1.25rem; margin-top: 8px; }
 .profile-stats span { color: #444; font-size: 11px; letter-spacing: 1px; }
 .profile-stats strong { color: var(--cyan); }
+.profile-stat-link { color: #444; font-size: 11px; letter-spacing: 1px; text-decoration: none; transition: color 0.15s; }
+.profile-stat-link:hover { color: var(--cyan); }
 .profile-actions { flex-shrink: 0; }
 
 .back-link { color: #444; font-size: 12px; letter-spacing: 1px; display: inline-block; margin-bottom: 1.25rem; transition: color 0.15s; }
