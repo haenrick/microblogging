@@ -53,4 +53,39 @@ class ProfilesControllerTest < ActionDispatch::IntegrationTest
     get profile_following_path(@user.username)
     assert_redirected_to new_session_path
   end
+
+  # ── U3: Private Profile ────────────────────────────────────────────────────
+  test "private profile hides posts from non-followers" do
+    private_user = users(:two)
+    private_user.update!(private_profile: true)
+    sign_in_as(@user)
+    get profile_path(private_user.username)
+    assert_response :success
+    assert_match "private", response.body
+    assert_no_match "posts-feed", response.body
+  end
+
+  test "private profile shows posts to accepted followers" do
+    private_user = users(:two)
+    private_user.update!(private_profile: true)
+    @user.follows.create!(following: private_user, status: "accepted")
+    sign_in_as(@user)
+    get profile_path(private_user.username)
+    assert_response :success
+    assert_match "posts-feed", response.body
+  end
+
+  test "owner sees their own private profile posts" do
+    @user.update!(private_profile: true)
+    sign_in_as(@user)
+    get profile_path(@user.username)
+    assert_response :success
+    assert_match "posts-feed", response.body
+  end
+
+  test "private profile toggle saves via settings" do
+    sign_in_as(@user)
+    patch update_profile_path, params: { user: { private_profile: "1" } }
+    assert @user.reload.private_profile?
+  end
 end

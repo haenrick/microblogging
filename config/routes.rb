@@ -21,8 +21,10 @@ Rails.application.routes.draw do
 
   resources :push_subscriptions, only: [:create, :destroy]
 
-  post   "/:username/follow",  to: "follows#create",  as: :follow_user
-  delete "/:username/follow",  to: "follows#destroy", as: :unfollow_user
+  post   "/:username/follow",         to: "follows#create",  as: :follow_user
+  delete "/:username/follow",         to: "follows#destroy", as: :unfollow_user
+  patch  "/:username/follow/accept",  to: "follows#accept",  as: :accept_follow_request
+  delete "/:username/follow/accept",  to: "follows#decline", as: :decline_follow_request
 
   post   "/:username/block",   to: "blocks#create",   as: :block_user
   delete "/:username/block",   to: "blocks#destroy",  as: :unblock_user

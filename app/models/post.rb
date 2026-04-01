@@ -15,6 +15,7 @@ class Post < ApplicationRecord
 
   before_create :set_expiry, :set_public_id
   after_create_commit :notify_parent_author, if: -> { parent_id.present? }
+  after_create_commit :broadcast_to_feed,    if: -> { parent_id.nil? && !user.private_profile? }
 
   scope :top_level,   -> { where(parent_id: nil) }
   scope :recent,      -> { order(created_at: :desc) }
@@ -64,6 +65,13 @@ class Post < ApplicationRecord
   end
 
   private
+
+  def broadcast_to_feed
+    broadcast_prepend_to "feed",
+      target: "posts-feed",
+      partial: "posts/post",
+      locals: { post: self }
+  end
 
   def notify_parent_author
     return if user_id == parent.user_id

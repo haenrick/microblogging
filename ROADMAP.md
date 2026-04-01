@@ -42,6 +42,9 @@
 | N6 | Push Notifications — Web Push API, VAPID, `web-push` Gem, Service Worker Push-Handler |
 | QA | Teststrategie — 102 Tests, 252 Assertions; Models, Controller, Jobs; `docs/testing.md` |
 | BF | Like 500-Bugfix — Race-Condition (Safari Doppel-Tap) behoben; Follower-/Following-Listen (`/:username/followers`, `/:username/following`) |
+| U3 | Privates Profil — `private_profile` Flag, Follow-Requests (pending/accepted), Accept/Decline auf Profilseite, Notification bei Annahme |
+| T8 | Live-Feed — Neue Posts erscheinen sofort im "All"-Tab via Turbo Broadcast (nur public, nur top-level) |
+| MB | Mobile Layout — Einspaltig auf kleinen Screens, sticky Header mit Avatar-Button, Slide-in-Nav (Stimulus) |
 
 ---
 
@@ -110,7 +113,7 @@
 
 | # | Maßnahme | Aufwand | Beschreibung |
 |---|----------|---------|--------------|
-| T8 | Live-Feed via Turbo Streams | ~1 Tag | Neue Posts erscheinen ohne Reload (Turbo Broadcast) |
+| ~~T8~~ | ~~Live-Feed via Turbo Streams~~ | ✅ | Neue Posts erscheinen in Echtzeit im "All"-Tab via `broadcast_prepend_to "feed"` |
 | T9 | Fehler-Tracking | ~1h | Sentry o.ä. für Production-Errors — aktuell keine Sichtbarkeit bei Crashes |
 | T10 | Avatar Variant Caching | ~1h | Thumbnails werden on-demand generiert, kein Caching |
 
@@ -120,7 +123,7 @@
 
 | # | Feature | Aufwand | Beschreibung |
 |---|---------|---------|--------------|
-| U3 | Privates Profil | ~1–2 Tage | Profil auf privat stellen, Follower-Anfragen mit pending-Status |
+| ~~U3~~ | ~~Privates Profil~~ | ✅ | Follow-Requests, Accept/Decline, Notification bei Annahme |
 | X2 | KI-Integration | ~1–3 Tage | Post-Assistent via Claude API (X2a), Smart Search (X2c) |
 | N4 | E2E-DMs | ~3–5 Tage | Ende-zu-Ende-verschlüsselte Direktnachrichten (X25519 + AES-GCM) |
 | I1 | iOS App | Später | Erst PWA, dann SwiftUI wenn Nutzerbasis es rechtfertigt |
@@ -134,19 +137,6 @@
 | S4 | Keine E-Mail-Verifikation | ~1 Tag | Token-basierte Verifikation bei Registrierung |
 
 > Vollständige Dokumentation: [docs/security.md](docs/security.md)
-
----
-
-### U3 — Privates Profil
-
-**Ziel:** User können ihr Profil auf privat stellen. Posts sind nur für Follower sichtbar.
-
-- `private_profile: boolean` auf `User`
-- Follow-Anfragen statt direktem Follow (`pending` Status auf `Follow`)
-- Anfragen annehmen / ablehnen auf Profilseite
-- Nicht-Follower sehen nur Avatar + Bio, keine Posts
-
-**Aufwand:** ~1–2 Tage · **Abhängigkeiten:** N1 (Follow-System ✅)
 
 ---
 
@@ -230,3 +220,5 @@ Für öffentlichen Launch: Hetzner CX22 (~5 €/Monat) + Kamal (bereits im Gemfi
 | `v0.9.0` | In-App Notifications (N5), Push Notifications (N6), PWA Service Worker (M6) |
 | `v0.9.1` | Teststrategie: 102 Tests, 252 Assertions — Models, Controller, Jobs vollständig abgedeckt |
 | `v0.9.2` | Favicons: vollständiges favicon.io-Paket (ICO, PNG 16/32/180/192/512), manifest.webmanifest |
+| `v0.9.3` | Like 500-Bugfix (Race-Condition), Follower/Following-Listen |
+| `v0.9.4` | Privates Profil (U3), Live-Feed (T8), Mobile-Layout (einspaltig + Slide-in-Nav) |

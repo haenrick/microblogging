@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_31_063530) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_01_115752) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -56,10 +56,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_31_063530) do
     t.datetime "created_at", null: false
     t.bigint "follower_id", null: false
     t.bigint "following_id", null: false
+    t.string "status", default: "accepted", null: false
     t.datetime "updated_at", null: false
     t.index ["follower_id", "following_id"], name: "index_follows_on_follower_id_and_following_id", unique: true
     t.index ["follower_id"], name: "index_follows_on_follower_id"
     t.index ["following_id"], name: "index_follows_on_following_id"
+    t.index ["status"], name: "index_follows_on_status"
   end
 
   create_table "likes", force: :cascade do |t|
@@ -131,6 +133,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_31_063530) do
     t.string "email_address", null: false
     t.string "password_digest", null: false
     t.jsonb "preferences", default: {}, null: false
+    t.boolean "private_profile", default: false, null: false
     t.string "theme", default: "green", null: false
     t.datetime "updated_at", null: false
     t.string "username"

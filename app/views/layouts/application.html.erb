@@ -40,6 +40,45 @@
     <% if user_signed_in? %>
       <%= turbo_stream_from "notifications_#{Current.user.id}" %>
       <div class="app-layout">
+
+        <%# Mobile header — only visible on small screens %>
+        <header class="mobile-header" data-controller="mobile-nav">
+          <%= link_to root_path, class: "mobile-logo" do %>
+            > fl4re<span class="cursor">_</span>
+          <% end %>
+          <div class="mobile-header-right">
+            <%= link_to notifications_path, class: "mobile-notif-link" do %>
+              <%= render "notifications/badge", unread_count: Current.user.notifications.unread.count %>
+            <% end %>
+            <button class="mobile-avatar-btn" data-action="click->mobile-nav#toggle" aria-label="Menu">
+              <% if Current.user.avatar.attached? %>
+                <%= image_tag Current.user.avatar_thumbnail, class: "avatar-img avatar-small" %>
+              <% else %>
+                <div class="avatar-initials avatar-small"><%= Current.user.initials %></div>
+              <% end %>
+            </button>
+          </div>
+          <nav class="mobile-menu hidden" data-mobile-nav-target="menu">
+            <div class="mobile-menu-inner">
+              <ul class="nav-links">
+                <li><%= link_to root_path, class: "nav-link", data: { action: "click->mobile-nav#close" } do %>> feed<% end %></li>
+                <li><%= link_to search_path, class: "nav-link", data: { action: "click->mobile-nav#close" } do %>> search<% end %></li>
+                <li><%= link_to discover_path, class: "nav-link", data: { action: "click->mobile-nav#close" } do %>> discover<% end %></li>
+                <li><%= link_to notifications_path, class: "nav-link", data: { action: "click->mobile-nav#close" } do %>> notifications<% end %></li>
+                <li><%= link_to profile_path(Current.user.username), class: "nav-link", data: { action: "click->mobile-nav#close" } do %>> profile<% end %></li>
+                <li><%= link_to edit_profile_path, class: "nav-link", data: { action: "click->mobile-nav#close" } do %>> settings<% end %></li>
+                <% if Current.user.admin? %>
+                  <li><%= link_to admin_root_path, class: "nav-link nav-admin", data: { action: "click->mobile-nav#close" } do %>> admin<% end %></li>
+                <% end %>
+              </ul>
+              <div class="mobile-menu-footer">
+                <span class="sidebar-username">@<%= Current.user.username %></span>
+                <%= button_to session_path, method: :delete, class: "btn-signout" do %>// sign out<% end %>
+              </div>
+            </div>
+          </nav>
+        </header>
+
         <nav class="sidebar">
           <div class="sidebar-top">
             <%= link_to root_path, class: "sidebar-logo" do %>

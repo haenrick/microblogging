@@ -57,6 +57,13 @@
             <span class="hint">When off, use Shift+Enter to post (Enter adds a new line)</span>
           </span>
         </label>
+        <label class="preference-item">
+          <%= f.check_box :private_profile, class: "preference-checkbox" %>
+          <span>
+            <strong>Private profile</strong>
+            <span class="hint">Only approved followers can see your posts. New followers must request access.</span>
+          </span>
+        </label>
       </div>
     </div>
 
