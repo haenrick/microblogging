@@ -31,4 +31,26 @@ class ProfilesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to profile_path(@user.username)
     assert_equal "My new bio", @user.reload.bio
   end
+
+  test "followers page returns success" do
+    sign_in_as(@user)
+    get profile_followers_path(@user.username)
+    assert_response :success
+  end
+
+  test "following page returns success" do
+    sign_in_as(@user)
+    get profile_following_path(@user.username)
+    assert_response :success
+  end
+
+  test "followers page redirects when not logged in" do
+    get profile_followers_path(@user.username)
+    assert_redirected_to new_session_path
+  end
+
+  test "following page redirects when not logged in" do
+    get profile_following_path(@user.username)
+    assert_redirected_to new_session_path
+  end
 end

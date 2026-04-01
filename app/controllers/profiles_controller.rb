@@ -7,6 +7,16 @@ class ProfilesController < ApplicationController
     @posts = @blocked ? [] : @user.posts.top_level.active.includes(:likes, replies: :user).with_attached_media.recent
   end
 
+  def followers
+    @user = User.find_by!(username: params[:username])
+    @users = @user.followers.order("follows.created_at DESC")
+  end
+
+  def following
+    @user = User.find_by!(username: params[:username])
+    @users = @user.following.order("follows.created_at DESC")
+  end
+
   def edit
     @user = Current.user
   end

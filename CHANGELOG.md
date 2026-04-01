@@ -5,6 +5,16 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.9.3] — 2026-04-01
+
+### Bugfix
+- **Like 500-Fehler behoben** — Race-Condition bei Doppelklick/-tap (Safari): `ActiveRecord::RecordNotUnique` wird jetzt abgefangen; die Aktion gibt immer den aktuellen Zustand per Turbo Stream zurück statt einem 500-Fehler
+
+### Neu
+- **Follower-/Following-Listen** — Klick auf "Followers" oder "Following" auf jedem Userprofil öffnet eine dedizierte Listenseite (`/:username/followers`, `/:username/following`) mit Avatar, Username, Bio-Preview und Follow/Unfollow-Button (analog Discover-Seite); Stats in der Profilheader-Zeile sind jetzt klickbare Links
+
+---
+
 ## [0.9.2] — 2026-03-31
 
 ### Assets

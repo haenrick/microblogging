@@ -56,10 +56,14 @@ class PostsController < ApplicationController
   def like
     post = Post.find_by!(public_id: params[:id])
     existing = post.likes.find_by(user: Current.user)
-    if existing
-      existing.destroy
-    else
-      post.likes.create(user: Current.user)
+    begin
+      if existing
+        existing.destroy
+      else
+        post.likes.create(user: Current.user)
+      end
+    rescue ActiveRecord::RecordNotUnique
+      # concurrent double-tap (e.g. Safari) — already liked, proceed gracefully
     end
     respond_to do |format|
       format.turbo_stream do
