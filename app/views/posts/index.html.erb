@@ -21,7 +21,8 @@
   </div>
 <% end %>
 
-<div class="posts-feed">
+<%= turbo_stream_from "feed" if @tab == "all" %>
+<div id="posts-feed" class="posts-feed">
   <% if @posts.empty? %>
     <p class="empty-state">
       <% if @tab == "following" %>

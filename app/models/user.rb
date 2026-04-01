@@ -16,9 +16,11 @@ class User < ApplicationRecord
   has_one_attached :avatar
 
   has_many :follows, foreign_key: :follower_id, dependent: :destroy
-  has_many :following, through: :follows, source: :following
+  has_many :following, -> { where(follows: { status: "accepted" }) }, through: :follows, source: :following
   has_many :reverse_follows, class_name: "Follow", foreign_key: :following_id, dependent: :destroy
-  has_many :followers, through: :reverse_follows, source: :follower
+  has_many :followers, -> { where(follows: { status: "accepted" }) }, through: :reverse_follows, source: :follower
+  has_many :pending_follow_requests, -> { where(status: "pending") },
+           class_name: "Follow", foreign_key: :following_id, dependent: :destroy
 
   has_many :blocks, foreign_key: :blocker_id, dependent: :destroy
   has_many :blocked_users, through: :blocks, source: :blocked
@@ -36,7 +38,11 @@ class User < ApplicationRecord
   validates :bio, length: { maximum: 160 }, allow_blank: true
 
   def following?(user)
-    following.include?(user)
+    follows.exists?(following: user, status: "accepted")
+  end
+
+  def pending_follow_request?(user)
+    follows.exists?(following: user, status: "pending")
   end
 
   def blocking?(user)

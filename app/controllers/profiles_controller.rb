@@ -4,7 +4,13 @@ class ProfilesController < ApplicationController
   def show
     @user = User.find_by!(username: params[:username])
     @blocked = Current.user.blocking?(@user)
-    @posts = @blocked ? [] : @user.posts.top_level.active.includes(:likes, replies: :user).with_attached_media.recent
+    @private_locked = @user.private_profile? && !Current.user.following?(@user) && Current.user != @user
+    @posts = if @blocked || @private_locked
+      []
+    else
+      @user.posts.top_level.active.includes(:likes, replies: :user).with_attached_media.recent
+    end
+    @pending_requests = Current.user == @user ? @user.pending_follow_requests.includes(:follower) : []
   end
 
   def followers
@@ -57,6 +63,6 @@ class ProfilesController < ApplicationController
   private
 
   def profile_params
-    params.require(:user).permit(:bio, :avatar, :theme, :enter_to_post)
+    params.require(:user).permit(:bio, :avatar, :theme, :enter_to_post, :private_profile)
   end
 end

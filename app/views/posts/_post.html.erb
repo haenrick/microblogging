@@ -1,4 +1,4 @@
-<% cache [post, Current.user.id], expires_in: 1.hour do %>
+<% cache [post, Current.user&.id], expires_in: 1.hour do %>
 <div class="post <%= "reply" if post.parent_id %>" data-controller="toggle">
   <div class="post-meta">
     <div class="post-avatar">

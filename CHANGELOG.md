@@ -5,6 +5,21 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.9.4] — 2026-04-01
+
+### Neu
+- **U3 Privates Profil** — Profil auf "privat" stellen in den Settings; Follow-Button wird zu "Request"; Besitzer sieht offene Anfragen mit Accept/Decline direkt auf der Profilseite; nicht-Follower sehen keine Posts; Benachrichtigung erst bei Annahme
+- **T8 Live-Feed** — Neue Posts erscheinen sofort im "All"-Tab ohne Seitenreload via Turbo Broadcast; Posts von privaten Profilen werden nicht gesendet
+- **Mobile Layout** — Sidebar auf kleinen Screens ausgeblendet; sticky Kopfzeile mit Logo, Notification-Badge und Avatar-Button; Klick auf Avatar öffnet ein Slide-in-Navigationsmenü (Stimulus `mobile-nav`); `main-content` nutzt die volle Breite
+
+### Technisch
+- `users.private_profile` boolean (default: false); `follows.status` string (default: "accepted")
+- `Follow#after_update_commit` sendet Notification wenn pending → accepted
+- `Post#after_create_commit` broadcasted zu `"feed"` Kanal (nur public, nur top-level)
+- nil-sichere Cache-Keys und `Current.user`-Guards in `_post`- und `_post_actions`-Partials
+
+---
+
 ## [0.9.3] — 2026-04-01
 
 ### Bugfix

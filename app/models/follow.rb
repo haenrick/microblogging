@@ -2,10 +2,24 @@ class Follow < ApplicationRecord
   belongs_to :follower, class_name: "User"
   belongs_to :following, class_name: "User"
 
+  attribute :status, :string, default: "accepted"
+
   validates :follower_id, uniqueness: { scope: :following_id }
   validate :no_self_follow
 
-  after_create_commit :notify_followed_user
+  scope :accepted, -> { where(status: "accepted") }
+  scope :pending,  -> { where(status: "pending") }
+
+  after_create_commit { notify_followed_user if accepted? }
+  after_update_commit { notify_followed_user if saved_change_to_status?(from: "pending", to: "accepted") }
+
+  def accepted?
+    status == "accepted"
+  end
+
+  def pending?
+    status == "pending"
+  end
 
   private
 

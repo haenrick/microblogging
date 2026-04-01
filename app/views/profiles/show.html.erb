@@ -9,14 +9,13 @@
     <% end %>
   </div>
   <div class="profile-info">
-    <h1>@<%= @user.username %></h1>
+    <h1>@<%= @user.username %> <% if @user.private_profile? %><span class="private-badge">🔒 private</span><% end %></h1>
     <% if @user.bio.present? %>
       <p class="bio"><%= @user.bio %></p>
     <% else %>
       <p class="bio muted">No bio yet.</p>
     <% end %>
     <div class="profile-stats">
-      <span><strong><%= @user.posts.count %></strong> Posts</span>
       <%= link_to profile_followers_path(@user.username), class: "profile-stat-link" do %>
         <strong><%= @user.followers.count %></strong> Followers
       <% end %>
@@ -33,8 +32,12 @@
     <% else %>
       <% if Current.user.following?(@user) %>
         <%= button_to "Unfollow", unfollow_user_path(@user.username), method: :delete, class: "btn-ghost" %>
+      <% elsif Current.user.pending_follow_request?(@user) %>
+        <%= button_to "Pending", unfollow_user_path(@user.username), method: :delete, class: "btn-ghost btn-pending",
+            title: "Click to cancel request" %>
       <% else %>
-        <%= button_to "Follow", follow_user_path(@user.username), method: :post, class: "btn-primary" %>
+        <%= button_to @user.private_profile? ? "Request" : "Follow",
+            follow_user_path(@user.username), method: :post, class: "btn-primary" %>
       <% end %>
       <%= button_to "Block", block_user_path(@user.username), method: :post, class: "btn-danger btn-small",
           data: { turbo_confirm: "Block @#{@user.username}? They won't see your posts and you won't see theirs." } %>
@@ -42,8 +45,23 @@
   </div>
 </div>
 
+<% if @pending_requests.any? %>
+  <div class="follow-requests">
+    <h3 class="follow-requests-title">Follow Requests (<%= @pending_requests.size %>)</h3>
+    <% @pending_requests.each do |req| %>
+      <div class="follow-request-item">
+        <%= link_to "@#{req.follower.username}", profile_path(req.follower.username), class: "username" %>
+        <%= button_to "Accept", accept_follow_request_path(req.follower.username), method: :patch, class: "btn-primary btn-small" %>
+        <%= button_to "Decline", decline_follow_request_path(req.follower.username), method: :delete, class: "btn-ghost btn-small" %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
 <% if @blocked %>
   <p class="empty-state">You have blocked @<%= @user.username %>.</p>
+<% elsif @private_locked %>
+  <p class="empty-state">🔒 This account is private. Follow to see their posts.</p>
 <% else %>
   <div class="posts-feed">
     <%= render @posts %>
