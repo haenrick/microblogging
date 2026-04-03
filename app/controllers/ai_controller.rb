@@ -13,20 +13,16 @@ class AiController < ApplicationController
     content = params[:content].to_s.strip
     return render json: { error: "No content" }, status: :bad_request if content.blank?
 
-    client   = Anthropic::Client.new(access_token: ENV.fetch("ANTHROPIC_API_KEY"))
-    response = client.messages(
-      parameters: {
-        model:      "claude-haiku-4-5-20251001",
-        max_tokens: 300,
-        system:     SYSTEM_PROMPT,
-        messages:   [ { role: "user", content: content } ]
-      }
+    client   = Anthropic::Client.new
+    response = client.messages.create(
+      model:      "claude-haiku-4-5-20251001",
+      max_tokens: 300,
+      system_:    SYSTEM_PROMPT,
+      messages:   [ { role: "user", content: content } ]
     )
 
-    suggestion = response.dig("content", 0, "text").to_s.strip
+    suggestion = response.content.first.text.to_s.strip
     render json: { suggestion: suggestion }
-  rescue KeyError
-    render json: { error: "ANTHROPIC_API_KEY not configured" }, status: :service_unavailable
   rescue => e
     Rails.logger.error "[AiController#suggest] #{e.class}: #{e.message}"
     render json: { error: "AI unavailable" }, status: :service_unavailable

@@ -14,17 +14,15 @@ class ClaudeBotJob < ApplicationJob
     return unless bot_user
     return unless ENV["ANTHROPIC_API_KEY"].present?
 
-    client   = Anthropic::Client.new(access_token: ENV.fetch("ANTHROPIC_API_KEY"))
-    response = client.messages(
-      parameters: {
-        model:      "claude-haiku-4-5-20251001",
-        max_tokens: 280,
-        system:     SYSTEM_PROMPT,
-        messages:   [ { role: "user", content: post.content } ]
-      }
+    client   = Anthropic::Client.new
+    response = client.messages.create(
+      model:      "claude-haiku-4-5-20251001",
+      max_tokens: 280,
+      system_:    SYSTEM_PROMPT,
+      messages:   [ { role: "user", content: post.content } ]
     )
 
-    reply_text = response.dig("content", 0, "text").to_s.strip
+    reply_text = response.content.first.text.to_s.strip
     return if reply_text.blank?
 
     bot_user.posts.create!(
