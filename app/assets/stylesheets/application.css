@@ -737,11 +737,14 @@ body {
   }
 
   /* Backdrop when mobile menu is open */
-  body.mobile-nav-open::before {
-    content: "";
+  .mobile-backdrop {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.7);
     z-index: 150;
   }
+  .mobile-backdrop.hidden { display: none; }
+
+  /* Readable nav-link text inside dark mobile menu */
+  .mobile-menu .nav-link { color: var(--text-bright); }
 }
