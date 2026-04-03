@@ -93,6 +93,12 @@ class Post < ApplicationRecord
 
     User.where(username: usernames).each do |mentioned_user|
       next if mentioned_user.id == user_id
+
+      if mentioned_user.username == ClaudeBotJob::BOT_USERNAME
+        ClaudeBotJob.perform_later(self)
+        next
+      end
+
       next if mentioned_user.id == already_notified
 
       Notification.create!(

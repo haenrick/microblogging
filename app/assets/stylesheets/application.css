@@ -464,6 +464,21 @@ body {
 .post-video { max-width: 100%; max-height: 400px; border-radius: 4px; border: 1px solid var(--border); display: block; }
 
 /* ── Attach button ── */
+.btn-ai-improve {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--green-dim);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 1px;
+  padding: 3px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+.btn-ai-improve:hover { color: var(--green); border-color: var(--green-dim); }
+.btn-ai-improve:disabled { opacity: 0.4; cursor: default; }
+
 .btn-attach {
   cursor: pointer;
   color: #444;

@@ -4,14 +4,20 @@
 </div>
 
 <%= form_with model: @post, class: "post-form", multipart: true,
-    data: { controller: "post-form" } do |f| %>
+    data: { controller: "post-form ai-assist" } do |f| %>
   <% if @post.errors.any? %>
     <div class="error"><%= @post.errors.full_messages.to_sentence %></div>
   <% end %>
   <%= f.text_area :content, placeholder: "What's happening?", maxlength: 280, rows: 3,
-      data: { action: "input->post-form#updateCount keydown->post-form#submitOnEnter" } %>
+      data: {
+        action: "input->post-form#updateCount keydown->post-form#submitOnEnter",
+        ai_assist_target: "textarea"
+      } %>
   <div class="form-footer">
     <span class="char-counter"><span class="char-remaining" data-post-form-target="counter">280</span> chars left</span>
+    <button type="button" class="btn-ai-improve"
+            data-ai-assist-target="button"
+            data-action="click->ai-assist#improve">✦ improve</button>
     <label class="btn-attach" title="Attach image">
       📎<span data-post-form-target="fileName"></span>
       <%= f.file_field :media, accept: "image/*,video/*", class: "attach-input",
