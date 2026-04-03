@@ -45,6 +45,9 @@
 | U3 | Privates Profil — `private_profile` Flag, Follow-Requests (pending/accepted), Accept/Decline auf Profilseite, Notification bei Annahme |
 | T8 | Live-Feed — Neue Posts erscheinen sofort im "All"-Tab via Turbo Broadcast (nur public, nur top-level) |
 | MB | Mobile Layout — Einspaltig auf kleinen Screens, sticky Header mit Avatar-Button, Slide-in-Nav (Stimulus) |
+| MF | Mobile Fix — Overlay-Schrift lesbar, Backdrop klickbar (close on click) |
+| LP | Link Previews — OpenGraph-Card unter Posts mit URLs (async via LinkPreviewJob) |
+| AT | @Mentions — `@username` wird verlinkt, Mention-Notification an erwähnte User |
 
 ---
 
@@ -124,7 +127,7 @@
 | # | Feature | Aufwand | Beschreibung |
 |---|---------|---------|--------------|
 | ~~U3~~ | ~~Privates Profil~~ | ✅ | Follow-Requests, Accept/Decline, Notification bei Annahme |
-| X2 | KI-Integration | ~1–3 Tage | Post-Assistent via Claude API (X2a), Smart Search (X2c) |
+| X2 | KI-Integration | ~1–3 Tage | Post-Assistent via Claude API (X2a), Smart Search (X2c), @claude Bot |
 | N4 | E2E-DMs | ~3–5 Tage | Ende-zu-Ende-verschlüsselte Direktnachrichten (X25519 + AES-GCM) |
 | I1 | iOS App | Später | Erst PWA, dann SwiftUI wenn Nutzerbasis es rechtfertigt |
 

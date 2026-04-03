@@ -5,6 +5,21 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.9.5] — 2026-04-03
+
+### Neu
+- **@Mentions** — `@username` in Posts und Replies wird als klickbarer Link gerendert; erwähnte User erhalten eine Mention-Notification; Doppelbenachrichtigung bei Replies (Reply + Mention) wird unterdrückt; max. 5 Mentions pro Post
+- **Link Previews** — Posts mit URLs zeigen nach dem Speichern automatisch eine Vorschau-Card (Titel, Beschreibung, Bild, Site-Name) via OpenGraph; wird asynchron per `LinkPreviewJob` geladen; kein extra Gem nötig
+
+### Technisch
+- `posts.link_preview` jsonb-Spalte für OG-Daten
+- `Notification::TYPES` um `"mention"` erweitert
+- `LinkPreviewJob` nutzt `Nokogiri` + `URI.open` (stdlib); toleriert Netzwerkfehler
+- `render_post_content` Helper escaped content sicher und linkt @mentions
+- 31 Tests, 59 Assertions
+
+---
+
 ## [0.9.4] — 2026-04-01
 
 ### Neu
