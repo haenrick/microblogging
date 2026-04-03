@@ -45,6 +45,8 @@ Rails.application.routes.draw do
   get "/:username/following", to: "profiles#following", as: :profile_following, constraints: { username: /(?!admin)[a-z0-9_]+/ }
   get "/:username", to: "profiles#show", as: :profile, constraints: { username: /(?!admin)[a-z0-9_]+/ }
 
+  post "/ai/suggest", to: "ai#suggest", as: :ai_suggest
+
   root "posts#index"
 
   get "up" => "rails/health#show", as: :rails_health_check

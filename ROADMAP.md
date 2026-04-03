@@ -48,6 +48,8 @@
 | MF | Mobile Fix — Overlay-Schrift lesbar, Backdrop klickbar (close on click) |
 | LP | Link Previews — OpenGraph-Card unter Posts mit URLs (async via LinkPreviewJob) |
 | AT | @Mentions — `@username` wird verlinkt, Mention-Notification an erwähnte User |
+| X2a | Post-Assistent — ✦ improve-Button verbessert Draft per Claude API (Haiku) |
+| X2b | @claude Bot — antwortet auf Mentions via ClaudeBotJob + Anthropic API |
 
 ---
 

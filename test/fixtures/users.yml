@@ -20,3 +20,10 @@ three:
   password_digest: <%= password_digest %>
   theme: amber
   admin: false
+
+claude_bot:
+  email_address: claude@fl4re.local
+  username: claude
+  password_digest: <%= password_digest %>
+  theme: green
+  admin: false

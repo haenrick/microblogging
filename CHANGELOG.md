@@ -5,6 +5,26 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.9.6] — 2026-04-03
+
+### Neu
+- **✦ Post-Assistent (X2a)** — Button im Compose-Bereich verbessert den Draft-Text per Claude API (Haiku); rate-limited auf 10 Requests/Minute
+- **@claude Bot (X2)** — `@claude` in einem Post triggert eine Antwort via `ClaudeBotJob`; kein Notifications-Spam für den Bot-User; Bot-Account wird per `db/seeds.rb` angelegt
+
+### Technisch
+- `gem "anthropic"` hinzugefügt
+- `AiController#suggest` — POST `/ai/suggest`, JSON-Response
+- `ClaudeBotJob` — async, toleriert API-Fehler
+- Stimulus `ai-assist-controller` — fetch → textarea update
+- `db/seeds.rb` — `@claude` User idempotent anlegen
+- 131 Tests, 329 Assertions
+
+### Setup
+- `ANTHROPIC_API_KEY=sk-ant-...` in `.env` auf dem Pi setzen
+- `bin/rails db:seed` ausführen (einmalig, idempotent)
+
+---
+
 ## [0.9.5] — 2026-04-03
 
 ### Neu
