@@ -16,6 +16,8 @@ class Post < ApplicationRecord
   before_create :set_expiry, :set_public_id
   after_create_commit :notify_parent_author, if: -> { parent_id.present? }
   after_create_commit :broadcast_to_feed,    if: -> { parent_id.nil? && !user.private_profile? }
+  after_create_commit :notify_mentions
+  after_create_commit :enqueue_link_preview, if: -> { content.match?(/https?:\/\//) }
 
   scope :top_level,   -> { where(parent_id: nil) }
   scope :recent,      -> { order(created_at: :desc) }
@@ -81,6 +83,29 @@ class Post < ApplicationRecord
       notifiable: self,
       notification_type: "reply"
     )
+  end
+
+  def notify_mentions
+    usernames = content.scan(/@(\w+)/).flatten.uniq.first(5)
+    return if usernames.empty?
+
+    already_notified = parent_id.present? ? parent.user_id : nil
+
+    User.where(username: usernames).each do |mentioned_user|
+      next if mentioned_user.id == user_id
+      next if mentioned_user.id == already_notified
+
+      Notification.create!(
+        recipient: mentioned_user,
+        actor: user,
+        notifiable: self,
+        notification_type: "mention"
+      )
+    end
+  end
+
+  def enqueue_link_preview
+    LinkPreviewJob.perform_later(self)
   end
 
   def set_expiry

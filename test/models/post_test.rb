@@ -86,4 +86,71 @@ class PostTest < ActiveSupport::TestCase
       )
     end
   end
+
+  # ── mention notifications ─────────────────────────────────────────────────
+  test "mention creates notification for mentioned user" do
+    poster   = users(:one)
+    mentioned = users(:two)
+
+    assert_difference("Notification.count", 1) do
+      poster.posts.create!(
+        content: "hey @#{mentioned.username} check this out",
+        public_id: SecureRandom.urlsafe_base64(8),
+        expires_at: 30.days.from_now
+      )
+    end
+
+    notif = mentioned.notifications.order(:created_at).last
+    assert_equal "mention", notif.notification_type
+    assert_equal poster, notif.actor
+  end
+
+  test "mention does not notify the poster themselves" do
+    poster = users(:one)
+
+    assert_no_difference("Notification.count") do
+      poster.posts.create!(
+        content: "talking to myself @#{poster.username}",
+        public_id: SecureRandom.urlsafe_base64(8),
+        expires_at: 30.days.from_now
+      )
+    end
+  end
+
+  test "mention does not notify unknown usernames" do
+    poster = users(:one)
+
+    assert_no_difference("Notification.count") do
+      poster.posts.create!(
+        content: "hey @doesnotexist",
+        public_id: SecureRandom.urlsafe_base64(8),
+        expires_at: 30.days.from_now
+      )
+    end
+  end
+
+  test "mention in reply does not double-notify parent author" do
+    replier = users(:two)
+    parent  = posts(:one)
+    author  = users(:one)
+
+    assert_difference("Notification.count", 1) do
+      replier.posts.create!(
+        content: "replying and mentioning @#{author.username}",
+        parent: parent,
+        public_id: SecureRandom.urlsafe_base64(8),
+        expires_at: 30.days.from_now
+      )
+    end
+
+    types = author.notifications.order(:created_at).last(2).map(&:notification_type)
+    assert_includes types, "reply"
+    assert_not_includes types, "mention"
+  end
+
+  # ── link_preview ──────────────────────────────────────────────────────────
+  test "link_preview is nil by default" do
+    post = posts(:one)
+    assert_nil post.link_preview
+  end
 end

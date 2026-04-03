@@ -1,5 +1,5 @@
 class Notification < ApplicationRecord
-  TYPES = %w[like follow reply].freeze
+  TYPES = %w[like follow reply mention].freeze
 
   belongs_to :recipient, class_name: "User"
   belongs_to :actor,     class_name: "User"
@@ -23,16 +23,17 @@ class Notification < ApplicationRecord
 
   def message
     case notification_type
-    when "like"   then "@#{actor.username} liked your post"
-    when "follow" then "@#{actor.username} followed you"
-    when "reply"  then "@#{actor.username} replied to your post"
+    when "like"    then "@#{actor.username} liked your post"
+    when "follow"  then "@#{actor.username} followed you"
+    when "reply"   then "@#{actor.username} replied to your post"
+    when "mention" then "@#{actor.username} mentioned you"
     end
   end
 
   def path
     case notification_type
-    when "like", "reply" then Rails.application.routes.url_helpers.post_path(notifiable)
-    when "follow"        then Rails.application.routes.url_helpers.profile_path(actor.username)
+    when "like", "reply", "mention" then Rails.application.routes.url_helpers.post_path(notifiable)
+    when "follow"                   then Rails.application.routes.url_helpers.profile_path(actor.username)
     end
   end
 

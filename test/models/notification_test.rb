@@ -64,4 +64,25 @@ class NotificationTest < ActiveSupport::TestCase
     notif = notifications(:follow_unread)
     assert_match notif.actor.username, notif.path
   end
+
+  # ── mention ───────────────────────────────────────────────────────────────
+  test "message for mention" do
+    actor = users(:two)
+    recipient = users(:one)
+    notif = Notification.create!(
+      recipient: recipient, actor: actor,
+      notifiable: posts(:one), notification_type: "mention"
+    )
+    assert_equal "@#{actor.username} mentioned you", notif.message
+  end
+
+  test "path for mention points to post" do
+    actor = users(:two)
+    recipient = users(:one)
+    notif = Notification.create!(
+      recipient: recipient, actor: actor,
+      notifiable: posts(:one), notification_type: "mention"
+    )
+    assert_match %r{/posts/}, notif.path
+  end
 end
