@@ -24,6 +24,10 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
+  # Safari cached 302-Redirects zu signed Disk-URLs (Default: 5 Min).
+  # Längere Ablaufzeit verhindert broken images nach Cache-Ablauf.
+  config.active_storage.service_urls_expire_in = 24.hours
+
   # Cloudflare Tunnel terminates SSL — Rails sieht nur HTTP intern
   config.assume_ssl = true
 
