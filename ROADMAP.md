@@ -144,7 +144,7 @@
 |---|--------|---------|----------|
 | S2 | Kein Admin-Audit-Log | ~2h | Admin-Aktionen in DB loggen |
 | S3 | Kein 2FA | ~1 Tag | TOTP via `rotp` Gem |
-| S4 | Keine E-Mail-Verifikation | ~1 Tag | Token-basierte Verifikation bei Registrierung |
+| ~~S4~~ | ~~E-Mail-Verifikation~~ | ✅ | Token 24h, Banner + Resend, Token wird nach Verifikation ungültig |
 
 > Vollständige Dokumentation: [docs/security.md](docs/security.md)
 
@@ -234,3 +234,4 @@ Für öffentlichen Launch: Hetzner CX22 (~5 €/Monat) + Kamal (bereits im Gemfi
 | `v0.9.5` | @Mentions (verlinkt + Notification), Link Previews (OpenGraph async via LinkPreviewJob) |
 | `v0.9.6` | KI-Post-Assistent (X2a, ✦ improve-Button via Claude Haiku), @claude Bot (X2b, ClaudeBotJob) |
 | `v0.9.7` | PostgreSQL Full-Text Search (T6) — `websearch_to_tsquery` + GIN-Indexes statt ILIKE |
+| `v0.9.8` | E-Mail-Verifikation (S4) — Token 24h, Banner + Resend, Auto-Invalidierung nach Bestätigung |

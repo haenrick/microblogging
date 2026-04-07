@@ -1,0 +1,25 @@
+<p style="color:#ccc;font-size:14px;line-height:1.6;margin:0 0 24px;">
+  Willkommen bei fl4re, <strong style="color:#00ff88;">@<%= @user.username %></strong>!
+  Klicke auf den Button, um deine E-Mail-Adresse zu bestätigen:
+</p>
+
+<table cellpadding="0" cellspacing="0" style="margin:0 0 24px;">
+  <tr>
+    <td style="background-color:#00ff88;border-radius:4px;">
+      <%= link_to "E-Mail bestätigen", verify_email_url(@token),
+            style: "display:inline-block;padding:12px 24px;color:#0a0a0a;font-weight:bold;text-decoration:none;font-size:14px;" %>
+    </td>
+  </tr>
+</table>
+
+<p style="color:#666;font-size:12px;line-height:1.6;margin:0 0 8px;">
+  Oder kopiere diesen Link in deinen Browser:
+</p>
+<p style="color:#00ff88;font-size:12px;word-break:break-all;margin:0 0 24px;">
+  <%= verify_email_url(@token) %>
+</p>
+
+<p style="color:#555;font-size:12px;margin:0;">
+  Dieser Link läuft in 24 Stunden ab.
+  Falls du dich nicht registriert hast, kannst du diese Mail ignorieren.
+</p>
