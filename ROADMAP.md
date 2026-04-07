@@ -141,6 +141,45 @@
 | ~~LP2~~ | ~~Link-Vorschau live nachladen~~ | ✅ | Turbo Stream broadcast nach LinkPreviewJob — kein Reload mehr nötig |
 | I1 | iOS App | Später | Erst PWA, dann SwiftUI wenn Nutzerbasis es rechtfertigt |
 
+### Interaktion & Content
+
+| # | Feature | Aufwand | Beschreibung |
+|---|---------|---------|--------------|
+| IC1 | Repost/Boost | ~1 Tag | Fremde Posts in den eigenen Feed teilen; Repost-Badge auf dem Original; Unboost möglich |
+| IC2 | Lesezeichen | ~2h | Posts privat für später speichern; eigene Lesezeichen-Seite im Profil |
+| IC3 | Polls/Umfragen | ~1 Tag | Einfache Abstimmungen im Post (2–4 Optionen, Ablaufdatum, Echtzeit-Ergebnis) |
+| IC4 | Threads | ~1 Tag | Zusammenhängende Posts als Serie verfassen — mehrere Felder im Compose, als Thread verknüpft |
+
+### Entdecken
+
+| # | Feature | Aufwand | Beschreibung |
+|---|---------|---------|--------------|
+| DI1 | Hashtags | ~1 Tag | `#thema` in Posts klickbar; eigene Feed-Ansicht pro Hashtag; Hashtag-Suche |
+| DI2 | Trending | ~2h | Meistgelikte/meistkommentierte Posts der letzten 24h; eigener Tab oder Widget |
+| DI3 | Empfehlungen | ~1 Tag | "Leute die du kennen könntest" auf Basis gemeinsamer Follower |
+
+### Profil
+
+| # | Feature | Aufwand | Beschreibung |
+|---|---------|---------|--------------|
+| PR1 | Profil-Banner | ~2h | Hintergrundbild auf der Profilseite (ActiveStorage, ähnlich wie Avatar) |
+| PR2 | Pinned Post | ~2h | Einen eigenen Post oben auf dem Profil fixieren; Pin/Unpin im Post-Menü |
+
+### Moderation
+
+| # | Feature | Aufwand | Beschreibung |
+|---|---------|---------|--------------|
+| MD1 | Melden | ~1 Tag | Posts und User melden; Meldungen im Admin unter eigenem Tab sichtbar; Status (offen/erledigt) |
+| MD2 | Wort-Filter | ~2h | Bestimmte Begriffe aus dem eigenen Feed ausblenden (clientseitig, Settings) |
+
+### Plattform & API
+
+| # | Feature | Aufwand | Beschreibung |
+|---|---------|---------|--------------|
+| PA1 | RSS-Feed | ~2h | Öffentliche Posts per `/:username/feed.rss` abonnierbar |
+| PA2 | REST-API | ~2 Tage | Öffentliche JSON-API für Posts, Profile, Feed — Grundlage für externe Clients |
+| PA3 | ActivityPub | Später | Föderierung mit Mastodon & Co. — sehr aufwändig, erst bei Bedarf |
+
 ### Sicherheit (ausstehend)
 
 | # | Risiko | Aufwand | Maßnahme |
@@ -148,6 +187,7 @@
 | ~~S2~~ | ~~Admin-Audit-Log~~ | ✅ | Chronologisches Protokoll aller Admin-Aktionen im `> audit`-Tab |
 | S3 | Kein 2FA | ~1 Tag | TOTP via `rotp` Gem |
 | ~~S4~~ | ~~E-Mail-Verifikation~~ | ✅ | Token 24h, Banner + Resend, Token wird nach Verifikation ungültig |
+| S5 | Passkey-Authentifizierung | ~2 Tage | Passwortlos einloggen via WebAuthn/FIDO2 (Face ID, Touch ID, Hardware-Key); `webauthn` Gem; als Alternative zum Passwort, nicht als Ersatz |
 
 > Vollständige Dokumentation: [docs/security.md](docs/security.md)
 
@@ -251,3 +291,4 @@ Für öffentlichen Launch: Hetzner CX22 (~5 €/Monat) + Kamal (bereits im Gemfi
 | `v0.9.12` | Version-Link → GitHub CHANGELOG, @fl4re_bot postet Release-Ankündigungen bei Deploy |
 | `v0.9.13` | T9 Error-Tracking im Admin — Rack-Middleware, gruppierte Fehler, Stack Trace, resolve |
 | `v0.9.14` | S2 Admin-Audit-Log — `> audit`-Tab, User-/Post-Aktionen protokolliert |
+| `v0.9.15` | Landing Page — Hero + Live-Stats + Feature-Liste + Register-CTA neben Login-Form |
