@@ -13,7 +13,9 @@ class User < ApplicationRecord
   has_many :posts, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :liked_posts, through: :likes, source: :post
-  has_one_attached :avatar
+  has_one_attached :avatar do |attachable|
+    attachable.variant :thumb, resize_to_fill: [ 100, 100 ], preprocessed: true
+  end
 
   has_many :follows, foreign_key: :follower_id, dependent: :destroy
   has_many :following, -> { where(follows: { status: "accepted" }) }, through: :follows, source: :following
@@ -59,7 +61,7 @@ class User < ApplicationRecord
 
   def avatar_thumbnail
     return unless avatar.attached?
-    avatar.variant(resize_to_fill: [100, 100]).processed
+    avatar.variant(:thumb).processed
   end
 
   def initials
