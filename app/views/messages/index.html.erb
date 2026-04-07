@@ -12,6 +12,23 @@
   <% end %>
 </div>
 
+<% if @messageable.any? %>
+  <div class="new-message-bar" data-controller="toggle">
+    <button class="btn-ghost btn-small" data-action="click->toggle#toggle" data-toggle-target="trigger">
+      // new message
+    </button>
+    <div class="new-message-form hidden" data-toggle-target="content">
+      <%= form_with url: new_message_conversation_path, method: :get, class: "new-message-select-form" do |f| %>
+        <%= f.select :username,
+            @messageable.map { |u| ["@#{u.username}", u.username] },
+            { prompt: "Follower auswählen …" },
+            { class: "select-input" } %>
+        <%= f.submit "// start", class: "btn-primary btn-small" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
 <% if @conversations.empty? %>
   <p class="empty-state">// keine Konversationen — schreibe jemanden an, der dir folgt</p>
 <% else %>

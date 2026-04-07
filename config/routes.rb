@@ -40,6 +40,7 @@ Rails.application.routes.draw do
   end
 
   get  "/messages",           to: "messages#index",  as: :messages
+  get  "/messages/new",       to: "messages#new_conversation", as: :new_message_conversation
   get  "/messages/:username", to: "messages#show",   as: :message,         constraints: { username: /[a-z0-9_]+/ }
   post "/messages/:username", to: "messages#create",                        constraints: { username: /[a-z0-9_]+/ }
 

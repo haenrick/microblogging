@@ -5,6 +5,14 @@ class MessagesController < ApplicationController
   def index
     # Latest message per conversation partner, ordered by most recent
     @conversations = conversations_for(Current.user)
+    @messageable   = Current.user.followers.where.not(id: Current.user.blocked_users).order(:username)
+  end
+
+  def new_conversation
+    partner = User.find_by!(username: params[:username])
+    redirect_to message_path(partner.username)
+  rescue ActiveRecord::RecordNotFound
+    redirect_to messages_path, alert: "User nicht gefunden."
   end
 
   def show

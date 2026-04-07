@@ -39,6 +39,9 @@
         <%= button_to @user.private_profile? ? "Request" : "Follow",
             follow_user_path(@user.username), method: :post, class: "btn-primary" %>
       <% end %>
+      <% if Current.user.can_message?(@user) %>
+        <%= link_to "// message", message_path(@user.username), class: "btn-ghost btn-small" %>
+      <% end %>
       <%= button_to "Block", block_user_path(@user.username), method: :post, class: "btn-danger btn-small",
           data: { turbo_confirm: "Block @#{@user.username}? They won't see your posts and you won't see theirs." } %>
     <% end %>
