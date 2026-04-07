@@ -487,16 +487,19 @@ body {
 }
 
 /* ── Poll Builder ── */
-.poll-builder { margin-top: 0.75rem; padding: 0.75rem; border: 1px solid #1a1a1a; border-radius: 4px; }
+.poll-builder { margin-top: 0.75rem; padding: 0.75rem; border: 1px solid #1a1a1a; border-radius: 4px; box-sizing: border-box; width: 100%; overflow: hidden; }
 .poll-builder-label { font-size: 11px; color: #444; letter-spacing: 2px; margin-bottom: 0.5rem; }
 .poll-builder-option {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 0.4rem;
+  min-width: 0;
 }
 .compose-input {
   flex: 1;
+  min-width: 0;
+  width: 0;           /* forces shrink inside flex, real width comes from flex:1 */
   background: var(--bg-input);
   border: 1px solid var(--border);
   color: var(--text-bright);
@@ -504,6 +507,7 @@ body {
   font-size: 13px;
   padding: 0.3rem 0.5rem;
   border-radius: 3px;
+  box-sizing: border-box;
 }
 .compose-input:focus { outline: none; border-color: var(--border-bright); }
 
@@ -660,6 +664,7 @@ body {
 .reply-form.hidden { display: none; }
 .edit-form { margin-top: 10px; }
 .edit-form.hidden { display: none; }
+.hidden { display: none !important; }
 
 /* ── Avatars ── */
 .avatar-img { border-radius: 3px; object-fit: cover; display: block; }
