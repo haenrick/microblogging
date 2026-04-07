@@ -138,7 +138,7 @@
 | X2d | Content-Moderation | ~2 Tage | Automatisches Flaggen toxischer Posts via Claude API |
 | ~~N4a~~ | ~~Basis-DMs~~ | ✅ | Inbox, Konversation, Real-time Turbo, Unread-Badge, `can_message?`-Permission |
 | N4b | E2E-Verschlüsselung | Später | X25519 + AES-GCM, nur wenn Datenschutz-Anforderungen es rechtfertigen |
-| LP2 | Link-Vorschau im Compose | ~1 Tag | Beim Verfassen eines Posts wird erkannte URL live als OpenGraph-Vorschau (Bild + Titel + Beschreibung) angezeigt — via Stimulus-Controller + bestehenden LinkPreviewJob |
+| LP2 | Link-Vorschau live nachladen | ~2h | Nach Abschluss des LinkPreviewJob die Vorschau per Turbo Stream in den bereits gerenderten Post nachschieben — kein Reload mehr nötig |
 | I1 | iOS App | Später | Erst PWA, dann SwiftUI wenn Nutzerbasis es rechtfertigt |
 
 ### Sicherheit (ausstehend)
