@@ -4,7 +4,7 @@
 </div>
 
 <%= form_with model: @post, class: "post-form", multipart: true,
-    data: { controller: "post-form compose" } do |f| %>
+    data: { controller: "post-form compose", turbo: false } do |f| %>
   <% if @post.errors.any? %>
     <div class="error"><%= @post.errors.full_messages.to_sentence %></div>
   <% end %>

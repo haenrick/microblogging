@@ -5,6 +5,15 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.9.17.4] — 2026-04-07
+
+### Fixes
+
+- **Compose-Form: Turbo deaktiviert** — `data-turbo="false"` auf dem Compose-Form. Turbo kann auf iOS PWA bei Form-Submits silent scheitern (Button erscheint reaktionslos). Native HTML-Submit ist zuverlässiger und hat keinen funktionalen Nachteil (Redirect-Verhalten bleibt gleich).
+- **Form-Footer CSS: `space-between` für Compose** — `.form-footer:has(.form-footer-left)` setzt `justify-content: space-between`, damit "+ thread" / "◉ poll" links und 📎 / Post-Button rechts landen. Ohne das fix drängten beide Gruppen nach rechts, was auf Mobile zu Überlappungen und nicht-tappbaren Bereichen führen kann.
+
+---
+
 ## [0.9.17.3] — 2026-04-07
 
 ### Fixes
