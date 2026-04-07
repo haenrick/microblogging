@@ -23,22 +23,7 @@
 
   <div class="post-content"><%= render_post_content(post.content) %></div>
 
-  <% if post.link_preview.present? %>
-    <%= link_to post.link_preview["url"], class: "link-preview-card", target: "_blank", rel: "noopener noreferrer" do %>
-      <% if post.link_preview["image"].present? %>
-        <img src="<%= post.link_preview["image"] %>" class="link-preview-image" loading="lazy" alt="">
-      <% end %>
-      <div class="link-preview-body">
-        <span class="link-preview-site"><%= post.link_preview["site_name"] %></span>
-        <% if post.link_preview["title"].present? %>
-          <strong class="link-preview-title"><%= post.link_preview["title"] %></strong>
-        <% end %>
-        <% if post.link_preview["description"].present? %>
-          <p class="link-preview-desc"><%= post.link_preview["description"] %></p>
-        <% end %>
-      </div>
-    <% end %>
-  <% end %>
+  <%= render "posts/link_preview", post: post %>
 
   <% if post.media.attached? %>
     <div class="post-media">

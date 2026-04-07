@@ -28,6 +28,14 @@ class LinkPreviewJob < ApplicationJob
     return if preview.keys == [ :url ]
 
     post.update_columns(link_preview: preview, updated_at: Time.current)
+    post.reload
+
+    target = ActionView::RecordIdentifier.dom_id(post, :link_preview)
+    locals = { post: post }
+    Turbo::StreamsChannel.broadcast_replace_to "feed",
+      target: target, partial: "posts/link_preview", locals: locals
+    Turbo::StreamsChannel.broadcast_replace_to "post_#{post.public_id}",
+      target: target, partial: "posts/link_preview", locals: locals
   rescue => e
     Rails.logger.warn "[LinkPreviewJob] Failed for post #{post.id}: #{e.message}"
   end

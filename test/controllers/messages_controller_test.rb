@@ -39,7 +39,7 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
   test "send message" do
     sign_in_as(@alice)
     assert_difference("Message.count", 1) do
-      post message_path(@bob.username), params: { message: { content: "Testinhalt" } }
+      post message_path(@bob.username), params: { content: "Testinhalt" }
     end
     assert_redirected_to message_path(@bob.username)
   end
@@ -48,7 +48,7 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
     sign_in_as(@alice)
     @follow.destroy
     assert_no_difference("Message.count") do
-      post message_path(@bob.username), params: { message: { content: "Testinhalt" } }
+      post message_path(@bob.username), params: { content: "Testinhalt" }
     end
     assert_redirected_to messages_path
   end

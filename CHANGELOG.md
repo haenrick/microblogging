@@ -5,6 +5,23 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.9.11.1] — 2026-04-07
+
+### Neu
+- **LP2 Link-Vorschau live** — Nach Abschluss des `LinkPreviewJob` wird die OpenGraph-Card per `Turbo::StreamsChannel.broadcast_replace_to` in den Feed und die Permalink-Seite nachgeliefert — kein Reload mehr nötig
+
+### Fixes
+- `MessagesControllerTest` auf `params[:content]` angepasst (war nach params-Änderung in v0.9.11 rot)
+
+### Technisch
+- `_link_preview.html.erb` als eigenes Partial extrahiert (war inline in `_post.html.erb`)
+- `dom_id(post, :link_preview)` als stabiles Broadcast-Target
+- Broadcast an `"feed"` (Feed-Seite) und `"post_#{post.public_id}"` (Permalink)
+- `turbo_stream_from "post_#{@post.public_id}"` in `posts/show.html.erb`
+- 160 Tests, 414 Assertions
+
+---
+
 ## [0.9.11] — 2026-04-07
 
 ### Neu
