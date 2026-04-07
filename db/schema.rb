@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_03_000736) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_07_073244) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -99,6 +99,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_03_000736) do
     t.string "public_id", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.index "to_tsvector('simple'::regconfig, COALESCE(content, ''::text))", name: "index_posts_on_content_fts", using: :gin
     t.index ["expires_at"], name: "index_posts_on_expires_at"
     t.index ["parent_id"], name: "index_posts_on_parent_id"
     t.index ["public_id"], name: "index_posts_on_public_id", unique: true
@@ -138,6 +139,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_03_000736) do
     t.string "theme", default: "green", null: false
     t.datetime "updated_at", null: false
     t.string "username"
+    t.index "to_tsvector('simple'::regconfig, (((COALESCE(username, ''::character varying))::text || ' '::text) || (COALESCE(bio, ''::character varying))::text))", name: "index_users_on_username_bio_fts", using: :gin
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
   end
