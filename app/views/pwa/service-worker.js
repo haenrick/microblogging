@@ -1,4 +1,4 @@
-const CACHE_NAME = "fl4re-v2";
+const CACHE_NAME = "fl4re-v3";
 const PRECACHE_URLS = ["/manifest.webmanifest"];
 
 self.addEventListener("install", (event) => {
@@ -10,9 +10,17 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
-    )
+    caches.keys()
+      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k))))
+      .then(() => self.clients.matchAll({ type: "window" }))
+      .then((clients) => {
+        // After a SW update, reload all open tabs so they get fresh HTML
+        // with a valid CSRF token — without this, the first page load after
+        // an update still carries the stale token from the old cached response.
+        clients.forEach((client) => {
+          try { client.navigate(client.url); } catch (_) { /* Safari < 15 */ }
+        });
+      })
   );
   self.clients.claim();
 });

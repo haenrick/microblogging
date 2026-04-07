@@ -104,6 +104,92 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # ── Boost ──────────────────────────────────────────────────────────────────
+  test "boost creates a repost" do
+    sign_in_as(@user)
+    assert_difference("Repost.count", 1) do
+      post boost_post_path(posts(:two)), headers: { "Accept" => "text/html" }
+    end
+    assert_response :redirect
+  end
+
+  test "boost again removes the repost" do
+    sign_in_as(@user)
+    Repost.create!(user: @user, post: posts(:two))
+    assert_difference("Repost.count", -1) do
+      delete boost_post_path(posts(:two)), headers: { "Accept" => "text/html" }
+    end
+    assert_response :redirect
+  end
+
+  test "boost responds with turbo_stream" do
+    sign_in_as(@user)
+    post boost_post_path(posts(:two)), headers: { "Accept" => "text/vnd.turbo-stream.html" }
+    assert_response :success
+    assert_match "text/vnd.turbo-stream.html", response.content_type
+  end
+
+  # ── Bookmark ───────────────────────────────────────────────────────────────
+  test "bookmark saves a post" do
+    sign_in_as(@user)
+    assert_difference("Bookmark.count", 1) do
+      post bookmark_post_path(posts(:two)), headers: { "Accept" => "text/html" }
+    end
+    assert_response :redirect
+  end
+
+  test "bookmark again removes it" do
+    sign_in_as(@user)
+    Bookmark.create!(user: @user, post: posts(:two))
+    assert_difference("Bookmark.count", -1) do
+      delete bookmark_post_path(posts(:two)), headers: { "Accept" => "text/html" }
+    end
+    assert_response :redirect
+  end
+
+  test "bookmark responds with turbo_stream" do
+    sign_in_as(@user)
+    post bookmark_post_path(posts(:two)), headers: { "Accept" => "text/vnd.turbo-stream.html" }
+    assert_response :success
+    assert_match "text/vnd.turbo-stream.html", response.content_type
+  end
+
+  # ── Vote ───────────────────────────────────────────────────────────────────
+  test "vote creates a poll vote" do
+    sign_in_as(@user)
+    post_with_poll = posts(:two)
+    option = post_with_poll.poll_options.create!(text: "Option A", position: 0)
+    assert_difference("PollVote.count", 1) do
+      post vote_post_path(post_with_poll),
+           params: { poll_option_id: option.id },
+           headers: { "Accept" => "text/html" }
+    end
+    assert_response :redirect
+  end
+
+  test "vote on same option toggles it off" do
+    sign_in_as(@user)
+    post_with_poll = posts(:two)
+    option = post_with_poll.poll_options.create!(text: "Option A", position: 0)
+    PollVote.create!(user: @user, poll_option: option)
+    assert_difference("PollVote.count", -1) do
+      post vote_post_path(post_with_poll),
+           params: { poll_option_id: option.id },
+           headers: { "Accept" => "text/html" }
+    end
+  end
+
+  test "vote responds with turbo_stream" do
+    sign_in_as(@user)
+    post_with_poll = posts(:two)
+    option = post_with_poll.poll_options.create!(text: "Option A", position: 0)
+    post vote_post_path(post_with_poll),
+         params: { poll_option_id: option.id },
+         headers: { "Accept" => "text/vnd.turbo-stream.html" }
+    assert_response :success
+    assert_match "text/vnd.turbo-stream.html", response.content_type
+  end
+
   # ── Destroy ────────────────────────────────────────────────────────────────
   test "destroy own post" do
     sign_in_as(@user)
