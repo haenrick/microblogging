@@ -166,7 +166,8 @@ body {
 .btn-resend-verification:hover { background: rgba(255,170,0,0.1); }
 
 /* ── Feed Tabs ── */
-.feed-tabs { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+.feed-tabs { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); align-items: center; }
+.tab-action { margin-left: auto; margin-right: 0.5rem; }
 .feed-tab {
   padding: 0.4rem 1rem;
   font-size: 12px;

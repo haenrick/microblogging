@@ -47,8 +47,9 @@
             > fl4re<span class="cursor">_</span>
           <% end %>
           <div class="mobile-header-right">
+            <% mobile_inbox_count = Current.user.notifications.unread.count + Current.user.unread_messages_count %>
             <%= link_to notifications_path, class: "mobile-notif-link" do %>
-              <%= render "notifications/badge", unread_count: Current.user.notifications.unread.count %>
+              <%= render "notifications/badge", unread_count: mobile_inbox_count %>
             <% end %>
             <button class="mobile-avatar-btn" data-action="click->mobile-nav#toggle" aria-label="Menu">
               <% if Current.user.avatar.attached? %>
@@ -65,8 +66,7 @@
                 <li><%= link_to root_path, class: "nav-link", data: { action: "click->mobile-nav#close" } do %>> feed<% end %></li>
                 <li><%= link_to search_path, class: "nav-link", data: { action: "click->mobile-nav#close" } do %>> search<% end %></li>
                 <li><%= link_to discover_path, class: "nav-link", data: { action: "click->mobile-nav#close" } do %>> discover<% end %></li>
-                <li><%= link_to notifications_path, class: "nav-link", data: { action: "click->mobile-nav#close" } do %>> notifications<% end %></li>
-                <li><%= link_to messages_path, class: "nav-link", data: { action: "click->mobile-nav#close" } do %>> messages<% end %></li>
+                <li><%= link_to notifications_path, class: "nav-link", data: { action: "click->mobile-nav#close" } do %>> inbox<% end %></li>
                 <li><%= link_to profile_path(Current.user.username), class: "nav-link", data: { action: "click->mobile-nav#close" } do %>> profile<% end %></li>
                 <li><%= link_to edit_profile_path, class: "nav-link", data: { action: "click->mobile-nav#close" } do %>> settings<% end %></li>
                 <% if Current.user.admin? %>
@@ -91,17 +91,12 @@
               <li><%= link_to search_path, class: "nav-link #{current_page?(search_path) ? "active" : ""}" do %>> search<% end %></li>
               <li><%= link_to discover_path, class: "nav-link #{current_page?(discover_path) ? "active" : ""}" do %>> discover<% end %></li>
               <li>
-                <%= link_to notifications_path, class: "nav-link notif-nav-link #{current_page?(notifications_path) ? "active" : ""}" do %>
-                  &gt; notifications
-                  <%= render "notifications/badge", unread_count: Current.user.notifications.unread.count %>
-                <% end %>
-              </li>
-              <li>
-                <%= link_to messages_path, class: "nav-link notif-nav-link #{request.path.start_with?("/messages") ? "active" : ""}" do %>
-                  &gt; messages
-                  <% unread_dm_count = Current.user.unread_messages_count %>
-                  <% if unread_dm_count > 0 %>
-                    <span class="notif-badge"><%= unread_dm_count %></span>
+                <% inbox_active = current_page?(notifications_path) || request.path.start_with?("/messages") %>
+                <% total_inbox = Current.user.notifications.unread.count + Current.user.unread_messages_count %>
+                <%= link_to notifications_path, class: "nav-link notif-nav-link #{inbox_active ? "active" : ""}" do %>
+                  &gt; inbox
+                  <% if total_inbox > 0 %>
+                    <span class="notif-badge"><%= total_inbox %></span>
                   <% end %>
                 <% end %>
               </li>
