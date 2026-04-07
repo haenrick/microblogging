@@ -5,6 +5,19 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.9.18] — 2026-04-07
+
+### Neu
+- **DM Link Previews** — Link-Vorschau in Direktnachrichten; async via `MessageLinkPreviewJob`; Live-Broadcast an Sender und Empfänger über ihre jeweiligen Turbo-Channels (`messages_#{user_id}`)
+
+### Technisch
+- Migration: `link_preview` jsonb-Spalte auf `messages`
+- `MessageLinkPreviewJob` — OG-Tags fetchen, `message.update_columns`, broadcast replace an beide Teilnehmer
+- `messages/_link_preview.html.erb` — Partial mit stabilem DOM-Target `message-preview-#{id}`
+- CSS: `.link-preview-card--dm` — kompaktere Karte (max-width 280px) für Chat-Kontext
+
+---
+
 ## [0.9.17.4] — 2026-04-07
 
 ### Fixes

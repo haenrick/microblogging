@@ -5,6 +5,7 @@ class Message < ApplicationRecord
   validates :content, presence: true, length: { maximum: 1000 }
 
   after_create_commit :broadcast_to_recipient
+  after_create_commit :enqueue_link_preview, if: -> { content.match?(/https?:\/\//) }
 
   scope :conversation_between, ->(a, b) {
     where(sender: a, recipient: b).or(where(sender: b, recipient: a)).order(:created_at)
@@ -21,5 +22,9 @@ class Message < ApplicationRecord
       target: "messages-list",
       partial: "messages/message",
       locals: { message: self, current_user: sender }
+  end
+
+  def enqueue_link_preview
+    MessageLinkPreviewJob.perform_later(self)
   end
 end
