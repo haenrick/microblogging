@@ -1,0 +1,14 @@
+E-Mail bestätigen — fl4re
+=========================
+
+Willkommen bei fl4re, @<%= @user.username %>!
+
+Öffne diesen Link, um deine E-Mail-Adresse zu bestätigen:
+
+<%= verify_email_url(@token) %>
+
+Dieser Link läuft in 24 Stunden ab.
+Falls du dich nicht registriert hast, kannst du diese Mail ignorieren.
+
+--
+fl4re · https://fl4re.datenkistchen.de

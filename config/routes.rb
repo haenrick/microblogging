@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
+  get  "/verify-email/:token", to: "email_verifications#show",   as: :verify_email
+  post "/verify-email/resend", to: "email_verifications#create", as: :resend_email_verification
 
   get  "/register", to: "registrations#new",    as: :new_register
   post "/register", to: "registrations#create", as: :register

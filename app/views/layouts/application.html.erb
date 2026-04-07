@@ -121,6 +121,12 @@
         <main class="main-content">
           <% if flash[:notice] %><p class="flash-notice">[ok] <%= flash[:notice] %></p><% end %>
           <% if flash[:alert] %><p class="flash-alert">[!] <%= flash[:alert] %></p><% end %>
+          <% unless Current.user.email_verified? %>
+            <div class="email-verification-banner">
+              <span>[!] Bitte bestätige deine E-Mail-Adresse.</span>
+              <%= button_to "> Mail erneut senden", resend_email_verification_path, method: :post, class: "btn-resend-verification" %>
+            </div>
+          <% end %>
           <%= yield %>
         </main>
       </div>

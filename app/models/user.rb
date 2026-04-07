@@ -30,6 +30,10 @@ class User < ApplicationRecord
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
   has_many :push_subscriptions, dependent: :destroy
 
+  generates_token_for :email_verification, expires_in: 24.hours do
+    email_verified_at
+  end
+
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
   validates :username, presence: true, uniqueness: true,
@@ -64,6 +68,10 @@ class User < ApplicationRecord
 
   def theme_colors
     THEMES[theme] || THEMES["green"]
+  end
+
+  def email_verified?
+    email_verified_at.present?
   end
 
   def admin?

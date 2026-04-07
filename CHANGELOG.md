@@ -5,6 +5,20 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.9.8] — 2026-04-07
+
+### Neu
+- **S4 E-Mail-Verifikation** — Nach der Registrierung wird eine Bestätigungs-Mail gesendet (Brevo SMTP); Token läuft nach 24h ab und wird nach Verifikation invalidiert; Banner im App-Layout mit "Mail erneut senden"-Button für unverified User; `EmailVerificationMailer` im fl4re-Stil
+
+### Technisch
+- `users.email_verified_at` (datetime, nullable)
+- `generates_token_for :email_verification, expires_in: 24h` im User-Model (mit `email_verified_at` als Digest — Token wird nach Verifikation automatisch ungültig)
+- `EmailVerificationsController#show` (öffentlich) + `#create` (resend, requires auth)
+- Routes: `GET /verify-email/:token`, `POST /verify-email/resend`
+- 6 neue Tests; gesamt: 141 Tests, 373 Assertions
+
+---
+
 ## [0.9.7] — 2026-04-07
 
 ### Technisch
