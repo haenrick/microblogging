@@ -1,6 +1,6 @@
 # fl4re — Roadmap
 
-> Stand: April 2026 · Stack: Ruby on Rails 8.1 · PostgreSQL 16 · Pi 5 + Cloudflare Tunnel
+> Stand: April 2026 · v0.9.6 · Stack: Ruby on Rails 8.1 · PostgreSQL 16 · Pi 5 + Cloudflare Tunnel
 
 ---
 
@@ -48,8 +48,9 @@
 | MF | Mobile Fix — Overlay-Schrift lesbar, Backdrop klickbar (close on click) |
 | LP | Link Previews — OpenGraph-Card unter Posts mit URLs (async via LinkPreviewJob) |
 | AT | @Mentions — `@username` wird verlinkt, Mention-Notification an erwähnte User |
-| X2a | Post-Assistent — ✦ improve-Button verbessert Draft per Claude API (Haiku) |
-| X2b | @claude Bot — antwortet auf Mentions via ClaudeBotJob + Anthropic API |
+| X2a | Post-Assistent — ✦ improve-Button verbessert Draft per Claude API (Haiku); rate-limited 10 req/min |
+| X2b | @claude Bot — antwortet auf @claude-Mentions via ClaudeBotJob + Anthropic API (Haiku) |
+| AT2 | @Mentions + Link Previews — @username verlinkt, Mention-Notification, OpenGraph-Card async via LinkPreviewJob |
 
 ---
 
@@ -112,7 +113,7 @@
 
 | # | Maßnahme | Aufwand | Beschreibung |
 |---|----------|---------|--------------|
-| T6 | PostgreSQL Full-Text Search | ~2h | `tsvector`/`tsquery` statt ILIKE — kein Extra-Gem, indexierbar, relevanter |
+| ~~T6~~ | ~~PostgreSQL Full-Text Search~~ | ✅ | `tsvector`/`websearch_to_tsquery` + GIN-Indexes auf posts und users |
 
 #### 🟢 Niedrig
 
@@ -129,7 +130,11 @@
 | # | Feature | Aufwand | Beschreibung |
 |---|---------|---------|--------------|
 | ~~U3~~ | ~~Privates Profil~~ | ✅ | Follow-Requests, Accept/Decline, Notification bei Annahme |
-| X2 | KI-Integration | ~1–3 Tage | Post-Assistent via Claude API (X2a), Smart Search (X2c), @claude Bot |
+| ~~X2a~~ | ~~Post-Assistent~~ | ✅ | ✦ improve-Button verbessert Draft per Claude API (Haiku) |
+| ~~X2b~~ | ~~@claude Bot~~ | ✅ | antwortet auf @claude-Mentions via ClaudeBotJob |
+| X2b | Thread-Zusammenfassung | ~1 Tag | Lange Threads auf Permalink-Seite zusammenfassen |
+| X2c | Smart Search | ~2 Tage | Semantische Suche statt ILIKE via Embeddings |
+| X2d | Content-Moderation | ~2 Tage | Automatisches Flaggen toxischer Posts via Claude API |
 | N4 | E2E-DMs | ~3–5 Tage | Ende-zu-Ende-verschlüsselte Direktnachrichten (X25519 + AES-GCM) |
 | I1 | iOS App | Später | Erst PWA, dann SwiftUI wenn Nutzerbasis es rechtfertigt |
 
@@ -145,18 +150,17 @@
 
 ---
 
-### X2 — KI-Integration
+### X2 — KI-Integration (Fortsetzung)
 
-**Mögliche Features:**
+X2a (Post-Assistent) und X2b (@claude Bot) sind abgeschlossen ✅. Offen:
 
 | # | Feature | Beschreibung | Aufwand |
 |---|---------|--------------|---------|
-| X2a | Post-Assistent | KI verbessert Entwurf auf Knopfdruck | ~1 Tag |
 | X2b | Thread-Zusammenfassung | Lange Threads auf Permalink-Seite zusammenfassen | ~1 Tag |
-| X2c | Smart Search | Semantische Suche statt ILIKE | ~2 Tage |
-| X2d | Content-Moderation | Automatisches Flaggen toxischer Posts | ~2 Tage |
+| X2c | Smart Search | Semantische Suche statt ILIKE via Embeddings | ~2 Tage |
+| X2d | Content-Moderation | Automatisches Flaggen toxischer Posts via Claude API | ~2 Tage |
 
-**Technischer Ansatz:** Claude API (Anthropic) · `anthropic-rb` Gem · Stimulus-Controller → `/ai/suggest`
+**Technischer Ansatz:** Claude API (Anthropic) · `anthropic` Gem (v1) · Stimulus-Controller
 
 ---
 
@@ -227,3 +231,6 @@ Für öffentlichen Launch: Hetzner CX22 (~5 €/Monat) + Kamal (bereits im Gemfi
 | `v0.9.2` | Favicons: vollständiges favicon.io-Paket (ICO, PNG 16/32/180/192/512), manifest.webmanifest |
 | `v0.9.3` | Like 500-Bugfix (Race-Condition), Follower/Following-Listen |
 | `v0.9.4` | Privates Profil (U3), Live-Feed (T8), Mobile-Layout (einspaltig + Slide-in-Nav) |
+| `v0.9.5` | @Mentions (verlinkt + Notification), Link Previews (OpenGraph async via LinkPreviewJob) |
+| `v0.9.6` | KI-Post-Assistent (X2a, ✦ improve-Button via Claude Haiku), @claude Bot (X2b, ClaudeBotJob) |
+| `v0.9.7` | PostgreSQL Full-Text Search (T6) — `websearch_to_tsquery` + GIN-Indexes statt ILIKE |

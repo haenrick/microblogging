@@ -61,15 +61,20 @@ class ClaudeBotJobTest < ActiveJob::TestCase
   private
 
   def stub_anthropic(text, &block)
-    fake_response = { "content" => [ { "text" => text } ] }
+    fake_content  = Struct.new(:text).new(text)
+    fake_response = Struct.new(:content).new([ fake_content ])
+    fake_messages = Object.new
+    fake_messages.define_singleton_method(:create) { |**_| fake_response }
     fake_client   = Object.new
-    fake_client.define_singleton_method(:messages) { |**_| fake_response }
+    fake_client.define_singleton_method(:messages) { fake_messages }
     stub_method(Anthropic::Client, :new, ->(*) { fake_client }, &block)
   end
 
   def stub_anthropic_error(&block)
-    bad_client = Object.new
-    bad_client.define_singleton_method(:messages) { |**_| raise "API error" }
+    fake_messages = Object.new
+    fake_messages.define_singleton_method(:create) { |**_| raise "API error" }
+    bad_client    = Object.new
+    bad_client.define_singleton_method(:messages) { fake_messages }
     stub_method(Anthropic::Client, :new, ->(*) { bad_client }, &block)
   end
 

@@ -5,6 +5,16 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.9.7] — 2026-04-07
+
+### Technisch
+- **T6 PostgreSQL Full-Text Search** — Post- und User-Suche nutzt jetzt `tsvector`/`websearch_to_tsquery` statt `ILIKE`; GIN-Indexes auf `posts.content` und `users.username+bio` für indexierbare, relevantere Volltextsuche
+- `websearch_to_tsquery('simple', ?)` unterstützt natürliche Suchsyntax (`wort1 wort2` = AND, `"phrase"`, `-ausschließen`)
+- Dictionary `simple` (nur Lowercasing) statt `english` — sprachunabhängig, kein unerwartetes Stemming
+- 4 neue Search-Controller-Tests; gesamt: 135 Tests, 340 Assertions
+
+---
+
 ## [0.9.6] — 2026-04-03
 
 ### Neu
