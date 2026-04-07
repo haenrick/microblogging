@@ -1,5 +1,5 @@
-const CACHE_NAME = "fl4re-v1";
-const PRECACHE_URLS = ["/", "/manifest.webmanifest"];
+const CACHE_NAME = "fl4re-v2";
+const PRECACHE_URLS = ["/manifest.webmanifest"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -21,6 +21,12 @@ self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
+
+  // Never cache HTML pages — they contain CSRF tokens tied to the session.
+  // Serving a stale HTML page causes all POST requests (like, post, boost…)
+  // to fail with 422 because the embedded token no longer matches the session.
+  const acceptsHTML = event.request.headers.get("Accept")?.includes("text/html");
+  if (acceptsHTML) return;
 
   event.respondWith(
     caches.match(event.request).then((cached) => cached || fetch(event.request))

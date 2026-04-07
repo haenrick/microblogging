@@ -192,6 +192,57 @@
 
 ### Sicherheit (ausstehend)
 
+#### Bekannte Findings aus Security Audit (April 2026)
+
+**🔴 Critical — sofort beheben**
+
+| # | Risiko | Aufwand | Datei | Maßnahme |
+|---|--------|---------|-------|----------|
+| SA-C1 | SSRF in LinkPreviewJob | ~2h | `app/jobs/link_preview_job.rb:8` | Interne IPs/Localhost blocken (`169.254.x`, `127.x`, `10.x`, `192.168.x`) vor `URI.open` |
+| SA-C2 | Session-Cookie ohne `same_site` | ~30min | `app/controllers/registrations_controller.rb:19` | `same_site: :lax, secure: true` zum Cookie hinzufügen |
+| SA-C3 | Reset-Token in Redirect-URL | ~30min | `app/controllers/passwords_controller.rb:25` | Bei Fehler `render :edit` statt `redirect_to` mit Token in URL |
+
+**🟠 High — vor nächstem Release**
+
+| # | Risiko | Aufwand | Datei | Maßnahme |
+|---|--------|---------|-------|----------|
+| SA-H1 | Stored XSS via Link-Preview OG-Tags | ~2h | `app/jobs/link_preview_job.rb` | OG-Werte durch `Rails::Html::SafeListSanitizer` filtern, Image-URL auf http/https prüfen |
+| SA-H2 | Admin-Operationen ohne Passwort-Bestätigung | ~1 Tag | `app/controllers/admin/users_controller.rb` | Re-Auth für `toggle_admin` und `destroy` |
+| SA-H3 | Reply auf private/geblockte Posts möglich | ~1h | `app/controllers/posts_controller.rb` | `visible_to?(Current.user)` vor Reply-Erstellung prüfen |
+| SA-H4 | Kein Budget-Cap für Claude API | ~1h | `app/controllers/ai_controller.rb` | Globales Rate-Limit zusätzlich zum Per-User-Limit |
+
+**🟡 Medium**
+
+| # | Risiko | Aufwand | Datei | Maßnahme |
+|---|--------|---------|-------|----------|
+| SA-M1 | CSP-Nonce an Session-ID gebunden | ~15min | `config/initializers/content_security_policy.rb` | `SecureRandom.base64(16)` statt `session.id` |
+| SA-M2 | Fehlende E-Mail-Format-Validierung | ~15min | `app/models/user.rb` | `validates :email_address, format: { with: URI::MailTo::EMAIL_REGEXP }` |
+| SA-M3 | Kein Rate-Limit auf Full-Text-Search | ~30min | `app/controllers/search_controller.rb` | `rate_limit to: 30, within: 1.minute` |
+| SA-M4 | ActionCable Connection ohne User-Auth-Check | ~1h | `app/channels/application_cable/connection.rb` | `reject_unauthorized_connection` wenn kein gültiger User |
+| SA-M5 | Login-Throttle ohne persistentes Blocken | ~1h | `config/initializers/rack_attack.rb` | Nach N Verstößen IP für 24h blocken |
+
+**🟢 Low**
+
+| # | Risiko | Aufwand | Datei | Maßnahme |
+|---|--------|---------|-------|----------|
+| SA-L1 | Invite-Token-Generator rekursiv | ~10min | `app/models/invite.rb` | `loop do ... break unless exists? end` statt Rekursion |
+| SA-L2 | Poll-Option-Limit nur im Form, nicht im Model | ~15min | `app/models/post.rb` | `validate :poll_options_count` (max 4) |
+| SA-L3 | Kein Login-Logging | ~30min | `app/controllers/concerns/authentication.rb` | IP + User-Agent bei Login loggen |
+| SA-L4 | Kein Upload-Frequenz-Limit | ~30min | `app/models/post.rb` | Rate-Limit auf Create-Aktion mit Media |
+
+**ℹ️ Info / Best Practices**
+
+| # | Thema | Maßnahme |
+|---|-------|----------|
+| SA-I1 | Password-Mindestlänge (aktuell: 6) | Auf 12 Zeichen erhöhen |
+| SA-I2 | `brakeman` + `bundler-audit` nur in dev | Auch im CD-Job (GitHub Actions) laufen lassen |
+| SA-I3 | Keine Secrets-Rotation-Policy | VAPID, Anthropic, Brevo Keys quartalsweise rotieren |
+| SA-I4 | Keine Dependency-Update-Routine | Regelmäßige `bundle update` mit `bundle audit check` |
+
+---
+
+**Bestehende Sicherheits-Features**
+
 | # | Risiko | Aufwand | Maßnahme |
 |---|--------|---------|----------|
 | ~~S2~~ | ~~Admin-Audit-Log~~ | ✅ | Chronologisches Protokoll aller Admin-Aktionen im `> audit`-Tab |
@@ -304,3 +355,4 @@ Für öffentlichen Launch: Hetzner CX22 (~5 €/Monat) + Kamal (bereits im Gemfi
 | `v0.9.15` | Landing Page — Hero + Live-Stats + Feature-Liste + Register-CTA neben Login-Form |
 | `v0.9.16` | Community-Wachstum — Öffentlicher Feed (/explore), OG-Tags, Invite-System (5 Codes/User), Welcome-Bot |
 | `v0.9.17` | Interaktion — Repost/Boost, Lesezeichen, Polls, Threads, Hashtags (#tag → Feed) |
+| `v0.9.17.1` | Mobile Fixes — Service Worker cacht kein HTML mehr (CSRF-Fix), Toggle-Controller `toggle()`-Methode ergänzt (DM-Inbox) |
