@@ -1,0 +1,4 @@
+<div class="message-bubble <%= message.sender_id == current_user.id ? "sent" : "received" %>">
+  <p class="message-content"><%= message.content %></p>
+  <span class="message-time dim"><%= message.created_at.strftime("%H:%M") %></span>
+</div>

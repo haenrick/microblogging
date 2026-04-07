@@ -1,0 +1,11 @@
+one:
+  sender: two
+  recipient: one
+  content: "Hallo userone!"
+  created_at: <%= 1.hour.ago %>
+
+two:
+  sender: one
+  recipient: two
+  content: "Hey usertwo, wie geht's?"
+  created_at: <%= 30.minutes.ago %>

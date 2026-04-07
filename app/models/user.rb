@@ -31,6 +31,8 @@ class User < ApplicationRecord
 
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
   has_many :push_subscriptions, dependent: :destroy
+  has_many :sent_messages,     class_name: "Message", foreign_key: :sender_id,    dependent: :destroy
+  has_many :received_messages, class_name: "Message", foreign_key: :recipient_id, dependent: :destroy
 
   generates_token_for :email_verification, expires_in: 24.hours do
     email_verified_at
@@ -74,6 +76,18 @@ class User < ApplicationRecord
 
   def email_verified?
     email_verified_at.present?
+  end
+
+  # Messaging permission — centralised so the rule can be changed without touching controllers/views.
+  # Current rule: target must follow self (they initiated contact), and neither side blocks the other.
+  def can_message?(target)
+    return false if target == self
+    return false if blocking?(target) || blocked_by?(target)
+    target.following?(self)
+  end
+
+  def unread_messages_count
+    received_messages.where(read_at: nil).count
   end
 
   def admin?

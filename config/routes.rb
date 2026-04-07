@@ -39,6 +39,10 @@ Rails.application.routes.draw do
     resources :posts, only: [:index, :destroy]
   end
 
+  get  "/messages",           to: "messages#index",  as: :messages
+  get  "/messages/:username", to: "messages#show",   as: :message,         constraints: { username: /[a-z0-9_]+/ }
+  post "/messages/:username", to: "messages#create",                        constraints: { username: /[a-z0-9_]+/ }
+
   get    "/profile/edit",            to: "profiles#edit",            as: :edit_profile
   patch  "/profile",                 to: "profiles#update",          as: :update_profile
   patch  "/profile/change_password", to: "profiles#change_password", as: :change_password

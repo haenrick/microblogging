@@ -845,3 +845,72 @@ body {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* ── Messages ── */
+.conversations-list { display: flex; flex-direction: column; gap: 0; }
+.conversation-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border);
+  color: inherit;
+  text-decoration: none;
+  position: relative;
+}
+.conversation-item:hover { background: rgba(255,255,255,0.02); }
+.conversation-item.unread .conv-username { color: var(--green); }
+.conv-body { flex: 1; min-width: 0; }
+.conv-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.2rem; }
+.conv-username { font-size: 13px; font-weight: bold; letter-spacing: 1px; }
+.conv-preview { font-size: 12px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.conv-time { font-size: 11px; white-space: nowrap; }
+.conv-unread-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green); flex-shrink: 0;
+}
+
+.messages-thread {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-bottom: 1.5rem;
+  min-height: 200px;
+}
+.message-bubble {
+  max-width: 75%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.message-bubble.sent {
+  align-self: flex-end;
+  background: rgba(0,255,136,0.08);
+  border: 1px solid rgba(0,255,136,0.2);
+}
+.message-bubble.received {
+  align-self: flex-start;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+}
+.message-content { margin: 0 0 0.2rem; }
+.message-time { font-size: 10px; display: block; text-align: right; }
+
+.message-compose { border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 0.5rem; }
+.message-input-row { display: flex; gap: 0.5rem; align-items: flex-end; }
+.message-input {
+  flex: 1;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  resize: none;
+}
+.message-input:focus { outline: none; border-color: var(--green); }
+.btn-send { white-space: nowrap; }
+.back-link { font-size: 12px; display: block; margin-bottom: 0.5rem; text-decoration: none; }
+.back-link:hover { color: var(--green); }
