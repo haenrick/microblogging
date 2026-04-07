@@ -356,3 +356,4 @@ Für öffentlichen Launch: Hetzner CX22 (~5 €/Monat) + Kamal (bereits im Gemfi
 | `v0.9.16` | Community-Wachstum — Öffentlicher Feed (/explore), OG-Tags, Invite-System (5 Codes/User), Welcome-Bot |
 | `v0.9.17` | Interaktion — Repost/Boost, Lesezeichen, Polls, Threads, Hashtags (#tag → Feed) |
 | `v0.9.17.1` | Mobile Fixes — Service Worker cacht kein HTML mehr (CSRF-Fix), Toggle-Controller `toggle()`-Methode ergänzt (DM-Inbox) |
+| `v0.9.17.2` | Mobile Fix 2 — SW reload nach Aktivierung (stale CSRF in aktiven Tabs), Tests für Boost/Bookmark/Vote (169 Tests, 440 Assertions) |

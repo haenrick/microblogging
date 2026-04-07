@@ -5,6 +5,15 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.9.17.2] — 2026-04-07
+
+### Fixes
+
+- **Service Worker: Auto-Reload nach Update** — `client.navigate(client.url)` auf alle offenen Tabs nach SW-Aktivierung. Behebt: Nutzer mussten nach einem SW-Update die Seite manuell neu laden, sonst blieben stale CSRF-Tokens im aktiven Tab aktiv → Posting/Liking schlugen fehl. Cache-Name → `fl4re-v3`.
+- **Tests: Boost, Bookmark, Vote** — 9 neue Controller-Tests für bisher nicht abgedeckte Turbo-Stream-Aktionen (jeweils toggle-on, toggle-off, turbo_stream-Format).
+
+---
+
 ## [0.9.17.1] — 2026-04-07
 
 ### Fixes
