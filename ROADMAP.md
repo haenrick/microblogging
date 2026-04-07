@@ -121,7 +121,7 @@
 |---|----------|---------|--------------|
 | ~~T8~~ | ~~Live-Feed via Turbo Streams~~ | ✅ | Neue Posts erscheinen in Echtzeit im "All"-Tab via `broadcast_prepend_to "feed"` |
 | T9 | Fehler-Tracking | ~1h | Sentry o.ä. für Production-Errors — aktuell keine Sichtbarkeit bei Crashes |
-| T10 | Avatar Variant Caching | ~1h | Thumbnails werden on-demand generiert, kein Caching |
+| ~~T10~~ | ~~Avatar Variant Caching~~ | ✅ | Named Variant `:thumb` mit `preprocessed: true` — Thumbnail wird nach Upload vorberechnet |
 
 ---
 
@@ -235,3 +235,4 @@ Für öffentlichen Launch: Hetzner CX22 (~5 €/Monat) + Kamal (bereits im Gemfi
 | `v0.9.6` | KI-Post-Assistent (X2a, ✦ improve-Button via Claude Haiku), @claude Bot (X2b, ClaudeBotJob) |
 | `v0.9.7` | PostgreSQL Full-Text Search (T6) — `websearch_to_tsquery` + GIN-Indexes statt ILIKE |
 | `v0.9.8` | E-Mail-Verifikation (S4) — Token 24h, Banner + Resend, Auto-Invalidierung nach Bestätigung |
+| `v0.9.9` | Avatar Variant Caching (T10) — Named Variant `:thumb` mit `preprocessed: true` |

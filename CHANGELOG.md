@@ -5,6 +5,13 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.9.9] — 2026-04-07
+
+### Technisch
+- **T10 Avatar Variant Caching** — Named Variant `:thumb` mit `preprocessed: true`; Thumbnail (100×100) wird nach jedem Avatar-Upload automatisch via `ActiveStorage::PreprocessImageVariantsJob` vorberechnet; kein on-demand Rendering mehr; kein extra Gem, keine Migration
+
+---
+
 ## [0.9.8] — 2026-04-07
 
 ### Neu
