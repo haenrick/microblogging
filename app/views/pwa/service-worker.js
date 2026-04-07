@@ -1,45 +1,19 @@
-const CACHE_NAME = "fl4re-v3";
-const PRECACHE_URLS = ["/manifest.webmanifest"];
+// fl4re Service Worker — Push Notifications only.
+// No caching: HTML pages contain session-specific CSRF tokens that become stale
+// when served from cache, breaking all form submissions (post, like, DM…).
 
-self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE_URLS))
-  );
-  self.skipWaiting();
-});
+self.addEventListener("install", () => self.skipWaiting());
 
 self.addEventListener("activate", (event) => {
+  // Clear any caches left over from previous SW versions.
   event.waitUntil(
     caches.keys()
-      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k))))
-      .then(() => self.clients.matchAll({ type: "window" }))
-      .then((clients) => {
-        // After a SW update, reload all open tabs so they get fresh HTML
-        // with a valid CSRF token — without this, the first page load after
-        // an update still carries the stale token from the old cached response.
-        clients.forEach((client) => {
-          try { client.navigate(client.url); } catch (_) { /* Safari < 15 */ }
-        });
-      })
-  );
-  self.clients.claim();
-});
-
-self.addEventListener("fetch", (event) => {
-  if (event.request.method !== "GET") return;
-  const url = new URL(event.request.url);
-  if (url.origin !== self.location.origin) return;
-
-  // Never cache HTML pages — they contain CSRF tokens tied to the session.
-  // Serving a stale HTML page causes all POST requests (like, post, boost…)
-  // to fail with 422 because the embedded token no longer matches the session.
-  const acceptsHTML = event.request.headers.get("Accept")?.includes("text/html");
-  if (acceptsHTML) return;
-
-  event.respondWith(
-    caches.match(event.request).then((cached) => cached || fetch(event.request))
+      .then((keys) => Promise.all(keys.map((k) => caches.delete(k))))
+      .then(() => self.clients.claim())
   );
 });
+
+// Do not intercept fetch — let every request go straight to the network.
 
 self.addEventListener("push", (event) => {
   if (!event.data) return;

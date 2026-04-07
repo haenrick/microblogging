@@ -5,6 +5,14 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.9.17.3] — 2026-04-07
+
+### Fixes
+
+- **Service Worker: Caching vollständig entfernt** — Der SW cached ab sofort gar nichts mehr. Einziger Zweck: Push Notifications. `client.navigate()` aus v0.9.17.2 funktionierte auf iOS Safari PWA nicht zuverlässig (kein Reload → stale CSRF-Token blieben aktiv → Posting schlug fehl). Alle verbleibenden Caches (fl4re-v1/v2/v3) werden beim Aktivieren gelöscht. `fetch`-Handler entfernt — alle Requests gehen direkt ans Netzwerk.
+
+---
+
 ## [0.9.17.2] — 2026-04-07
 
 ### Fixes
