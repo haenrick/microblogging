@@ -1,0 +1,31 @@
+<div class="page-header">
+  <h2 class="page-title">> messages<span class="cursor">_</span></h2>
+</div>
+
+<% if @conversations.empty? %>
+  <p class="empty-state">// keine Konversationen — schreibe jemanden an, der dir folgt</p>
+<% else %>
+  <div class="conversations-list">
+    <% @conversations.each do |conv| %>
+      <%= link_to message_path(conv[:partner].username), class: "conversation-item #{conv[:unread] ? "unread" : ""}" do %>
+        <div class="conv-avatar">
+          <% if conv[:partner].avatar.attached? %>
+            <%= image_tag conv[:partner].avatar_thumbnail, class: "avatar-img avatar-small" %>
+          <% else %>
+            <div class="avatar-initials avatar-small"><%= conv[:partner].initials %></div>
+          <% end %>
+        </div>
+        <div class="conv-body">
+          <div class="conv-header">
+            <span class="conv-username">@<%= conv[:partner].username %></span>
+            <span class="conv-time dim"><%= time_ago_in_words(conv[:last_message].created_at) %> ago</span>
+          </div>
+          <p class="conv-preview dim"><%= truncate(conv[:last_message].content, length: 60) %></p>
+        </div>
+        <% if conv[:unread] %>
+          <span class="conv-unread-dot"></span>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

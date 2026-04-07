@@ -1,0 +1,27 @@
+<div class="page-header">
+  <a href="<%= messages_path %>" class="back-link dim">// &larr; inbox</a>
+  <h2 class="page-title">
+    > @<%= @partner.username %><span class="cursor">_</span>
+  </h2>
+</div>
+
+<%= turbo_stream_from "messages_#{Current.user.id}" %>
+
+<div class="messages-thread" id="messages-list">
+  <%= render @messages, current_user: Current.user %>
+</div>
+
+<div class="message-compose">
+  <%= form_with url: message_path(@partner.username), method: :post, data: { turbo: false } do |f| %>
+    <div class="message-input-row">
+      <%= f.text_area :content, placeholder: "// nachricht...", class: "message-input",
+            rows: 2, maxlength: 1000, autofocus: true %>
+      <%= f.submit "> senden", class: "btn-primary btn-send" %>
+    </div>
+    <% if @new_message&.errors&.any? %>
+      <% @new_message.errors.full_messages.each do |msg| %>
+        <p class="error-text">[!] <%= msg %></p>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

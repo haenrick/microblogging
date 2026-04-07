@@ -132,10 +132,12 @@
 | ~~U3~~ | ~~Privates Profil~~ | ✅ | Follow-Requests, Accept/Decline, Notification bei Annahme |
 | ~~X2a~~ | ~~Post-Assistent~~ | ✅ | ✦ improve-Button verbessert Draft per Claude API (Haiku) |
 | ~~X2b~~ | ~~@claude Bot~~ | ✅ | antwortet auf @claude-Mentions via ClaudeBotJob |
+| X2 | KI-Ausbau (offen) | Laufend | ✦ improve nur im Compose, nicht in Replies; @claude-Bot, Thread-Zusammenfassung, Smart Search, Content-Moderation — aktueller Stand nicht final |
 | X2b | Thread-Zusammenfassung | ~1 Tag | Lange Threads auf Permalink-Seite zusammenfassen |
 | X2c | Smart Search | ~2 Tage | Semantische Suche statt ILIKE via Embeddings |
 | X2d | Content-Moderation | ~2 Tage | Automatisches Flaggen toxischer Posts via Claude API |
-| N4 | E2E-DMs | ~3–5 Tage | Ende-zu-Ende-verschlüsselte Direktnachrichten (X25519 + AES-GCM) |
+| ~~N4a~~ | ~~Basis-DMs~~ | ✅ | Inbox, Konversation, Real-time Turbo, Unread-Badge, `can_message?`-Permission |
+| N4b | E2E-Verschlüsselung | Später | X25519 + AES-GCM, nur wenn Datenschutz-Anforderungen es rechtfertigen |
 | I1 | iOS App | Später | Erst PWA, dann SwiftUI wenn Nutzerbasis es rechtfertigt |
 
 ### Sicherheit (ausstehend)
@@ -152,7 +154,13 @@
 
 ### X2 — KI-Integration (Fortsetzung)
 
-X2a (Post-Assistent) und X2b (@claude Bot) sind abgeschlossen ✅. Offen:
+X2a (Post-Assistent) und X2b (@claude Bot) sind abgeschlossen ✅, aber der KI-Ausbau ist **nicht final** — der aktuelle Stand ist ein erster Schritt. Offene Punkte:
+
+- ✦ improve erscheint nur im Haupt-Compose, nicht in Reply-Feldern
+- Kein Feedback wenn Verbesserung schlechter ist als das Original
+- @claude antwortet ohne Kontext (sieht nur den einzelnen Post, nicht den Thread)
+
+Weitere geplante Features:
 
 | # | Feature | Beschreibung | Aufwand |
 |---|---------|--------------|---------|
@@ -236,3 +244,4 @@ Für öffentlichen Launch: Hetzner CX22 (~5 €/Monat) + Kamal (bereits im Gemfi
 | `v0.9.7` | PostgreSQL Full-Text Search (T6) — `websearch_to_tsquery` + GIN-Indexes statt ILIKE |
 | `v0.9.8` | E-Mail-Verifikation (S4) — Token 24h, Banner + Resend, Auto-Invalidierung nach Bestätigung |
 | `v0.9.9` | Avatar Variant Caching (T10) — Named Variant `:thumb` mit `preprocessed: true` |
+| `v0.9.10` | Direkt­nachrichten N4a — Inbox, Konversation, Real-time, Unread-Badge, `can_message?` |

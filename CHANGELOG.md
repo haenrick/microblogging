@@ -5,6 +5,22 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.9.10] — 2026-04-07
+
+### Neu
+- **N4a Direkt­nachrichten** — 1:1-DMs zwischen Usern; Inbox-Übersicht mit letzter Nachricht und Unread-Dot; Konversations-Ansicht mit Real-time via Turbo Streams (Solid Cable); `> messages`-Eintrag in Sidebar + Mobile-Nav mit Unread-Badge
+- Permission-Regel: Du kannst User X anschreiben, wenn X dir folgt; zentralisiert in `user.can_message?(target)` — leicht anpassbar ohne Controller/View-Änderungen
+- Geblockte User können sich nicht anschreiben; Nachrichten werden beim Öffnen als gelesen markiert
+
+### Technisch
+- `messages`-Tabelle: `sender_id`, `recipient_id`, `content`, `read_at` + Foreign Keys + Indexes
+- `Message#broadcast_to_recipient` via Turbo Streams zu `"messages_#{recipient_id}"`
+- `DISTINCT ON`-SQL-Query für Inbox (eine Zeile pro Konversationspartner, neueste Nachricht)
+- Routes vor `/:username`-Catch-all platziert (Routing-Konflikt vermieden)
+- 18 neue Tests; gesamt: 159 Tests, 411 Assertions
+
+---
+
 ## [0.9.9] — 2026-04-07
 
 ### Technisch
