@@ -31,8 +31,7 @@
           <span class="prompt-char">#</span>
           <%= po.hidden_field :position, value: i %>
           <%= po.text_field :text, placeholder: "Option #{i + 1}#{i > 1 ? " (optional)" : ""}",
-              maxlength: 80, class: "compose-input",
-              required: i < 2 %>
+              maxlength: 80, class: "compose-input" %>
         </div>
       <% end %>
     <% end %>
