@@ -34,7 +34,7 @@ class MessagesController < ApplicationController
 
     @new_message = Current.user.sent_messages.build(
       recipient: @partner,
-      content:   params[:message][:content].to_s.strip
+      content:   params[:content].to_s.strip
     )
 
     if @new_message.save

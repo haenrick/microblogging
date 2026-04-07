@@ -5,6 +5,26 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.9.11] — 2026-04-07
+
+### Neu
+- **DM-Einstiegspunkte** — „// message"-Button auf Profilseiten (sichtbar wenn `can_message?` true); „// new message"-Formular in der Inbox mit Select aller anschreibbaren Follower
+- **Inbox-Tabs** — Notifications und Messages zu einer gemeinsamen Inbox zusammengefasst; Tab-Bar wie beim Feed; Sidebar zeigt nur noch einen `> inbox`-Link mit kombiniertem Unread-Badge
+
+### Fixes
+- **Avatar-Fragezeichen in Posts** — `action_controller.default_url_options` fehlte; Turbo-Broadcasts generierten ActiveStorage-URLs mit `host: localhost`, die im Fragment-Cache landeten und im Browser ungültig waren
+- **T10 reaktiviert** — Named Variant `:thumb` mit `preprocessed: true` nach Behebung des obigen Bugs wieder aktiv
+- **Delete-Button in Post-Edit** — `button_to` war in `form_with` verschachtelt (ungültiges HTML); Browser ignorierte das innere Form; Delete-Button jetzt außerhalb des Edit-Forms
+
+### Technisch
+- `config.action_controller.default_url_options` in `production.rb` gesetzt
+- Route `GET /messages/new` → `messages#new_conversation` (vor `:username`-Catch-all platziert)
+- `MessagesController#new_conversation` leitet zu Konversationsseite weiter
+- `MessagesController#create` nutzt `params[:content]` statt `params[:message][:content]` (Form ohne Model-Scope)
+- CSS: `.new-message-bar`, `.new-message-select-form`, `.select-input`, `.tab-action`
+
+---
+
 ## [0.9.10] — 2026-04-07
 
 ### Neu
