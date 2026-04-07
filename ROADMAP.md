@@ -248,3 +248,4 @@ Für öffentlichen Launch: Hetzner CX22 (~5 €/Monat) + Kamal (bereits im Gemfi
 | `v0.9.10` | Direkt­nachrichten N4a — Inbox, Konversation, Real-time, Unread-Badge, `can_message?` |
 | `v0.9.11` | Bugfixes (Avatar-URL, Delete-Button), Inbox-Tabs, DM-Einstiegspunkte (Profilseite + New-Message-Formular) |
 | `v0.9.11.1` | LP2 Link-Vorschau live via Turbo Broadcast, Test-Fix MessagesController |
+| `v0.9.12` | Version-Link → GitHub CHANGELOG, @fl4re_bot postet Release-Ankündigungen bei Deploy |
