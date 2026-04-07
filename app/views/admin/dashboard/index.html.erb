@@ -1,9 +1,10 @@
 <div class="admin-header">
   <h2 class="page-title">> admin console</h2>
   <nav class="admin-nav">
-    <%= link_to "> dashboard", admin_root_path, class: "admin-nav-link #{current_page?(admin_root_path) ? "active" : ""}" %>
-    <%= link_to "> users",     admin_users_path, class: "admin-nav-link #{current_page?(admin_users_path) ? "active" : ""}" %>
-    <%= link_to "> posts",     admin_posts_path, class: "admin-nav-link #{current_page?(admin_posts_path) ? "active" : ""}" %>
+    <%= link_to "> dashboard", admin_root_path,      class: "admin-nav-link #{current_page?(admin_root_path) ? "active" : ""}" %>
+    <%= link_to "> users",     admin_users_path,      class: "admin-nav-link #{current_page?(admin_users_path) ? "active" : ""}" %>
+    <%= link_to "> posts",     admin_posts_path,      class: "admin-nav-link #{current_page?(admin_posts_path) ? "active" : ""}" %>
+    <%= link_to "> errors",    admin_error_logs_path, class: "admin-nav-link #{current_page?(admin_error_logs_path) ? "active" : ""}" %>
   </nav>
 </div>
 
@@ -56,5 +57,21 @@
       </div>
     <% end %>
     <%= link_to "→ all posts", admin_posts_path, class: "admin-more-link" %>
+  </div>
+
+  <div class="admin-section">
+    <h3 class="admin-section-title">// recent errors <% if @error_count > 0 %><span class="error-count-badge"><%= @error_count %></span><% end %></h3>
+    <% if @recent_errors.empty? %>
+      <p class="dim" style="font-size:12px;">// no errors — all systems nominal</p>
+    <% else %>
+      <% @recent_errors.each do |group| %>
+        <div class="admin-row">
+          <span class="error-class-small"><%= group.error_class.split("::").last %></span>
+          <span class="admin-meta"><%= group.message.truncate(50) %></span>
+          <span class="error-badge-small"><%= group.occurrences %>×</span>
+        </div>
+      <% end %>
+    <% end %>
+    <%= link_to "→ all errors", admin_error_logs_path, class: "admin-more-link" %>
   </div>
 </div>

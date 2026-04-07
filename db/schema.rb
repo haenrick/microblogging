@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_07_082025) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_07_100443) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -50,6 +50,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_07_082025) do
     t.index ["blocked_id"], name: "index_blocks_on_blocked_id"
     t.index ["blocker_id", "blocked_id"], name: "index_blocks_on_blocker_id_and_blocked_id", unique: true
     t.index ["blocker_id"], name: "index_blocks_on_blocker_id"
+  end
+
+  create_table "error_logs", force: :cascade do |t|
+    t.string "action"
+    t.text "backtrace"
+    t.string "controller"
+    t.datetime "created_at", null: false
+    t.string "error_class", null: false
+    t.string "fingerprint", null: false
+    t.string "http_method"
+    t.text "message", null: false
+    t.text "params_json"
+    t.string "path"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["created_at"], name: "index_error_logs_on_created_at"
+    t.index ["error_class"], name: "index_error_logs_on_error_class"
+    t.index ["fingerprint"], name: "index_error_logs_on_fingerprint"
   end
 
   create_table "follows", force: :cascade do |t|

@@ -1,0 +1,55 @@
+<div class="admin-header">
+  <h2 class="page-title">> admin console</h2>
+  <nav class="admin-nav">
+    <%= link_to "> dashboard", admin_root_path,       class: "admin-nav-link" %>
+    <%= link_to "> users",     admin_users_path,       class: "admin-nav-link" %>
+    <%= link_to "> posts",     admin_posts_path,       class: "admin-nav-link" %>
+    <%= link_to "> errors",    admin_error_logs_path,  class: "admin-nav-link active" %>
+  </nav>
+</div>
+
+<div class="error-detail-header">
+  <%= link_to "← back", admin_error_logs_path, class: "back-link dim" %>
+  <div class="error-detail-title">
+    <span class="error-class"><%= @sample.error_class %></span>
+    <span class="error-badge"><%= @occurrences.size %>+ occurrences</span>
+  </div>
+  <p class="error-message"><%= @sample.message %></p>
+  <%= button_to "// resolve (delete all)", admin_error_log_path(@fingerprint), method: :delete,
+      class: "btn-danger btn-small",
+      data: { turbo_confirm: "Alle Einträge dieser Fehlergruppe löschen?" } %>
+</div>
+
+<% if @sample.backtrace.present? %>
+  <div class="error-section">
+    <h3 class="admin-section-title">// stack trace</h3>
+    <pre class="error-backtrace"><%= @sample.backtrace %></pre>
+  </div>
+<% end %>
+
+<div class="error-section">
+  <h3 class="admin-section-title">// recent occurrences (<%= @occurrences.size %>)</h3>
+  <div class="error-occurrence-list">
+    <% @occurrences.each do |log| %>
+      <div class="error-occurrence">
+        <div class="error-occurrence-meta">
+          <span class="dim"><%= log.created_at.strftime("%d.%m.%Y %H:%M:%S") %></span>
+          <% if log.http_method.present? %>
+            <span class="error-method"><%= log.http_method %></span>
+            <span class="dim"><%= log.path %></span>
+          <% end %>
+          <% if log.controller.present? %>
+            <span class="dim"><%= log.controller %>#<%= log.action %></span>
+          <% end %>
+          <% if log.user_id.present? %>
+            <% u = User.find_by(id: log.user_id) %>
+            <span class="dim">user: @<%= u&.username || log.user_id %></span>
+          <% end %>
+        </div>
+        <% if log.params_json.present? && log.params_json != "{}" %>
+          <pre class="error-params"><%= JSON.pretty_generate(JSON.parse(log.params_json)) rescue log.params_json %></pre>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

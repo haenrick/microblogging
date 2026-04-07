@@ -120,7 +120,7 @@
 | # | Maßnahme | Aufwand | Beschreibung |
 |---|----------|---------|--------------|
 | ~~T8~~ | ~~Live-Feed via Turbo Streams~~ | ✅ | Neue Posts erscheinen in Echtzeit im "All"-Tab via `broadcast_prepend_to "feed"` |
-| T9 | Fehler-Tracking | ~1h | Sentry o.ä. für Production-Errors — aktuell keine Sichtbarkeit bei Crashes |
+| ~~T9~~ | ~~Fehler-Tracking~~ | ✅ | Eingebaut im Admin-Dashboard — gruppierte Fehler, Stack Trace, Request-Kontext, resolve |
 | ~~T10~~ | ~~Avatar Variant Caching~~ | ✅ | Named Variant `:thumb` mit `preprocessed: true` — Thumbnail wird nach Upload vorberechnet |
 
 ---
@@ -249,3 +249,4 @@ Für öffentlichen Launch: Hetzner CX22 (~5 €/Monat) + Kamal (bereits im Gemfi
 | `v0.9.11` | Bugfixes (Avatar-URL, Delete-Button), Inbox-Tabs, DM-Einstiegspunkte (Profilseite + New-Message-Formular) |
 | `v0.9.11.1` | LP2 Link-Vorschau live via Turbo Broadcast, Test-Fix MessagesController |
 | `v0.9.12` | Version-Link → GitHub CHANGELOG, @fl4re_bot postet Release-Ankündigungen bei Deploy |
+| `v0.9.13` | T9 Error-Tracking im Admin — Rack-Middleware, gruppierte Fehler, Stack Trace, resolve |

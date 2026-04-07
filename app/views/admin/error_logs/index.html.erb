@@ -1,0 +1,50 @@
+<div class="admin-header">
+  <h2 class="page-title">> admin console</h2>
+  <nav class="admin-nav">
+    <%= link_to "> dashboard", admin_root_path,       class: "admin-nav-link" %>
+    <%= link_to "> users",     admin_users_path,       class: "admin-nav-link" %>
+    <%= link_to "> posts",     admin_posts_path,       class: "admin-nav-link" %>
+    <%= link_to "> errors",    admin_error_logs_path,  class: "admin-nav-link active" %>
+  </nav>
+</div>
+
+<div class="admin-error-header">
+  <div class="admin-error-stats">
+    <span class="stat-chip"><%= @total %> total occurrences</span>
+    <span class="stat-chip"><%= @error_groups.size %> unique errors</span>
+  </div>
+  <% if @total > 0 %>
+    <%= button_to "// clear all", destroy_all_admin_error_logs_path, method: :delete,
+        class: "btn-danger btn-small",
+        data: { turbo_confirm: "Alle Fehlereinträge löschen?" } %>
+  <% end %>
+</div>
+
+<% if @error_groups.empty? %>
+  <p class="empty-state">// no errors logged — all systems nominal</p>
+<% else %>
+  <div class="error-log-list">
+    <% @error_groups.each do |group| %>
+      <div class="error-log-item">
+        <div class="error-log-main">
+          <div class="error-log-top">
+            <span class="error-class"><%= group.error_class %></span>
+            <span class="error-badge"><%= group.occurrences %>×</span>
+          </div>
+          <p class="error-message"><%= group.message.truncate(120) %></p>
+          <div class="error-log-meta">
+            <span class="dim">first: <%= time_ago_in_words(group.first_seen) %> ago</span>
+            <span class="dim">·</span>
+            <span class="dim">last: <%= time_ago_in_words(group.last_seen) %> ago</span>
+          </div>
+        </div>
+        <div class="error-log-actions">
+          <%= link_to "// details", admin_error_log_path(group.fingerprint), class: "btn-ghost btn-small" %>
+          <%= button_to "// resolve", admin_error_log_path(group.fingerprint), method: :delete,
+              class: "btn-danger btn-small",
+              data: { turbo_confirm: "Fehlergruppe löschen?" } %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

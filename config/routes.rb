@@ -37,6 +37,10 @@ Rails.application.routes.draw do
       member { patch :toggle_admin }
     end
     resources :posts, only: [:index, :destroy]
+    resources :error_logs, only: [:index, :show], param: :fingerprint do
+      collection { delete :destroy_all }
+      member     { delete :destroy }
+    end
   end
 
   get  "/messages",           to: "messages#index",  as: :messages

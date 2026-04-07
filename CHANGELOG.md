@@ -5,6 +5,21 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.9.13] — 2026-04-07
+
+### Neu
+- **T9 Error-Tracking** — Eingebautes Fehler-Tracking im Admin-Dashboard (Sentry-inspiriert); gruppierte Fehleransicht nach Fingerprint mit Anzahl, erstem/letztem Auftreten, Stack Trace und Request-Kontext; Rack-Middleware fängt alle Controller-Fehler, Job-Fehler werden via `around_perform` geloggt
+- Admin-Nav um `> errors`-Tab erweitert; Dashboard zeigt Fehler-Widget mit Badge
+
+### Technisch
+- `error_logs`-Tabelle: `error_class`, `message`, `backtrace`, `controller`, `action`, `path`, `http_method`, `params_json`, `user_id`, `fingerprint`; GIN-Indexes auf `fingerprint`, `created_at`, `error_class`
+- `ErrorLog.log(exception, request:, job:)` — zentrales Logging, ignoriert 404/Routing/CSRF
+- `ErrorLoggerMiddleware` — Rack-Middleware, loggt und re-raised (Rails-Fehlerseite bleibt erhalten)
+- `Admin::ErrorLogsController` — index (grouped), show (detail + occurrences), destroy (resolve), destroy_all
+- 160 Tests, 414 Assertions
+
+---
+
 ## [0.9.12] — 2026-04-07
 
 ### Neu

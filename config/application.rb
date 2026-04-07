@@ -16,6 +16,8 @@ module Fl4re
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
     config.middleware.use Rack::Attack
+    require_relative "../app/middleware/error_logger_middleware"
+    config.middleware.use ErrorLoggerMiddleware
 
     config.x.app_email = "noreply@fl4re.datenkistchen.de"
 
