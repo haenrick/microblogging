@@ -61,10 +61,10 @@
         <div class="form-footer">
           <span class="char-counter"><span class="char-remaining" data-post-form-target="counter"><%= 280 - post.content.length %></span> chars left</span>
           <%= f.submit "Save", class: "btn-primary btn-small" %>
-          <%= button_to post_path(post), method: :delete, class: "btn-danger btn-small",
-              data: { turbo_confirm: "Delete this post?" } do %>Delete<% end %>
         </div>
       <% end %>
+      <%= button_to post_path(post), method: :delete, class: "btn-danger btn-small",
+          data: { turbo_confirm: "Delete this post?" } do %>Delete<% end %>
     </div>
   <% end %>
 
