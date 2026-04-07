@@ -5,6 +5,18 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.9.15] — 2026-04-07
+
+### Neu
+- **Landing Page** — Zweigeteiltes Login-Layout: links Hero mit Tagline, Live-Stats (User, Posts, Verbrannt), Feature-Liste und Register-CTA; rechts Login-Form; Mobile-optimiert (einspaltig)
+
+### Technisch
+- `SessionsController#new` lädt `@stats` (User, Posts, abgelaufene Posts)
+- `.landing-layout` Grid (50/50), responsive auf Mobile
+- Live-Zähler aus der DB: User (ohne fl4re_bot), Posts gesamt, verbrannte Posts
+
+---
+
 ## [0.9.14] — 2026-04-07
 
 ### Neu

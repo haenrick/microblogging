@@ -291,3 +291,4 @@ Für öffentlichen Launch: Hetzner CX22 (~5 €/Monat) + Kamal (bereits im Gemfi
 | `v0.9.12` | Version-Link → GitHub CHANGELOG, @fl4re_bot postet Release-Ankündigungen bei Deploy |
 | `v0.9.13` | T9 Error-Tracking im Admin — Rack-Middleware, gruppierte Fehler, Stack Trace, resolve |
 | `v0.9.14` | S2 Admin-Audit-Log — `> audit`-Tab, User-/Post-Aktionen protokolliert |
+| `v0.9.15` | Landing Page — Hero + Live-Stats + Feature-Liste + Register-CTA neben Login-Form |

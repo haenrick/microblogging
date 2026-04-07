@@ -1,25 +1,90 @@
-<div class="session-form">
-  <h1>> fl4re<span class="cursor">_</span></h1>
+<div class="landing-layout">
 
-  <%= form_with url: session_path do |f| %>
-    <div class="form-group">
-      <%= f.label :email_address, "$ email" %>
-      <%= f.email_field :email_address, required: true, autofocus: true,
-          autocomplete: "username", placeholder: "user@example.com",
-          value: params[:email_address] %>
-    </div>
-    <div class="form-group">
-      <%= f.label :password, "$ password" %>
-      <%= f.password_field :password, required: true,
-          autocomplete: "current-password", placeholder: "••••••••", maxlength: 72 %>
-    </div>
-    <%= f.submit "> sign in", class: "btn-primary" %>
-  <% end %>
+  <%# ── LEFT: Hero ─────────────────────────────────────────────── %>
+  <div class="landing-hero">
 
-  <p class="register-footer">
-    // no account yet?
-    <%= link_to "> register", new_register_path, class: "green-link" %>
-    &nbsp;·&nbsp;
-    <%= link_to "> forgot password?", new_password_path, class: "green-link" %>
-  </p>
+    <div class="landing-logo">
+      &gt; fl4re<span class="cursor">_</span>
+    </div>
+
+    <div class="landing-tagline">
+      <span class="landing-line landing-line--1">broadcast live.</span>
+      <span class="landing-line landing-line--2">disappear on schedule.</span>
+    </div>
+
+    <p class="landing-sub">
+      // wie eine Leuchtrakete —<br>
+      kurz, hell, dann weg.<br>
+      posts leben <span class="landing-accent">30 Tage</span>. dann verbrennen sie.
+    </p>
+
+    <div class="landing-stats">
+      <div class="landing-stat">
+        <span class="landing-stat-value"><%= @stats[:users] %></span>
+        <span class="landing-stat-label">// user</span>
+      </div>
+      <div class="landing-stat">
+        <span class="landing-stat-value"><%= @stats[:posts] %></span>
+        <span class="landing-stat-label">// posts</span>
+      </div>
+      <div class="landing-stat">
+        <span class="landing-stat-value"><%= @stats[:expired] %></span>
+        <span class="landing-stat-label">// verbrannt</span>
+      </div>
+    </div>
+
+    <ul class="landing-features">
+      <li>
+        <span class="landing-feature-key">&gt; ephemeral by design</span>
+        <span class="landing-feature-val">— 30 Tage, dann gone</span>
+      </li>
+      <li>
+        <span class="landing-feature-key">&gt; no algorithm</span>
+        <span class="landing-feature-val">— chronologisch, immer</span>
+      </li>
+      <li>
+        <span class="landing-feature-key">&gt; real connections</span>
+        <span class="landing-feature-val">— follow, dm, @mention</span>
+      </li>
+      <li>
+        <span class="landing-feature-key">&gt; self-hosted</span>
+        <span class="landing-feature-val">— kein tracking, keine ads</span>
+      </li>
+    </ul>
+
+    <%= link_to new_register_path, class: "btn-primary landing-cta" do %>
+      &gt; jetzt registrieren<span class="cursor">_</span>
+    <% end %>
+
+  </div>
+
+  <%# ── RIGHT: Login form ──────────────────────────────────────── %>
+  <div class="landing-form">
+    <div class="session-form">
+      <h2 class="landing-form-title">// sign in</h2>
+
+      <%= form_with url: session_path do |f| %>
+        <div class="form-group">
+          <%= f.label :email_address, "$ email" %>
+          <%= f.email_field :email_address, required: true, autofocus: false,
+              autocomplete: "username", placeholder: "user@example.com",
+              value: params[:email_address] %>
+        </div>
+        <div class="form-group">
+          <%= f.label :password, "$ password" %>
+          <%= f.password_field :password, required: true,
+              autocomplete: "current-password", placeholder: "••••••••", maxlength: 72 %>
+        </div>
+        <%= f.submit "> sign in", class: "btn-primary" %>
+      <% end %>
+
+      <p class="register-footer">
+        // no account yet?
+        <%= link_to "> register", new_register_path, class: "green-link" %>
+        &nbsp;·&nbsp;
+        <%= link_to "> forgot password?", new_password_path, class: "green-link" %>
+      </p>
+    </div>
+  </div>
+
 </div>
