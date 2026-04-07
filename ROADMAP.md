@@ -141,6 +141,45 @@
 | ~~LP2~~ | ~~Link-Vorschau live nachladen~~ | ✅ | Turbo Stream broadcast nach LinkPreviewJob — kein Reload mehr nötig |
 | I1 | iOS App | Später | Erst PWA, dann SwiftUI wenn Nutzerbasis es rechtfertigt |
 
+### Interaktion & Content
+
+| # | Feature | Aufwand | Beschreibung |
+|---|---------|---------|--------------|
+| IC1 | Repost/Boost | ~1 Tag | Fremde Posts in den eigenen Feed teilen; Repost-Badge auf dem Original; Unboost möglich |
+| IC2 | Lesezeichen | ~2h | Posts privat für später speichern; eigene Lesezeichen-Seite im Profil |
+| IC3 | Polls/Umfragen | ~1 Tag | Einfache Abstimmungen im Post (2–4 Optionen, Ablaufdatum, Echtzeit-Ergebnis) |
+| IC4 | Threads | ~1 Tag | Zusammenhängende Posts als Serie verfassen — mehrere Felder im Compose, als Thread verknüpft |
+
+### Entdecken
+
+| # | Feature | Aufwand | Beschreibung |
+|---|---------|---------|--------------|
+| DI1 | Hashtags | ~1 Tag | `#thema` in Posts klickbar; eigene Feed-Ansicht pro Hashtag; Hashtag-Suche |
+| DI2 | Trending | ~2h | Meistgelikte/meistkommentierte Posts der letzten 24h; eigener Tab oder Widget |
+| DI3 | Empfehlungen | ~1 Tag | "Leute die du kennen könntest" auf Basis gemeinsamer Follower |
+
+### Profil
+
+| # | Feature | Aufwand | Beschreibung |
+|---|---------|---------|--------------|
+| PR1 | Profil-Banner | ~2h | Hintergrundbild auf der Profilseite (ActiveStorage, ähnlich wie Avatar) |
+| PR2 | Pinned Post | ~2h | Einen eigenen Post oben auf dem Profil fixieren; Pin/Unpin im Post-Menü |
+
+### Moderation
+
+| # | Feature | Aufwand | Beschreibung |
+|---|---------|---------|--------------|
+| MD1 | Melden | ~1 Tag | Posts und User melden; Meldungen im Admin unter eigenem Tab sichtbar; Status (offen/erledigt) |
+| MD2 | Wort-Filter | ~2h | Bestimmte Begriffe aus dem eigenen Feed ausblenden (clientseitig, Settings) |
+
+### Plattform & API
+
+| # | Feature | Aufwand | Beschreibung |
+|---|---------|---------|--------------|
+| PA1 | RSS-Feed | ~2h | Öffentliche Posts per `/:username/feed.rss` abonnierbar |
+| PA2 | REST-API | ~2 Tage | Öffentliche JSON-API für Posts, Profile, Feed — Grundlage für externe Clients |
+| PA3 | ActivityPub | Später | Föderierung mit Mastodon & Co. — sehr aufwändig, erst bei Bedarf |
+
 ### Sicherheit (ausstehend)
 
 | # | Risiko | Aufwand | Maßnahme |
