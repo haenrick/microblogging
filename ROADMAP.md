@@ -189,6 +189,7 @@
 | ~~GR3~~ | ~~Invite-System~~ | ✅ | 5 Codes pro User (90 Tage), in Settings sichtbar, optionales Feld bei Registrierung |
 | ~~GR4~~ | ~~Welcome-Bot~~ | ✅ | `@fl4re_bot` postet @mention nach jeder Registrierung |
 | GR5 | Puma-Tuning | ~1h | Threads auf 8, `WEB_CONCURRENCY: 2` — verdoppelt parallele Request-Kapazität auf ~80 gleichzeitige User |
+| GR6 | Push Notifications (geschlossene App) | ~2h | Service-Worker-Template-Bug fixen (`service-worker.js` → `service_worker.js`); Push-Handler liefert dann echte Notifications auch wenn fl4re komplett geschlossen ist (iOS 16.4+ PWA, Android) |
 
 ### Sicherheit (ausstehend)
 
