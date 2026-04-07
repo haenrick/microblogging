@@ -57,8 +57,9 @@ Rails.application.configure do
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
 
-  # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: "fl4re.datenkistchen.de", protocol: "https" }
+  # Set host to be used by links generated in mailer templates and Turbo broadcasts.
+  config.action_mailer.default_url_options     = { host: "fl4re.datenkistchen.de", protocol: "https" }
+  config.action_controller.default_url_options = { host: "fl4re.datenkistchen.de", protocol: "https" }
 
   # Brevo SMTP — transaktionale Mails (Passwort-Reset etc.)
   config.action_mailer.delivery_method = :smtp
