@@ -5,6 +5,20 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.9.14] — 2026-04-07
+
+### Neu
+- **S2 Admin-Audit-Log** — Chronologisches Protokoll aller Admin-Aktionen; neuer `> audit`-Tab in der Admin-Nav; geloggt werden: User löschen, Admin-Rechte vergeben/entziehen, Post löschen
+
+### Technisch
+- `audit_logs`-Tabelle: `admin_id`, `action`, `target_type`, `target_id`, `target_label`, `details`
+- `AuditLog.record(admin:, action:, target:, details:)` — zentrales Logging mit Label-Generierung
+- `Admin::BaseController#audit` — Helper-Methode für alle Admin-Controller
+- `Admin::AuditLogsController#index` — letzte 200 Einträge, chronologisch
+- 160 Tests, 414 Assertions
+
+---
+
 ## [0.9.13.1] — 2026-04-07
 
 ### Fix

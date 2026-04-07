@@ -663,6 +663,18 @@ body {
 .admin-more-link { display: block; margin-top: 0.75rem; font-size: 11px; color: var(--green); letter-spacing: 1px; }
 .admin-table-wrap { overflow-x: auto; }
 
+/* Audit Log */
+.audit-log-list { display: flex; flex-direction: column; gap: 0; }
+.audit-log-item { display: flex; align-items: baseline; gap: 0.6rem; padding: 0.5rem 0; border-bottom: 1px solid #0d0d0d; font-size: 12px; flex-wrap: wrap; }
+.audit-log-item:last-child { border-bottom: none; }
+.audit-time   { font-size: 11px; white-space: nowrap; flex-shrink: 0; }
+.audit-admin  { color: var(--green); letter-spacing: 1px; }
+.audit-action { font-size: 11px; padding: 1px 6px; border-radius: 2px; border: 1px solid #333; white-space: nowrap; }
+.audit-action--user { border-color: var(--cyan, #00e5ff); color: var(--cyan, #00e5ff); }
+.audit-action--post { border-color: var(--red, #ff4444);  color: var(--red, #ff4444); }
+.audit-target  { color: #aaa; }
+.audit-details { font-size: 11px; }
+
 /* Error Tracking */
 .admin-error-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
 .admin-error-stats  { display: flex; gap: 0.5rem; flex: 1; }
