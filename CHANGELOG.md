@@ -5,6 +5,23 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.9.16] — 2026-04-07
+
+### Neu
+- **GR1 — Öffentlicher Feed** (`/explore`) — Posts ohne Login lesbar; Terminal-Ästhetik mit Stats, Register-CTA und "feed ansehen"-Link auf der Landing Page
+- **GR2 — Open Graph Tags** — Post-Permalinks haben OG-Meta-Tags (title, description, image, twitter:card); Permalinks sind ohne Login zugänglich
+- **GR3 — Invite-System** — Jeder User bekommt 5 Invite-Codes (90 Tage gültig); Codes in Settings sichtbar mit Copy-Link; optionales Invite-Feld bei Registrierung; Tracking wer wen eingeladen hat
+- **GR4 — Welcome-Bot** — `@fl4re_bot` postet nach jeder Registrierung eine @mention an den neuen User
+
+### Technisch
+- Migration: `invites`-Tabelle (token, user_id, used_by_id, used_at, expires_at)
+- `Invite.grant_to(user)` erstellt 5 Codes; Token-Format: `XXXX-XXXX-XXXX`
+- `WelcomeJob` via `perform_later` nach erfolgreicher Registrierung
+- `PostsController#show` als `allow_unauthenticated_access` — Permalink auch ohne Login lesbar
+- `ExploreController` mit `allow_unauthenticated_access`, zeigt öffentliche Posts (nicht-private User, ohne fl4re_bot)
+
+---
+
 ## [0.9.15] — 2026-04-07
 
 ### Neu

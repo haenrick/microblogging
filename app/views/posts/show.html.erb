@@ -1,5 +1,29 @@
-<%= link_to "← Back", :back, class: "back-link" %>
-<%= turbo_stream_from "post_#{@post.public_id}" %>
+<% content_for :head do %>
+  <meta property="og:type"        content="article">
+  <meta property="og:site_name"   content="fl4re">
+  <meta property="og:url"         content="<%= request.original_url %>">
+  <meta property="og:title"       content="@<%= @post.user.username %> auf fl4re">
+  <meta property="og:description" content="<%= @post.content.truncate(200) %>">
+  <% if @post.user.avatar.attached? %>
+    <meta property="og:image" content="<%= url_for(@post.user.avatar_thumbnail) %>">
+  <% end %>
+  <meta name="twitter:card"        content="summary">
+  <meta name="twitter:title"       content="@<%= @post.user.username %> auf fl4re">
+  <meta name="twitter:description" content="<%= @post.content.truncate(200) %>">
+<% end %>
+
+<% if user_signed_in? %>
+  <%= link_to "← Back", :back, class: "back-link" %>
+  <%= turbo_stream_from "post_#{@post.public_id}" %>
+<% else %>
+  <div class="explore-header explore-header--compact">
+    <div class="explore-brand">&gt; fl4re<span class="cursor">_</span></div>
+    <div class="explore-actions">
+      <%= link_to "&gt; sign in".html_safe, new_session_path, class: "btn-secondary" %>
+      <%= link_to "&gt; registrieren".html_safe, new_register_path, class: "btn-primary" %>
+    </div>
+  </div>
+<% end %>
 
 <div class="posts-feed">
   <%= render @post %>

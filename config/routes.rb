@@ -16,6 +16,7 @@ Rails.application.routes.draw do
 
   get "/search",   to: "search#index",   as: :search
   get "/discover", to: "discover#index", as: :discover
+  get "/explore",  to: "explore#index",  as: :explore
 
   resources :notifications, only: [:index] do
     collection { delete :destroy_all }

@@ -66,6 +66,19 @@
           </div>
         </div>
 
+        <div class="terminal-field">
+          <label>// invite code <span class="field-hint-inline">— optional</span></label>
+          <div class="input-row">
+            <span class="prompt-char">#</span>
+            <%= text_field_tag :invite_token,
+                (@invite&.token || params[:invite_token]),
+                placeholder: "XXXX-XXXX-XXXX",
+                autocomplete: "off",
+                class: "terminal-input",
+                style: "text-transform: uppercase; letter-spacing: 2px;" %>
+          </div>
+        </div>
+
         <div class="terminal-submit">
           <%= f.submit "> initialize account", class: "btn-primary btn-block" %>
         </div>
