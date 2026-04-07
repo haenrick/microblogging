@@ -33,5 +33,9 @@ bin/rails assets:precompile RAILS_ENV=production
 echo "[deploy] Starte Service neu..."
 sudo systemctl restart fl4re
 
+echo "[deploy] Poste Release-Ankündigung als @fl4re_bot..."
+sleep 3
+bin/rails fl4re:announce_version RAILS_ENV=production
+
 echo "[deploy] Fertig. Status:"
 sudo systemctl status fl4re --no-pager -l

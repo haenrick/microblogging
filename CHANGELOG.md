@@ -5,6 +5,19 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.9.12] — 2026-04-07
+
+### Neu
+- **Version-Link** — Versionsnummer in der Sidebar verlinkt auf CHANGELOG.md auf GitHub
+- **@fl4re_bot** — System-Bot postet bei jedem Deploy automatisch die neue Version + Neuigkeiten aus dem CHANGELOG; idempotent (überspringt bereits angekündigte Versionen)
+
+### Technisch
+- `lib/tasks/fl4re.rake` — `fl4re:announce_version`-Task; liest CHANGELOG.md, extrahiert erste 3 Bullet-Points, postet als `@fl4re_bot`; `find_or_create_by!` für Bot-User
+- `bin/deploy` — ruft `fl4re:announce_version` nach Service-Neustart auf (3s Delay)
+- 160 Tests, 414 Assertions
+
+---
+
 ## [0.9.11.1] — 2026-04-07
 
 ### Neu

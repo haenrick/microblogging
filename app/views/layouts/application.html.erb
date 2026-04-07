@@ -120,7 +120,8 @@
             </div>
             <%= button_to session_path, method: :delete, class: "btn-signout" do %>// sign out<% end %>
           </div>
-          <div class="sidebar-version">v<%= FL4RE_VERSION %></div>
+          <%= link_to "v#{FL4RE_VERSION}", "https://github.com/haenrick/microblogging/blob/main/CHANGELOG.md",
+              class: "sidebar-version", target: "_blank", rel: "noopener noreferrer" %>
         </nav>
 
         <main class="main-content">
