@@ -1,0 +1,19 @@
+<div id="message-preview-<%= message.id %>">
+  <% if message.link_preview.present? %>
+    <%= link_to message.link_preview["url"], class: "link-preview-card link-preview-card--dm",
+        target: "_blank", rel: "noopener noreferrer" do %>
+      <% if message.link_preview["image"].present? %>
+        <img src="<%= message.link_preview["image"] %>" class="link-preview-image" loading="lazy" alt="">
+      <% end %>
+      <div class="link-preview-body">
+        <span class="link-preview-site"><%= message.link_preview["site_name"] %></span>
+        <% if message.link_preview["title"].present? %>
+          <strong class="link-preview-title"><%= message.link_preview["title"] %></strong>
+        <% end %>
+        <% if message.link_preview["description"].present? %>
+          <p class="link-preview-desc"><%= message.link_preview["description"] %></p>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

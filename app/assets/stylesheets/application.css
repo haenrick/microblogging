@@ -1266,6 +1266,7 @@ body {
   text-decoration: none;
 }
 .link-preview-card:hover { border-color: var(--green-dim); }
+.link-preview-card--dm { margin-top: 0.4rem; margin-bottom: 0.25rem; max-width: 280px; }
 .link-preview-image {
   width: 100%;
   max-height: 200px;
