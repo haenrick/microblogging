@@ -1,0 +1,9 @@
+<h2 class="page-title">// bookmarks</h2>
+
+<% if @posts.any? %>
+  <div class="posts-feed">
+    <%= render @posts %>
+  </div>
+<% else %>
+  <p class="empty-state">// keine gespeicherten posts — klick ✦ auf einem post um ihn zu bookmarken.</p>
+<% end %>

@@ -1,0 +1,10 @@
+<h2 class="page-title">#<%= @tag %></h2>
+<p class="page-subtitle">// <%= @posts.count %> posts mit diesem hashtag</p>
+
+<% if @posts.any? %>
+  <div class="posts-feed">
+    <%= render @posts %>
+  </div>
+<% else %>
+  <p class="empty-state">// noch keine posts mit #<%= @tag %></p>
+<% end %>

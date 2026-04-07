@@ -66,6 +66,7 @@
                 <li><%= link_to root_path, class: "nav-link", data: { action: "click->mobile-nav#close" } do %>> feed<% end %></li>
                 <li><%= link_to search_path, class: "nav-link", data: { action: "click->mobile-nav#close" } do %>> search<% end %></li>
                 <li><%= link_to discover_path, class: "nav-link", data: { action: "click->mobile-nav#close" } do %>> discover<% end %></li>
+                <li><%= link_to bookmarks_path, class: "nav-link", data: { action: "click->mobile-nav#close" } do %>> bookmarks<% end %></li>
                 <li><%= link_to notifications_path, class: "nav-link", data: { action: "click->mobile-nav#close" } do %>> inbox<% end %></li>
                 <li><%= link_to profile_path(Current.user.username), class: "nav-link", data: { action: "click->mobile-nav#close" } do %>> profile<% end %></li>
                 <li><%= link_to edit_profile_path, class: "nav-link", data: { action: "click->mobile-nav#close" } do %>> settings<% end %></li>
@@ -90,6 +91,7 @@
               <li><%= link_to root_path, class: "nav-link #{current_page?(root_path) ? "active" : ""}" do %>> feed<% end %></li>
               <li><%= link_to search_path, class: "nav-link #{current_page?(search_path) ? "active" : ""}" do %>> search<% end %></li>
               <li><%= link_to discover_path, class: "nav-link #{current_page?(discover_path) ? "active" : ""}" do %>> discover<% end %></li>
+              <li><%= link_to bookmarks_path, class: "nav-link #{current_page?(bookmarks_path) ? "active" : ""}" do %>> bookmarks<% end %></li>
               <li>
                 <% inbox_active = current_page?(notifications_path) || request.path.start_with?("/messages") %>
                 <% total_inbox = Current.user.notifications.unread.count + Current.user.unread_messages_count %>

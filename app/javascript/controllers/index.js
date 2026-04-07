@@ -5,6 +5,7 @@ import ThemeController from "controllers/theme_controller"
 import PushNotificationsController from "controllers/push_notifications_controller"
 import MobileNavController from "controllers/mobile_nav_controller"
 import AiAssistController from "controllers/ai_assist_controller"
+import ComposeController from "controllers/compose_controller"
 
 application.register("toggle", ToggleController)
 application.register("post-form", PostFormController)
@@ -12,3 +13,4 @@ application.register("theme", ThemeController)
 application.register("push-notifications", PushNotificationsController)
 application.register("mobile-nav", MobileNavController)
 application.register("ai-assist", AiAssistController)
+application.register("compose", ComposeController)

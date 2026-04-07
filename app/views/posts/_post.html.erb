@@ -23,6 +23,7 @@
 
   <div class="post-content"><%= render_post_content(post.content) %></div>
 
+  <%= render "posts/poll", post: post %>
   <%= render "posts/link_preview", post: post %>
 
   <% if post.media.attached? %>

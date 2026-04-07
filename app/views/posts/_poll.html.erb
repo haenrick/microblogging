@@ -1,0 +1,29 @@
+<% return unless post.poll? %>
+<div class="poll" id="<%= dom_id(post, :poll) %>">
+  <% total = post.poll_total_votes %>
+  <% user_vote = user_signed_in? ? post.user_vote(Current.user) : nil %>
+  <% voted = user_vote.present? %>
+
+  <% post.poll_options.each do |option| %>
+    <% pct = option.percentage(total) %>
+    <div class="poll-option <%= voted ? "poll-voted" : "" %> <%= user_vote&.poll_option_id == option.id ? "poll-my-vote" : "" %>">
+      <% if user_signed_in? %>
+        <%= button_to vote_post_path(post), method: :post,
+            class: "poll-option-btn",
+            data: { turbo_stream: true },
+            params: { poll_option_id: option.id } do %>
+          <span class="poll-bar" style="width: <%= pct %>%"></span>
+          <span class="poll-label"><%= option.text %></span>
+          <span class="poll-pct"><%= pct %>%</span>
+        <% end %>
+      <% else %>
+        <div class="poll-option-btn">
+          <span class="poll-bar" style="width: <%= pct %>%"></span>
+          <span class="poll-label"><%= option.text %></span>
+          <span class="poll-pct"><%= pct %>%</span>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+  <p class="poll-meta">// <%= total %> <%= total == 1 ? "stimme" : "stimmen" %></p>
+</div>
