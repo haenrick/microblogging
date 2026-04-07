@@ -148,6 +148,7 @@
 | ~~S2~~ | ~~Admin-Audit-Log~~ | ✅ | Chronologisches Protokoll aller Admin-Aktionen im `> audit`-Tab |
 | S3 | Kein 2FA | ~1 Tag | TOTP via `rotp` Gem |
 | ~~S4~~ | ~~E-Mail-Verifikation~~ | ✅ | Token 24h, Banner + Resend, Token wird nach Verifikation ungültig |
+| S5 | Passkey-Authentifizierung | ~2 Tage | Passwortlos einloggen via WebAuthn/FIDO2 (Face ID, Touch ID, Hardware-Key); `webauthn` Gem; als Alternative zum Passwort, nicht als Ersatz |
 
 > Vollständige Dokumentation: [docs/security.md](docs/security.md)
 
