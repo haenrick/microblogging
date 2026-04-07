@@ -1,0 +1,30 @@
+<div class="admin-header">
+  <h2 class="page-title">> admin console</h2>
+  <nav class="admin-nav">
+    <%= link_to "> dashboard", admin_root_path,       class: "admin-nav-link" %>
+    <%= link_to "> users",     admin_users_path,       class: "admin-nav-link" %>
+    <%= link_to "> posts",     admin_posts_path,       class: "admin-nav-link" %>
+    <%= link_to "> audit",     admin_audit_logs_path,  class: "admin-nav-link active" %>
+    <%= link_to "> errors",    admin_error_logs_path,  class: "admin-nav-link" %>
+  </nav>
+</div>
+
+<% if @audit_logs.empty? %>
+  <p class="empty-state">// keine Aktionen protokolliert</p>
+<% else %>
+  <div class="audit-log-list">
+    <% @audit_logs.each do |log| %>
+      <div class="audit-log-item">
+        <span class="audit-time dim"><%= log.created_at.strftime("%d.%m.%Y %H:%M:%S") %></span>
+        <span class="audit-admin">@<%= log.admin.username %></span>
+        <span class="audit-action audit-action--<%= log.action.split('.').first %>"><%= log.action_label %></span>
+        <% if log.target_label.present? %>
+          <span class="audit-target"><%= log.target_label %></span>
+        <% end %>
+        <% if log.details.present? %>
+          <span class="audit-details dim">(<%= log.details %>)</span>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

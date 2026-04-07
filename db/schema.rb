@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_07_100443) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_07_101742) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -40,6 +40,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_07_100443) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "audit_logs", force: :cascade do |t|
+    t.string "action", null: false
+    t.bigint "admin_id", null: false
+    t.datetime "created_at", null: false
+    t.text "details"
+    t.bigint "target_id"
+    t.string "target_label"
+    t.string "target_type"
+    t.datetime "updated_at", null: false
+    t.index ["action"], name: "index_audit_logs_on_action"
+    t.index ["admin_id"], name: "index_audit_logs_on_admin_id"
+    t.index ["created_at"], name: "index_audit_logs_on_created_at"
   end
 
   create_table "blocks", force: :cascade do |t|
@@ -177,6 +191,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_07_100443) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "audit_logs", "users", column: "admin_id"
   add_foreign_key "blocks", "users", column: "blocked_id"
   add_foreign_key "blocks", "users", column: "blocker_id"
   add_foreign_key "follows", "users", column: "follower_id"

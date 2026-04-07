@@ -14,6 +14,7 @@ class Admin::UsersController < Admin::BaseController
     elsif user.admin?
       redirect_to admin_users_path, alert: "You cannot delete another admin."
     else
+      audit("user.deleted", target: user)
       user.destroy
       redirect_to admin_users_path, notice: "@#{user.username} deleted."
     end
@@ -25,7 +26,9 @@ class Admin::UsersController < Admin::BaseController
       redirect_to admin_users_path, alert: "You cannot revoke another admin's privileges."
       return
     end
-    user.update!(admin: !user.admin?)
+    new_status = !user.admin?
+    user.update!(admin: new_status)
+    audit(new_status ? "user.admin_granted" : "user.admin_revoked", target: user)
     redirect_to admin_users_path, notice: "@#{user.username} admin status updated."
   end
 end

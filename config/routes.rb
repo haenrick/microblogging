@@ -37,6 +37,7 @@ Rails.application.routes.draw do
       member { patch :toggle_admin }
     end
     resources :posts, only: [:index, :destroy]
+    resources :audit_logs,  only: [:index]
     resources :error_logs, only: [:index, :show], param: :fingerprint do
       collection { delete :destroy_all }
       member     { delete :destroy }

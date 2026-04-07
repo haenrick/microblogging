@@ -7,6 +7,7 @@ class Admin::PostsController < Admin::BaseController
 
   def destroy
     post = Post.find(params[:id])
+    audit("post.deleted", target: post, details: "@#{post.user.username}")
     post.destroy
     redirect_to admin_posts_path, notice: "Post deleted."
   end

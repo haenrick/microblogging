@@ -145,7 +145,7 @@
 
 | # | Risiko | Aufwand | Maßnahme |
 |---|--------|---------|----------|
-| S2 | Kein Admin-Audit-Log | ~2h | Admin-Aktionen in DB loggen |
+| ~~S2~~ | ~~Admin-Audit-Log~~ | ✅ | Chronologisches Protokoll aller Admin-Aktionen im `> audit`-Tab |
 | S3 | Kein 2FA | ~1 Tag | TOTP via `rotp` Gem |
 | ~~S4~~ | ~~E-Mail-Verifikation~~ | ✅ | Token 24h, Banner + Resend, Token wird nach Verifikation ungültig |
 
@@ -250,3 +250,4 @@ Für öffentlichen Launch: Hetzner CX22 (~5 €/Monat) + Kamal (bereits im Gemfi
 | `v0.9.11.1` | LP2 Link-Vorschau live via Turbo Broadcast, Test-Fix MessagesController |
 | `v0.9.12` | Version-Link → GitHub CHANGELOG, @fl4re_bot postet Release-Ankündigungen bei Deploy |
 | `v0.9.13` | T9 Error-Tracking im Admin — Rack-Middleware, gruppierte Fehler, Stack Trace, resolve |
+| `v0.9.14` | S2 Admin-Audit-Log — `> audit`-Tab, User-/Post-Aktionen protokolliert |
