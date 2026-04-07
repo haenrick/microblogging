@@ -46,7 +46,7 @@ class ErrorLog < ApplicationRecord
   def self.grouped
     select("fingerprint, error_class, MIN(message) as message, COUNT(*) as occurrences, MAX(created_at) as last_seen, MIN(created_at) as first_seen")
       .group(:fingerprint, :error_class)
-      .order("last_seen DESC")
+      .order("MAX(created_at) DESC")
   end
 
   private

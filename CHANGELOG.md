@@ -5,6 +5,13 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.9.13.1] — 2026-04-07
+
+### Fix
+- `ErrorLog.grouped` — PostgreSQL erlaubt keine SELECT-Aliase in `ORDER BY` bei `GROUP BY`-Queries; `last_seen` durch `MAX(created_at) DESC` ersetzt
+
+---
+
 ## [0.9.13] — 2026-04-07
 
 ### Neu
