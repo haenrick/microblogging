@@ -5,6 +5,15 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.9.17.1] — 2026-04-07
+
+### Fixes
+
+- **Service Worker: HTML nie cachen** — `"/"` aus `PRECACHE_URLS` entfernt, HTML-Requests von Cache-Handler ausgenommen. Verhindert veraltete CSRF-Tokens auf Mobilgeräten (Likes, Posts, Boosts schlugen mit 422 fehl). Cache-Name auf `fl4re-v2` erhöht, um alten Cache sofort zu invalidieren.
+- **Toggle-Controller: `toggle()`-Methode ergänzt** — `content`-Target und generische `toggle()`-Methode hinzugefügt. Behebt: "// new message"-Button in der DM-Inbox öffnete das Formular nicht (Methode fehlte im Controller).
+
+---
+
 ## [0.9.17] — 2026-04-07
 
 ### Neu
