@@ -1,0 +1,63 @@
+<% content_for :full_layout, true %>
+<div class="explore-layout">
+
+  <div class="explore-header">
+    <div class="explore-brand">&gt; fl4re<span class="cursor">_</span></div>
+    <div class="explore-tagline">broadcast live. disappear on schedule.</div>
+    <div class="explore-stats">
+      <span><%= @stats[:users] %> user</span>
+      <span class="explore-sep">//</span>
+      <span><%= @stats[:posts] %> posts</span>
+      <span class="explore-sep">//</span>
+      <span><%= @stats[:expired] %> verbrannt</span>
+    </div>
+    <div class="explore-actions">
+      <%= link_to "&gt; registrieren".html_safe, new_register_path, class: "btn-primary" %>
+      <%= link_to "&gt; sign in".html_safe, new_session_path, class: "btn-secondary" %>
+    </div>
+  </div>
+
+  <div class="explore-feed">
+    <p class="explore-feed-label">// aktuelle posts — live &amp; ephemer</p>
+    <% if @posts.any? %>
+      <% @posts.each do |post| %>
+        <div class="explore-post">
+          <div class="explore-post-meta">
+            <% if post.user.avatar.attached? %>
+              <%= image_tag post.user.avatar_thumbnail, class: "avatar-img avatar-small" %>
+            <% else %>
+              <div class="avatar-initials avatar-small"><%= post.user.initials %></div>
+            <% end %>
+            <span class="username">@<%= post.user.username %></span>
+            <span class="post-time"><%= time_ago_in_words(post.created_at) %> ago</span>
+            <% if post.expires_at %>
+              <span class="expiry-badge expiry-<%= post.expiry_status %>">⏳ <%= post.expiry_label %></span>
+            <% end %>
+          </div>
+          <div class="post-content"><%= render_post_content(post.content) %></div>
+          <% if post.link_preview.present? %>
+            <%= render "posts/link_preview", post: post %>
+          <% end %>
+          <% if post.media.attached? %>
+            <div class="post-media">
+              <% if post.media.video? %>
+                <%= video_tag post.media, controls: true, class: "post-video" %>
+              <% else %>
+                <%= image_tag post.media, class: "post-image" %>
+              <% end %>
+            </div>
+          <% end %>
+          <div class="explore-post-footer">
+            <span class="like-count">♥ <%= post.likes.count %></span>
+            <%= link_to new_session_path, class: "explore-cta-link" do %>
+              &gt; mitmachen<span class="cursor">_</span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <p class="hint">// noch keine öffentlichen posts</p>
+    <% end %>
+  </div>
+
+</div>

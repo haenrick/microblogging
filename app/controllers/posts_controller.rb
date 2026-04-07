@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
-  before_action :require_authentication
+  allow_unauthenticated_access only: %i[show]
+  before_action :require_authentication, except: %i[show]
   rate_limit to: 20, within: 1.minute, only: %i[create reply],
              with: -> { redirect_to root_path, alert: "[!] Rate limit reached. Wait a moment." }
 

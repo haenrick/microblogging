@@ -24,7 +24,8 @@ class ProfilesController < ApplicationController
   end
 
   def edit
-    @user = Current.user
+    @user    = Current.user
+    @invites = Current.user.invites.order(created_at: :asc)
   end
 
   def update

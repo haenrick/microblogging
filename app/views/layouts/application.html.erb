@@ -136,6 +136,8 @@
           <%= yield %>
         </main>
       </div>
+    <% elsif content_for?(:full_layout) %>
+      <%= yield %>
     <% else %>
       <div class="auth-layout">
         <% if flash[:notice] %><p class="flash-notice">[ok] <%= flash[:notice] %></p><% end %>

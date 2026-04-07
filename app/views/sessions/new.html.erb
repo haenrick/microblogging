@@ -52,9 +52,14 @@
       </li>
     </ul>
 
-    <%= link_to new_register_path, class: "btn-primary landing-cta" do %>
-      &gt; jetzt registrieren<span class="cursor">_</span>
-    <% end %>
+    <div class="landing-cta-group">
+      <%= link_to new_register_path, class: "btn-primary landing-cta" do %>
+        &gt; jetzt registrieren<span class="cursor">_</span>
+      <% end %>
+      <%= link_to explore_path, class: "landing-explore-link" do %>
+        &gt; feed ansehen
+      <% end %>
+    </div>
 
   </div>
 

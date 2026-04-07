@@ -105,6 +105,31 @@
   </div>
 <% end %>
 
+<div class="settings-form">
+  <div class="settings-section">
+    <h3>// invite friends</h3>
+    <p class="hint">Teile diese Links um Freunde einzuladen. Jeder Code kann einmal verwendet werden.</p>
+    <div class="invite-list">
+      <% @invites.each do |invite| %>
+        <div class="invite-item <%= invite.used? ? "invite-used" : "invite-available" %>">
+          <span class="invite-token"><%= invite.token %></span>
+          <% if invite.used? %>
+            <span class="invite-status">// verwendet von @<%= invite.used_by&.username %></span>
+          <% else %>
+            <span class="invite-status">// verfügbar</span>
+            <span class="invite-link">
+              <%= new_register_path(invite: invite.token) %>
+            </span>
+          <% end %>
+        </div>
+      <% end %>
+      <% if @invites.empty? %>
+        <p class="hint">// keine Invite-Codes vorhanden</p>
+      <% end %>
+    </div>
+  </div>
+</div>
+
 <div class="settings-form danger-zone">
   <div class="settings-section">
     <h3>Delete account</h3>

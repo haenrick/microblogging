@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_07_101742) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_07_120551) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -96,6 +96,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_07_101742) do
     t.index ["status"], name: "index_follows_on_status"
   end
 
+  create_table "invites", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "expires_at"
+    t.string "token", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "used_at"
+    t.bigint "used_by_id"
+    t.bigint "user_id", null: false
+    t.index ["token"], name: "index_invites_on_token", unique: true
+    t.index ["used_by_id"], name: "index_invites_on_used_by_id"
+    t.index ["user_id"], name: "index_invites_on_user_id"
+  end
+
   create_table "likes", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "post_id", null: false
@@ -172,6 +185,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_07_101742) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
+  create_table "solid_cable_messages", force: :cascade do |t|
+    t.binary "channel", null: false
+    t.bigint "channel_hash", null: false
+    t.datetime "created_at", null: false
+    t.binary "payload", null: false
+    t.index ["channel"], name: "index_solid_cable_messages_on_channel"
+    t.index ["channel_hash"], name: "index_solid_cable_messages_on_channel_hash"
+    t.index ["created_at"], name: "index_solid_cable_messages_on_created_at"
+  end
+
   create_table "users", force: :cascade do |t|
     t.boolean "admin", default: false, null: false
     t.string "bio", limit: 160
@@ -196,6 +219,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_07_101742) do
   add_foreign_key "blocks", "users", column: "blocker_id"
   add_foreign_key "follows", "users", column: "follower_id"
   add_foreign_key "follows", "users", column: "following_id"
+  add_foreign_key "invites", "users"
+  add_foreign_key "invites", "users", column: "used_by_id"
   add_foreign_key "likes", "posts"
   add_foreign_key "likes", "users"
   add_foreign_key "messages", "users", column: "recipient_id"

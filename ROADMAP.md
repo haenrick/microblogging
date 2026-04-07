@@ -184,10 +184,10 @@
 
 | # | Feature | Aufwand | Beschreibung |
 |---|---------|---------|--------------|
-| GR1 | Öffentlicher Feed | ~2h | Read-only Feed ohne Login — Posts entdeckbar machen, Hemmschwelle zur Registrierung senken |
-| GR2 | Open Graph / Link Preview | ~2h | OG-Tags auf Post-Permalinks — schöne Vorschau beim Teilen auf WhatsApp, iMessage, Discord |
-| GR3 | Invite-System | ~1 Tag | Jeder User bekommt N Invite-Links; kontrolliertes, qualitatives Wachstum statt offener Registrierung |
-| GR4 | Welcome-Bot | ~2h | `@fl4re_bot` @mentioned neuen User nach Registrierung automatisch — erstes Willkommen auf der Plattform |
+| ~~GR1~~ | ~~Öffentlicher Feed~~ | ✅ | `/explore` — Posts ohne Login lesbar, Terminal-Stil, Stats + Register-CTA |
+| ~~GR2~~ | ~~Open Graph / Link Preview~~ | ✅ | OG-Tags auf Post-Permalinks; Permalinks ohne Login erreichbar |
+| ~~GR3~~ | ~~Invite-System~~ | ✅ | 5 Codes pro User (90 Tage), in Settings sichtbar, optionales Feld bei Registrierung |
+| ~~GR4~~ | ~~Welcome-Bot~~ | ✅ | `@fl4re_bot` postet @mention nach jeder Registrierung |
 | GR5 | Puma-Tuning | ~1h | Threads auf 8, `WEB_CONCURRENCY: 2` — verdoppelt parallele Request-Kapazität auf ~80 gleichzeitige User |
 
 ### Sicherheit (ausstehend)
@@ -302,3 +302,4 @@ Für öffentlichen Launch: Hetzner CX22 (~5 €/Monat) + Kamal (bereits im Gemfi
 | `v0.9.13` | T9 Error-Tracking im Admin — Rack-Middleware, gruppierte Fehler, Stack Trace, resolve |
 | `v0.9.14` | S2 Admin-Audit-Log — `> audit`-Tab, User-/Post-Aktionen protokolliert |
 | `v0.9.15` | Landing Page — Hero + Live-Stats + Feature-Liste + Register-CTA neben Login-Form |
+| `v0.9.16` | Community-Wachstum — Öffentlicher Feed (/explore), OG-Tags, Invite-System (5 Codes/User), Welcome-Bot |
