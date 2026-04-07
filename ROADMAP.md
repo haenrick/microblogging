@@ -358,3 +358,4 @@ Für öffentlichen Launch: Hetzner CX22 (~5 €/Monat) + Kamal (bereits im Gemfi
 | `v0.9.17.1` | Mobile Fixes — Service Worker cacht kein HTML mehr (CSRF-Fix), Toggle-Controller `toggle()`-Methode ergänzt (DM-Inbox) |
 | `v0.9.17.2` | Mobile Fix 2 — SW reload nach Aktivierung (stale CSRF in aktiven Tabs), Tests für Boost/Bookmark/Vote (169 Tests, 440 Assertions) |
 | `v0.9.17.3` | Mobile Fix 3 — SW Caching komplett entfernt; nur noch Push Notifications. client.navigate() funktionierte auf iOS Safari PWA nicht → Posting weiterhin kaputt. Root fix: kein Cache = kein stale CSRF. |
+| `v0.9.17.4` | Mobile Fix 4 — Compose-Form Turbo deaktiviert (iOS PWA silent fail), Form-Footer CSS space-between fix (Post-Button war auf Mobile nicht zuverlässig tappbar) |
