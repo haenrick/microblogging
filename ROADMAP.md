@@ -145,16 +145,16 @@
 
 | # | Feature | Aufwand | Beschreibung |
 |---|---------|---------|--------------|
-| IC1 | Repost/Boost | ~1 Tag | Fremde Posts in den eigenen Feed teilen; Repost-Badge auf dem Original; Unboost möglich |
-| IC2 | Lesezeichen | ~2h | Posts privat für später speichern; eigene Lesezeichen-Seite im Profil |
-| IC3 | Polls/Umfragen | ~1 Tag | Einfache Abstimmungen im Post (2–4 Optionen, Ablaufdatum, Echtzeit-Ergebnis) |
-| IC4 | Threads | ~1 Tag | Zusammenhängende Posts als Serie verfassen — mehrere Felder im Compose, als Thread verknüpft |
+| ~~IC1~~ | ~~Repost/Boost~~ | ✅ | ⇄-Button; boost/unboost; Turbo Stream Live-Update |
+| ~~IC2~~ | ~~Lesezeichen~~ | ✅ | ✦-Button; `/bookmarks`-Seite; Sidebar-Link |
+| ~~IC3~~ | ~~Polls/Umfragen~~ | ✅ | 2–4 Optionen im Compose; Live-Balken per Turbo Stream |
+| ~~IC4~~ | ~~Threads~~ | ✅ | "+ thread"-Button; verkettete Posts (reply-chain) |
 
 ### Entdecken
 
 | # | Feature | Aufwand | Beschreibung |
 |---|---------|---------|--------------|
-| DI1 | Hashtags | ~1 Tag | `#thema` in Posts klickbar; eigene Feed-Ansicht pro Hashtag; Hashtag-Suche |
+| ~~DI1~~ | ~~Hashtags~~ | ✅ | `#thema` klickbar; `/tags/:tag`-Feed; after_save Extraktion |
 | DI2 | Trending | ~2h | Meistgelikte/meistkommentierte Posts der letzten 24h; eigener Tab oder Widget |
 | DI3 | Empfehlungen | ~1 Tag | "Leute die du kennen könntest" auf Basis gemeinsamer Follower |
 
@@ -303,3 +303,4 @@ Für öffentlichen Launch: Hetzner CX22 (~5 €/Monat) + Kamal (bereits im Gemfi
 | `v0.9.14` | S2 Admin-Audit-Log — `> audit`-Tab, User-/Post-Aktionen protokolliert |
 | `v0.9.15` | Landing Page — Hero + Live-Stats + Feature-Liste + Register-CTA neben Login-Form |
 | `v0.9.16` | Community-Wachstum — Öffentlicher Feed (/explore), OG-Tags, Invite-System (5 Codes/User), Welcome-Bot |
+| `v0.9.17` | Interaktion — Repost/Boost, Lesezeichen, Polls, Threads, Hashtags (#tag → Feed) |

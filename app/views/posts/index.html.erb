@@ -4,26 +4,63 @@
 </div>
 
 <%= form_with model: @post, class: "post-form", multipart: true,
-    data: { controller: "post-form ai-assist" } do |f| %>
+    data: { controller: "post-form ai-assist compose" } do |f| %>
   <% if @post.errors.any? %>
     <div class="error"><%= @post.errors.full_messages.to_sentence %></div>
   <% end %>
-  <%= f.text_area :content, placeholder: "What's happening?", maxlength: 280, rows: 3,
-      data: {
-        action: "input->post-form#updateCount keydown->post-form#submitOnEnter",
-        ai_assist_target: "textarea"
-      } %>
-  <div class="form-footer">
+
+  <%# ── Main textarea ── %>
+  <div class="thread-segment" data-compose-target="segment">
+    <%= f.text_area :content, placeholder: "What's happening? Use #hashtags and @mentions", maxlength: 280, rows: 3,
+        data: {
+          action: "input->post-form#updateCount keydown->post-form#submitOnEnter",
+          ai_assist_target: "textarea"
+        } %>
     <span class="char-counter"><span class="char-remaining" data-post-form-target="counter">280</span> chars left</span>
-    <button type="button" class="btn-ai-improve"
-            data-ai-assist-target="button"
-            data-action="click->ai-assist#improve">✦ improve</button>
-    <label class="btn-attach" title="Attach image">
-      📎<span data-post-form-target="fileName"></span>
-      <%= f.file_field :media, accept: "image/*,video/*", class: "attach-input",
-          data: { action: "change->post-form#fileSelected" } %>
-    </label>
-    <%= f.submit "Post", class: "btn-primary" %>
+  </div>
+
+  <%# ── Thread segments (added dynamically) ── %>
+  <div data-compose-target="threadContainer"></div>
+
+  <%# ── Poll builder (hidden by default) ── %>
+  <div class="poll-builder hidden" data-compose-target="pollBuilder">
+    <p class="poll-builder-label">// umfrage optionen</p>
+    <% 4.times do |i| %>
+      <%= f.fields_for :poll_options, PollOption.new, index: i do |po| %>
+        <div class="poll-builder-option">
+          <span class="prompt-char">#</span>
+          <%= po.hidden_field :position, value: i %>
+          <%= po.text_field :text, placeholder: "Option #{i + 1}#{i > 1 ? " (optional)" : ""}",
+              maxlength: 80, class: "compose-input",
+              required: i < 2 %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="form-footer">
+    <div class="form-footer-left">
+      <button type="button" class="btn-compose-tool" title="Thread hinzufügen"
+              data-action="click->compose#addThread">
+        + thread
+      </button>
+      <button type="button" class="btn-compose-tool" title="Umfrage"
+              data-action="click->compose#togglePoll"
+              data-compose-target="pollToggle">
+        ◉ poll
+      </button>
+    </div>
+    <div class="form-footer-right">
+      <button type="button" class="btn-ai-improve"
+              data-ai-assist-target="button"
+              data-action="click->ai-assist#improve">✦ improve</button>
+      <label class="btn-attach" title="Attach image">
+        📎<span data-post-form-target="fileName"></span>
+        <%= f.file_field :media, accept: "image/*,video/*", class: "attach-input",
+            data: { action: "change->post-form#fileSelected" } %>
+      </label>
+      <%= f.submit "Post", class: "btn-primary", data: { compose_target: "submitBtn" } %>
+    </div>
   </div>
 <% end %>
 

@@ -9,10 +9,18 @@ Rails.application.routes.draw do
 
   resources :posts, only: [:index, :create, :show, :update, :destroy] do
     member do
-      post :like
-      post :reply
+      post   :like
+      post   :reply
+      post   :boost
+      delete :boost
+      post   :bookmark
+      delete :bookmark
+      post   :vote
     end
   end
+
+  resources :bookmarks, only: [:index]
+  get "/tags/:tag", to: "hashtags#show", as: :hashtag, constraints: { tag: /[a-z0-9_äöüßÄÖÜ]+/i }
 
   get "/search",   to: "search#index",   as: :search
   get "/discover", to: "discover#index", as: :discover

@@ -6,7 +6,14 @@ class Post < ApplicationRecord
   has_many :replies, class_name: "Post", foreign_key: :parent_id, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :liked_by_users, through: :likes, source: :user
+  has_many :reposts, dependent: :destroy
+  has_many :bookmarks, dependent: :destroy
+  has_many :poll_options, -> { order(:position) }, dependent: :destroy
+  has_many :post_hashtags, dependent: :destroy
+  has_many :hashtags, through: :post_hashtags
   has_one_attached :media
+
+  accepts_nested_attributes_for :poll_options, reject_if: ->(a) { a[:text].blank? }, limit: 4
 
   ALLOWED_MEDIA_TYPES = %w[image/png image/jpeg image/gif image/webp image/jpg].freeze
 
@@ -18,6 +25,7 @@ class Post < ApplicationRecord
   after_create_commit :broadcast_to_feed,    if: -> { parent_id.nil? && !user.private_profile? }
   after_create_commit :notify_mentions
   after_create_commit :enqueue_link_preview, if: -> { content.match?(/https?:\/\//) }
+  after_save          :sync_hashtags
 
   scope :top_level,   -> { where(parent_id: nil) }
   scope :recent,      -> { order(created_at: :desc) }
@@ -29,6 +37,26 @@ class Post < ApplicationRecord
 
   def liked_by?(user)
     likes.exists?(user: user)
+  end
+
+  def reposted_by?(user)
+    reposts.exists?(user: user)
+  end
+
+  def bookmarked_by?(user)
+    bookmarks.exists?(user: user)
+  end
+
+  def poll?
+    poll_options.any?
+  end
+
+  def poll_total_votes
+    poll_options.sum { |o| o.votes_count }
+  end
+
+  def user_vote(user)
+    PollVote.joins(:poll_option).find_by(user: user, poll_options: { post_id: id })
   end
 
   def expires_in_seconds
@@ -120,6 +148,22 @@ class Post < ApplicationRecord
 
   def set_public_id
     self.public_id ||= SecureRandom.urlsafe_base64(8)
+  end
+
+  def sync_hashtags
+    tags = content.scan(/#([a-z0-9_äöüß]+)/i).flatten.map(&:downcase).uniq.first(10)
+    current_names = hashtags.pluck(:name)
+    to_add    = tags - current_names
+    to_remove = current_names - tags
+    to_add.each do |name|
+      hashtag = Hashtag.find_or_create_by!(name: name)
+      post_hashtags.find_or_create_by!(hashtag: hashtag)
+    rescue ActiveRecord::RecordInvalid
+      nil
+    end
+    hashtags.where(name: to_remove).each do |h|
+      post_hashtags.find_by(hashtag: h)&.destroy
+    end
   end
 
   def acceptable_media

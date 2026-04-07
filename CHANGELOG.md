@@ -5,6 +5,24 @@ Format: [Semantic Versioning](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [0.9.17] — 2026-04-07
+
+### Neu
+- **IC1 — Repost/Boost** — ⇄-Button auf Posts; boost/unboost; Turbo Stream Live-Update; Boost-Counter sichtbar
+- **IC2 — Lesezeichen** — ✦-Button auf Posts; `/bookmarks`-Seite zeigt gespeicherte Posts; Sidebar-Link
+- **IC3 — Polls** — Umfrage-Builder im Compose (2–4 Optionen); Abstimmung per Turbo Stream; Ergebnisbalken live; eigene Stimme hervorgehoben
+- **IC4 — Threads** — "+ thread"-Button im Compose fügt weitere Segmente hinzu; Controller erstellt verkettete Posts (reply-chain); "Thread posten"-Label
+- **DI1 — Hashtags** — `#hashtag` in Posts wird verlinkt; `/tags/:tag`-Feed; automatische Extraktion und Speicherung nach jedem Post-Save
+
+### Technisch
+- Migrationen: `reposts`, `bookmarks`, `poll_options`, `poll_votes`, `hashtags`, `post_hashtags`
+- `Post#sync_hashtags` — after_save, extrahiert und synct Hashtags
+- `render_post_content` — linked jetzt auch `#hashtags` (cyan)
+- Stimulus `ComposeController` — Thread-Modus, Poll-Toggle, Submit-Interceptor
+- `PostsController#boost`, `#bookmark`, `#vote` — alle mit Turbo Stream Response
+
+---
+
 ## [0.9.16] — 2026-04-07
 
 ### Neu

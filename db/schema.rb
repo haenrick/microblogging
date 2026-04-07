@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_07_120551) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_07_122153) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -66,6 +66,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_07_120551) do
     t.index ["blocker_id"], name: "index_blocks_on_blocker_id"
   end
 
+  create_table "bookmarks", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "post_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["post_id"], name: "index_bookmarks_on_post_id"
+    t.index ["user_id", "post_id"], name: "index_bookmarks_on_user_id_and_post_id", unique: true
+    t.index ["user_id"], name: "index_bookmarks_on_user_id"
+  end
+
   create_table "error_logs", force: :cascade do |t|
     t.string "action"
     t.text "backtrace"
@@ -94,6 +104,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_07_120551) do
     t.index ["follower_id"], name: "index_follows_on_follower_id"
     t.index ["following_id"], name: "index_follows_on_following_id"
     t.index ["status"], name: "index_follows_on_status"
+  end
+
+  create_table "hashtags", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_hashtags_on_name", unique: true
   end
 
   create_table "invites", force: :cascade do |t|
@@ -145,6 +162,35 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_07_120551) do
     t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
   end
 
+  create_table "poll_options", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "position", default: 0, null: false
+    t.bigint "post_id", null: false
+    t.string "text", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_poll_options_on_post_id"
+  end
+
+  create_table "poll_votes", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "poll_option_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["poll_option_id"], name: "index_poll_votes_on_poll_option_id"
+    t.index ["user_id", "poll_option_id"], name: "index_poll_votes_on_user_id_and_poll_option_id", unique: true
+    t.index ["user_id"], name: "index_poll_votes_on_user_id"
+  end
+
+  create_table "post_hashtags", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "hashtag_id", null: false
+    t.bigint "post_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hashtag_id"], name: "index_post_hashtags_on_hashtag_id"
+    t.index ["post_id", "hashtag_id"], name: "index_post_hashtags_on_post_id_and_hashtag_id", unique: true
+    t.index ["post_id"], name: "index_post_hashtags_on_post_id"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.text "content"
     t.datetime "created_at", null: false
@@ -172,6 +218,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_07_120551) do
     t.bigint "user_id", null: false
     t.index ["endpoint"], name: "index_push_subscriptions_on_endpoint", unique: true
     t.index ["user_id"], name: "index_push_subscriptions_on_user_id"
+  end
+
+  create_table "reposts", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "post_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["post_id"], name: "index_reposts_on_post_id"
+    t.index ["user_id", "post_id"], name: "index_reposts_on_user_id_and_post_id", unique: true
+    t.index ["user_id"], name: "index_reposts_on_user_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -217,6 +273,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_07_120551) do
   add_foreign_key "audit_logs", "users", column: "admin_id"
   add_foreign_key "blocks", "users", column: "blocked_id"
   add_foreign_key "blocks", "users", column: "blocker_id"
+  add_foreign_key "bookmarks", "posts"
+  add_foreign_key "bookmarks", "users"
   add_foreign_key "follows", "users", column: "follower_id"
   add_foreign_key "follows", "users", column: "following_id"
   add_foreign_key "invites", "users"
@@ -225,7 +283,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_07_120551) do
   add_foreign_key "likes", "users"
   add_foreign_key "messages", "users", column: "recipient_id"
   add_foreign_key "messages", "users", column: "sender_id"
+  add_foreign_key "poll_options", "posts"
+  add_foreign_key "poll_votes", "poll_options"
+  add_foreign_key "poll_votes", "users"
+  add_foreign_key "post_hashtags", "hashtags"
+  add_foreign_key "post_hashtags", "posts"
   add_foreign_key "posts", "posts", column: "parent_id"
   add_foreign_key "posts", "users"
+  add_foreign_key "reposts", "posts"
+  add_foreign_key "reposts", "users"
   add_foreign_key "sessions", "users"
 end
