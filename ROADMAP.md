@@ -180,6 +180,16 @@
 | PA2 | REST-API | ~2 Tage | Öffentliche JSON-API für Posts, Profile, Feed — Grundlage für externe Clients |
 | PA3 | ActivityPub | Später | Föderierung mit Mastodon & Co. — sehr aufwändig, erst bei Bedarf |
 
+### Community & Wachstum
+
+| # | Feature | Aufwand | Beschreibung |
+|---|---------|---------|--------------|
+| GR1 | Öffentlicher Feed | ~2h | Read-only Feed ohne Login — Posts entdeckbar machen, Hemmschwelle zur Registrierung senken |
+| GR2 | Open Graph / Link Preview | ~2h | OG-Tags auf Post-Permalinks — schöne Vorschau beim Teilen auf WhatsApp, iMessage, Discord |
+| GR3 | Invite-System | ~1 Tag | Jeder User bekommt N Invite-Links; kontrolliertes, qualitatives Wachstum statt offener Registrierung |
+| GR4 | Welcome-Bot | ~2h | `@fl4re_bot` @mentioned neuen User nach Registrierung automatisch — erstes Willkommen auf der Plattform |
+| GR5 | Puma-Tuning | ~1h | Threads auf 8, `WEB_CONCURRENCY: 2` — verdoppelt parallele Request-Kapazität auf ~80 gleichzeitige User |
+
 ### Sicherheit (ausstehend)
 
 | # | Risiko | Aufwand | Maßnahme |
