@@ -1,9 +1,19 @@
 <% content_for :title, "notifications — fl4re" %>
 
-<div class="page-header">
-  <h1 class="page-title">&gt; notifications_</h1>
+<div class="feed-tabs">
+  <%= link_to notifications_path, class: "feed-tab active" do %>
+    notifications
+    <%= render "notifications/badge", unread_count: Current.user.notifications.unread.count %>
+  <% end %>
+  <%= link_to messages_path, class: "feed-tab" do %>
+    messages
+    <% unread_dm = Current.user.unread_messages_count %>
+    <% if unread_dm > 0 %>
+      <span class="notif-badge"><%= unread_dm %></span>
+    <% end %>
+  <% end %>
   <% if @notifications.any? %>
-    <%= button_to destroy_all_notifications_path, method: :delete, class: "btn-sm" do %>
+    <%= button_to destroy_all_notifications_path, method: :delete, class: "btn-sm tab-action" do %>
       // clear all
     <% end %>
   <% end %>

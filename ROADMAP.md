@@ -138,6 +138,7 @@
 | X2d | Content-Moderation | ~2 Tage | Automatisches Flaggen toxischer Posts via Claude API |
 | ~~N4a~~ | ~~Basis-DMs~~ | ✅ | Inbox, Konversation, Real-time Turbo, Unread-Badge, `can_message?`-Permission |
 | N4b | E2E-Verschlüsselung | Später | X25519 + AES-GCM, nur wenn Datenschutz-Anforderungen es rechtfertigen |
+| ~~LP2~~ | ~~Link-Vorschau live nachladen~~ | ✅ | Turbo Stream broadcast nach LinkPreviewJob — kein Reload mehr nötig |
 | I1 | iOS App | Später | Erst PWA, dann SwiftUI wenn Nutzerbasis es rechtfertigt |
 
 ### Sicherheit (ausstehend)
@@ -245,3 +246,5 @@ Für öffentlichen Launch: Hetzner CX22 (~5 €/Monat) + Kamal (bereits im Gemfi
 | `v0.9.8` | E-Mail-Verifikation (S4) — Token 24h, Banner + Resend, Auto-Invalidierung nach Bestätigung |
 | `v0.9.9` | Avatar Variant Caching (T10) — Named Variant `:thumb` mit `preprocessed: true` |
 | `v0.9.10` | Direkt­nachrichten N4a — Inbox, Konversation, Real-time, Unread-Badge, `can_message?` |
+| `v0.9.11` | Bugfixes (Avatar-URL, Delete-Button), Inbox-Tabs, DM-Einstiegspunkte (Profilseite + New-Message-Formular) |
+| `v0.9.11.1` | LP2 Link-Vorschau live via Turbo Broadcast, Test-Fix MessagesController |

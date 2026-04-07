@@ -1,0 +1,18 @@
+<div id="<%= dom_id(post, :link_preview) %>">
+  <% if post.link_preview.present? %>
+    <%= link_to post.link_preview["url"], class: "link-preview-card", target: "_blank", rel: "noopener noreferrer" do %>
+      <% if post.link_preview["image"].present? %>
+        <img src="<%= post.link_preview["image"] %>" class="link-preview-image" loading="lazy" alt="">
+      <% end %>
+      <div class="link-preview-body">
+        <span class="link-preview-site"><%= post.link_preview["site_name"] %></span>
+        <% if post.link_preview["title"].present? %>
+          <strong class="link-preview-title"><%= post.link_preview["title"] %></strong>
+        <% end %>
+        <% if post.link_preview["description"].present? %>
+          <p class="link-preview-desc"><%= post.link_preview["description"] %></p>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

@@ -14,7 +14,7 @@ class User < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :liked_posts, through: :likes, source: :post
   has_one_attached :avatar do |attachable|
-    attachable.variant :thumb, resize_to_fill: [ 100, 100 ]
+    attachable.variant :thumb, resize_to_fill: [ 100, 100 ], preprocessed: true
   end
 
   has_many :follows, foreign_key: :follower_id, dependent: :destroy

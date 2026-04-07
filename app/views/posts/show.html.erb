@@ -1,4 +1,5 @@
 <%= link_to "← Back", :back, class: "back-link" %>
+<%= turbo_stream_from "post_#{@post.public_id}" %>
 
 <div class="posts-feed">
   <%= render @post %>

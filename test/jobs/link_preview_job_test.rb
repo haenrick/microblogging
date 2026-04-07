@@ -33,6 +33,32 @@ class LinkPreviewJobTest < ActiveJob::TestCase
     assert_equal "Example Site", preview["site_name"]
   end
 
+  test "broadcasts turbo stream after storing preview" do
+    @post.update_column(:content, "check https://example.com")
+
+    fake_html = <<~HTML
+      <html><head>
+        <meta property="og:title" content="Broadcast Title">
+        <meta property="og:site_name" content="Example">
+      </head></html>
+    HTML
+
+    broadcasts_feed = []
+    broadcasts_post = []
+
+    stub_method(URI, :open, ->(*_args, **_kwargs) { StringIO.new(fake_html) }) do
+      stub_method(Turbo::StreamsChannel, :broadcast_replace_to, ->(stream, **_opts) {
+        broadcasts_feed << stream if stream == "feed"
+        broadcasts_post << stream if stream.to_s.start_with?("post_")
+      }) do
+        LinkPreviewJob.perform_now(@post)
+      end
+    end
+
+    assert_includes broadcasts_feed, "feed"
+    assert_equal 1, broadcasts_post.size
+  end
+
   test "does not raise on network error" do
     @post.update_column(:content, "check https://example.com")
 

@@ -1,6 +1,33 @@
-<div class="page-header">
-  <h2 class="page-title">> messages<span class="cursor">_</span></h2>
+<div class="feed-tabs">
+  <%= link_to notifications_path, class: "feed-tab" do %>
+    notifications
+    <%= render "notifications/badge", unread_count: Current.user.notifications.unread.count %>
+  <% end %>
+  <%= link_to messages_path, class: "feed-tab active" do %>
+    messages
+    <% unread_dm = Current.user.unread_messages_count %>
+    <% if unread_dm > 0 %>
+      <span class="notif-badge"><%= unread_dm %></span>
+    <% end %>
+  <% end %>
 </div>
+
+<% if @messageable.any? %>
+  <div class="new-message-bar" data-controller="toggle">
+    <button class="btn-ghost btn-small" data-action="click->toggle#toggle" data-toggle-target="trigger">
+      // new message
+    </button>
+    <div class="new-message-form hidden" data-toggle-target="content">
+      <%= form_with url: new_message_conversation_path, method: :get, class: "new-message-select-form" do |f| %>
+        <%= f.select :username,
+            @messageable.map { |u| ["@#{u.username}", u.username] },
+            { prompt: "Follower auswählen …" },
+            { class: "select-input" } %>
+        <%= f.submit "// start", class: "btn-primary btn-small" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
 
 <% if @conversations.empty? %>
   <p class="empty-state">// keine Konversationen — schreibe jemanden an, der dir folgt</p>
